@@ -7,6 +7,7 @@ const tryCatch = require("./middlewares/tryCatchMiddleware");
 const packageJson = require("../../package.json");
 const helloRoute = require("./routes/helloRoute");
 
+// eslint-disable-next-line no-unused-vars
 module.exports = async (components) => {
   const app = express();
 
