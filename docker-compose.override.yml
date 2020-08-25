@@ -1,0 +1,26 @@
+#Override containers for dev
+version: "2.4"
+services:
+  reverse_proxy:
+    volumes:
+      - template_nginx_data:/data
+
+  server:
+    command: ["yarn", "debug"]
+    ports:
+      - "127.0.0.1:9229:9229" #Allows remote debugging
+    volumes:
+      - ./server/src:/app/src #Allows source folders to be watched
+      - ./server/config:/app/config
+      - template_server_data:/data
+    environment:
+      - TEMPLATE_ENV=dev
+      - TEMPLATE_LOG_LEVEL=debug
+
+volumes:
+  template_nginx_data:
+    driver: local
+    name: template_nginx_data
+  template_server_data:
+    driver: local
+    name: template_server_data
