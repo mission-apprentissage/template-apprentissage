@@ -1,0 +1,11 @@
+{
+  "appName": "TEMPLATE_NAME",
+  "env": "TEMPLATE_ENV",
+  "publicUrl": "TEMPLATE_PUBLIC_URL",
+  "log": {
+    "type": "TEMPLATE_LOG_TYPE",
+    "level": "TEMPLATE_LOG_LEVEL"
+  },
+  "slackWebhookUrl": "TEMPLATE_SLACK_WEBHOOK_URL",
+  "outputDir": "TEMPLATE_OUTPUT_DIR"
+}

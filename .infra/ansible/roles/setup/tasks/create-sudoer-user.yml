@@ -1,0 +1,14 @@
+- name: "Create user {{ item.username }}"
+  user:
+    name: "{{ item.username }}"
+    password: "$6$l7dEu7DLCAMYN9MO$kN74MlGPRYYCnoS5GjTcUQ2ZlvRvmpf0jPD35/IRJzfc6mSDf074O5.oLIvVw2vl.e5dQAYe1HxYjVDkqKFQO0"
+    update_password: on_create
+    shell: /bin/bash
+    groups: sudo,mna
+    append: yes
+
+- name: "Add authorized key to user {{ item.username }}"
+  authorized_key:
+    user: "{{ item.username }}"
+    state: present
+    key: "{{ item.authorized_key }}"

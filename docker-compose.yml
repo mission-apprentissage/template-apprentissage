@@ -1,0 +1,31 @@
+version: "2.4"
+services:
+  reverse_proxy:
+    image: template_reverse_proxy
+    container_name: template_reverse_proxy
+    build:
+      context: reverse_proxy
+    mem_limit: 256m
+    restart: unless-stopped
+    ports:
+      - 80:80
+    networks:
+      - template_network
+    depends_on:
+      - server
+
+  server:
+    image: template_server
+    container_name: template_server
+    build:
+      context: server
+    mem_limit: 1g
+    restart: unless-stopped
+    networks:
+      - template_network
+    environment:
+      - TEMPLATE_OUTPUT_DIR=/data
+
+networks:
+  template_network:
+    name: template_network

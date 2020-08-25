@@ -1,0 +1,11 @@
+{
+  "appName": "TEMPLATE-MNA",
+  "env": "local",
+  "publicUrl": "http://localhost",
+  "log": {
+    "type": "console",
+    "level": "info"
+  },
+  "slackWebhookUrl": null,
+  "outputDir": ".local/output"
+}
