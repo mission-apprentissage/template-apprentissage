@@ -1,6 +1,0 @@
-- name: "Run start-app.sh script with branch {{ git_revision }}"
-  shell: "sudo /opt/mna/start-app.sh {{ git_revision }}"
-  register: output
-
-- debug:
-    var: output

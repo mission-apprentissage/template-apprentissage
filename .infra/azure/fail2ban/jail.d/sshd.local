@@ -1,9 +1,0 @@
-[sshd]
-enabled = true
-port = ssh
-filter = sshd[mode=aggressive]
-logpath = /system/auth.log
-maxretry = 10
-bantime = 604800
-banaction = iptables-multiport
-            slack-notify
