@@ -3,7 +3,7 @@ version: "2.4"
 services:
   reverse_proxy:
     volumes:
-      - template_nginx_data:/data
+      - template_app_nginx_data:/data
 
   server:
     command: ["yarn", "debug"]
@@ -12,15 +12,15 @@ services:
     volumes:
       - ./server/src:/app/src #Allows source folders to be watched
       - ./server/config:/app/config
-      - template_server_data:/data
+      - template_app_server_data:/data
     environment:
-      - TEMPLATE_ENV=dev
-      - TEMPLATE_LOG_LEVEL=debug
+      - TEMPLATE_APP_ENV=dev
+      - TEMPLATE_APP_LOG_LEVEL=debug
 
 volumes:
-  template_nginx_data:
+  template_app_nginx_data:
     driver: local
-    name: template_nginx_data
-  template_server_data:
+    name: template_app_nginx_data
+  template_app_server_data:
     driver: local
-    name: template_server_data
+    name: template_app_server_data
