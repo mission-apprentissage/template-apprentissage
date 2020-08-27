@@ -29,6 +29,14 @@ module.exports = async (components) => {
     })
   );
 
+  // Example getConfig endpoint
+  app.get(
+    "/getConfig",
+    tryCatch(async (req, res) => {
+      return res.json(config);
+    })
+  );
+
   app.use(errorMiddleware());
 
   return app;
