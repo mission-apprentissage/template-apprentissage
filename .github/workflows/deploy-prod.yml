@@ -1,0 +1,21 @@
+# Worflow pour CI des commandes Yarn
+name: CI - Deploy on master / production
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out the repository
+      - uses: actions/checkout@v2
+
+      # Install dependencies
+      - name: Deploy App
+        run: |
+          cd ../template-apprentissage-infra/script
+          bash echo-deploy.sh production
