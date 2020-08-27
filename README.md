@@ -1,9 +1,15 @@
 # Template Apprentissage
 
+## Organisation
+
 ## Start Stack
 
-## Debug
+## Conteneurs Docker
 
-## Test
+## Tests
 
-## Deploy
+## Déploiement
+
+## Debugger sous VSCode
+
+[Documentation sur le debugging](docs/DEBUG.md)

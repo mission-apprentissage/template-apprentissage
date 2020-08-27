@@ -1,8 +1,8 @@
 version: "2.4"
 services:
   reverse_proxy:
-    image: template_reverse_proxy
-    container_name: template_reverse_proxy
+    image: template_app_reverse_proxy
+    container_name: template_app_reverse_proxy
     build:
       context: reverse_proxy
     mem_limit: 256m
@@ -10,22 +10,20 @@ services:
     ports:
       - 80:80
     networks:
-      - template_network
+      - template_app_network
     depends_on:
       - server
 
   server:
-    image: template_server
-    container_name: template_server
+    image: template_app_server
+    container_name: template_app_server
     build:
       context: server
     mem_limit: 1g
     restart: unless-stopped
     networks:
-      - template_network
-    environment:
-      - TEMPLATE_OUTPUT_DIR=/data
+      - template_app_network
 
 networks:
-  template_network:
-    name: template_network
+  template_app_network:
+    name: template_app_network
