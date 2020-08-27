@@ -1,7 +1,7 @@
 # Worflow pour CI des commandes Yarn
 name: Yarn CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   # Single job
