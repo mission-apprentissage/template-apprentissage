@@ -29,11 +29,12 @@ module.exports = async (components) => {
     })
   );
 
-  // Example getConfig endpoint
   app.get(
-    "/getConfig",
+    "/api/config",
     tryCatch(async (req, res) => {
-      return res.json(config);
+      return res.json({
+        config: config,
+      });
     })
   );
 
