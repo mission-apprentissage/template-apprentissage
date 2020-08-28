@@ -188,15 +188,41 @@ Les tests sont en règle général découpés en 3 dossiers :
 
 ## Server Node Express
 
-### Middlewares & Routes
+### Http
+
+La structure principale du serveur Node Express est définie dans `/server/src/http` et contient :
+
+- La liste des middlewares express à appliquer
+- La liste des routes d'API
+- Le point d'entrée principal du serveur : `/server/src/http/server.js`
 
 ### Logger
 
+Pour la gestion des logs nous utilisons la librairie bunyan _cf : https://www.npmjs.com/package/bunyan_
+
+Par défaut 3 stream sont configurés :
+
+- Dans la console.
+- Dans un fichier JSON.
+- Dans une chaine Slack.
+
+Pour mettre en place les notifications Slack il est nécessaire d'utiliser les Webhooks et de créer une chaine dédiée dans votre espace de travail Slack.
+
+Il vous faudra créer une application dans Slack et récupérer le lien de la Webhook, pour en savoir plus : https://api.slack.com/messaging/webhooks.
+
 ### Utilitaires
+
+Certains modules utilitaires sont présents dans `/server/src/common/utils`
 
 ### Composants injectables
 
+Un module permettant de contenir des composants "communs" et injectable dans les routes est proposé dans le fichier `/server/src/common/components/components.js`
+
+Vous pouvez ajouter dans ce fichier des élements communs à réexploiter dans l'API.
+
 ## Debugger sous VSCode
+
+Il est possible de débugger facilement le serveur Express contenu dans le Docker local **sous VSCode** en utilisant la configuration suivante \_a placer dans le fichier `/.vscode/launch.json` :
 
 ```json
 {
@@ -205,7 +231,7 @@ Les tests sont en règle général découpés en 3 dossiers :
     {
       "type": "node",
       "request": "attach",
-      "name": "Attach to Docker - Server",
+      "name": "Debug Express in docker",
       "address": "127.0.0.1",
       "port": 9229,
       "localRoot": "${workspaceFolder}/server/src",
@@ -216,6 +242,28 @@ Les tests sont en règle général découpés en 3 dossiers :
 }
 ```
 
+Cette configuration va utiliser la commande `debug` définie dans le fichier `/server/package.json` :
+
+```json
+{
+  ...
+  "scripts": {
+    ...
+    "debug": "nodemon --inspect=0.0.0.0 --signal SIGINT --ignore tests/ src/index.js",
+    ...
+  },
+  ...
+  }
+}
+
+```
+
 ## Workflows & CI / CD
 
-Workflows
+Dans le repertoire `/.github/workflows` sont définie les Github actions à mettre en place sur le repository.
+
+Le workflow principal est définie dans `/.github/workflows/yarn-ci.yml` et se charge à chaque push sur une branche de :
+
+- Vérifier l'installation des dépendances
+- Lancer le linter
+- Exécuter les tests unitaires.
