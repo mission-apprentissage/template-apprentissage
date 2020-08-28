@@ -1,4 +1,4 @@
-#Override containers for dev
+# Override containers for local / dev environnement
 version: "2.4"
 services:
   reverse_proxy:
@@ -8,9 +8,9 @@ services:
   server:
     command: ["yarn", "debug"]
     ports:
-      - "127.0.0.1:9229:9229" #Allows remote debugging
+      - "127.0.0.1:9229:9229" # Allows remote debugging
     volumes:
-      - ./server/src:/app/src #Allows source folders to be watched
+      - ./server/src:/app/src # Allows source folders to be watched
       - ./server/config:/app/config
       - template_app_server_data:/data
     environment:
