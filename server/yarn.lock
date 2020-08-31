@@ -299,6 +299,11 @@ buffer-equal-constant-time@1.0.1:
   resolved "https://registry.yarnpkg.com/buffer-equal-constant-time/-/buffer-equal-constant-time-1.0.1.tgz#f8e71132f7ffe6e01a5c9697a4c6f3e48d5cc819"
   integrity sha1-+OcRMvf/5uAaXJaXpMbz5I1cyBk=
 
+bunyan-mongodb-stream@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/bunyan-mongodb-stream/-/bunyan-mongodb-stream-0.0.3.tgz#e6dcc4cd2496f19b4785d6f110941a0a0627e1e8"
+  integrity sha1-5tzEzSSW8ZtHhdbxEJQaCgYn4eg=
+
 bunyan-prettystream@0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/bunyan-prettystream/-/bunyan-prettystream-0.1.3.tgz#6c3b713266f6ad32007c7b6ab1e998a245349d98"

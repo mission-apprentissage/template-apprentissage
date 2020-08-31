@@ -3,6 +3,8 @@ const util = require("util");
 const bunyan = require("bunyan");
 const PrettyStream = require("bunyan-prettystream");
 const BunyanSlack = require("bunyan-slack");
+const BunyanMongodbStream = require("bunyan-mongodb-stream");
+const { Log } = require("./model");
 
 let createStreams = () => {
   let { type, level } = config.log;
@@ -23,6 +25,14 @@ let createStreams = () => {
       name: "console",
       level,
       stream: pretty,
+    };
+  };
+
+  const mongoDBStream = () => {
+    return {
+      name: "mongodb",
+      level,
+      stream: BunyanMongodbStream({ model: Log }),
     };
   };
 
@@ -55,7 +65,7 @@ let createStreams = () => {
     };
   };
 
-  let streams = [type === "console" ? consoleStream() : jsonStream()];
+  let streams = [type === "console" ? consoleStream() : jsonStream(), mongoDBStream()];
   if (config.slackWebhookUrl) {
     streams.push(slackStream());
   }
