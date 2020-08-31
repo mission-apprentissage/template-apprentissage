@@ -7,6 +7,7 @@ const errorMiddleware = require("./middlewares/errorMiddleware");
 const tryCatch = require("./middlewares/tryCatchMiddleware");
 const packageJson = require("../../package.json");
 const helloRoute = require("./routes/helloRoute");
+const entityRoute = require("./routes/entityRoute");
 
 // eslint-disable-next-line no-unused-vars
 module.exports = async (components) => {
@@ -17,8 +18,6 @@ module.exports = async (components) => {
 
   // Add needed middlewares here
   app.use(logMiddleware());
-
-  app.use("/api/helloRoute", helloRoute());
 
   app.get(
     "/api",
@@ -54,6 +53,9 @@ module.exports = async (components) => {
       });
     })
   );
+
+  app.use("/api/helloRoute", helloRoute());
+  app.use("/api/entity", entityRoute());
 
   app.use(errorMiddleware());
 
