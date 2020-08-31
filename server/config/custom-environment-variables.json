@@ -2,6 +2,9 @@
   "appName": "TEMPLATE_APP_NAME",
   "env": "TEMPLATE_APP_ENV",
   "publicUrl": "TEMPLATE_APP_PUBLIC_URL",
+  "mongodb": {
+    "uri": "TEMPLATE_APP_MONGODB_URI"
+  },
   "log": {
     "type": "TEMPLATE_APP_LOG_TYPE",
     "level": "TEMPLATE_APP_LOG_LEVEL"

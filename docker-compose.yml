@@ -23,6 +23,18 @@ services:
     restart: unless-stopped
     networks:
       - template_app_network
+    depends_on:
+      - mongodb
+    environment:
+      - TEMPLATE_APP_MONGODB_URI=mongodb://mongodb:27017/template-app?retryWrites=true&w=majority
+
+  mongodb:
+    image: mongo:4.2.6-bionic
+    container_name: template_app_mongodb
+    mem_limit: 1g
+    restart: unless-stopped
+    networks:
+      - template_app_network
 
 networks:
   template_app_network:

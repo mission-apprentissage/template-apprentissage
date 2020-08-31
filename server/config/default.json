@@ -2,6 +2,9 @@
   "appName": "Template App",
   "env": "local",
   "publicUrl": "http://localhost",
+  "mongodb": {
+    "uri": "mongodb://127.0.0.1:27017/template-app?retryWrites=true&w=majority"
+  },
   "log": {
     "type": "console",
     "level": "info"
