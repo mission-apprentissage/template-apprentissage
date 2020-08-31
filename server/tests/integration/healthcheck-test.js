@@ -10,6 +10,7 @@ httpTests(__filename, ({ startServer }) => {
 
     assert.strictEqual(response.status, 200);
     assert.strictEqual(response.data.name, `Serveur MNA - ${config.appName}`);
+    assert.strictEqual(response.data.healthcheck.mongodb, true);
     assert.ok(response.data.env);
     assert.ok(response.data.version);
   });

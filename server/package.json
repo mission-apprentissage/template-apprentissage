@@ -29,6 +29,7 @@
     "convert-csv-to-json": "0.0.15",
     "env-var": "6.1.1",
     "express": "4.17.1",
+    "fs-extra": "9.0.0",
     "json2csv": "5.0.1",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.15",

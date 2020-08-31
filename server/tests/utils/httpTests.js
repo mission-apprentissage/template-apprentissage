@@ -1,13 +1,14 @@
 /* eslint-disable node/no-unpublished-require */
 const axiosist = require("axiosist");
 const createComponents = require("../../src/common/components/components");
+const { connectToMongoForTests, cleanAll } = require("./testUtils.js");
 const server = require("../../src/http/server");
 
 let startServer = async (options = {}) => {
-  let components = await createComponents({});
-
-  let app = await server(components);
-  let httpClient = axiosist(app);
+  const { db } = await connectToMongoForTests();
+  const components = await createComponents({ db });
+  const app = await server(components);
+  const httpClient = axiosist(app);
 
   return {
     httpClient,
@@ -18,5 +19,6 @@ let startServer = async (options = {}) => {
 module.exports = (desc, cb) => {
   describe(desc, function () {
     cb({ startServer });
+    afterEach(cleanAll);
   });
 };
