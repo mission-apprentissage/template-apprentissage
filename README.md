@@ -163,7 +163,7 @@ docker exec -t -i template_app_server /bin/bash
 De même pour consulter la liste des fichiers dans le docker :
 
 ```bash
-docker exec flux_server bash -c 'ls'
+docker exec template_app_server bash -c 'ls'
 ```
 
 ## Linter

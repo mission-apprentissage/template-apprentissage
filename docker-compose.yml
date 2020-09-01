@@ -13,6 +13,7 @@ services:
       - template_app_network
     depends_on:
       - server
+      - ui
 
   ui:
     image: template_app_ui
