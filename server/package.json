@@ -27,6 +27,7 @@
     "bunyan-slack": "0.0.10",
     "config": "3.3.1",
     "convert-csv-to-json": "0.0.15",
+    "compose-middleware": "5.0.1",
     "env-var": "6.1.1",
     "express": "4.17.1",
     "fs-extra": "9.0.0",

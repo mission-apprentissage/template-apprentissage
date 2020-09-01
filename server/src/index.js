@@ -7,7 +7,7 @@ process.on("unhandledRejection", (e) => logger.error("An unexpected error occurr
 process.on("uncaughtException", (e) => logger.error("An unexpected error occurred", e));
 
 (async function () {
-  let components = await createComponents();
-  let http = await server(components);
+  const components = await createComponents();
+  const http = await server(components);
   http.listen(5000, () => logger.info(`${config.appName} - Server ready and listening on port ${5000}`));
 })();

@@ -7,14 +7,21 @@ const errorMiddleware = require("./middlewares/errorMiddleware");
 const tryCatch = require("./middlewares/tryCatchMiddleware");
 const apiKeyAuthMiddleware = require("./middlewares/apiKeyAuthMiddleware");
 const corsMiddleware = require("./middlewares/corsMiddleware");
+const authMiddleware = require("./middlewares/authMiddleware");
+const permissionsMiddleware = require("./middlewares/permissionsMiddleware");
 const packageJson = require("../../package.json");
 const hello = require("./routes/hello");
 const entity = require("./routes/entity");
 const secured = require("./routes/secured");
+const login = require("./routes/login");
+const authentified = require("./routes/authentified");
+const admin = require("./routes/admin");
 
 module.exports = async (components) => {
   const { db } = components;
   const app = express();
+  const checkJwtToken = authMiddleware(components);
+  const adminOnly = permissionsMiddleware({ isAdmin: true });
 
   app.use(bodyParser.json());
   app.use(corsMiddleware());
@@ -23,6 +30,9 @@ module.exports = async (components) => {
   app.use("/api/helloRoute", hello());
   app.use("/api/entity", entity());
   app.use("/api/secured", apiKeyAuthMiddleware, secured());
+  app.use("/api/login", login(components));
+  app.use("/api/authentified", checkJwtToken, authentified());
+  app.use("/api/admin", checkJwtToken, adminOnly, admin());
 
   app.get(
     "/api",
