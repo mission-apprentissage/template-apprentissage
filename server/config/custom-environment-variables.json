@@ -5,6 +5,7 @@
   "mongodb": {
     "uri": "TEMPLATE_APP_MONGODB_URI"
   },
+  "apiKey": "TEMPLATE_APP_API_KEY",
   "log": {
     "type": "TEMPLATE_APP_LOG_TYPE",
     "level": "TEMPLATE_APP_LOG_LEVEL"

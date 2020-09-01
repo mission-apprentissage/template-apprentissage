@@ -5,19 +5,30 @@ const bodyParser = require("body-parser");
 const logMiddleware = require("./middlewares/logMiddleware");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const tryCatch = require("./middlewares/tryCatchMiddleware");
+const apiKeyAuthMiddleware = require("./middlewares/apiKeyAuthMiddleware");
+const testMiddleware = require("./middlewares/testMiddleware");
 const packageJson = require("../../package.json");
 const helloRoute = require("./routes/helloRoute");
 const entityRoute = require("./routes/entityRoute");
+const securedRoute = require("./routes/securedRoute");
 
-// eslint-disable-next-line no-unused-vars
 module.exports = async (components) => {
   const { db } = components;
   const app = express();
 
-  app.use(bodyParser.json());
+  // // enable CORS for all routes and for our specific API-Key header
+  // app.use(function (res, next) {
+  //   res.header("Access-Control-Allow-Origin", "*");
+  //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, API-Key");
+  //   next();
+  // });
 
-  // Add needed middlewares here
+  app.use(bodyParser.json());
   app.use(logMiddleware());
+
+  app.use("/api/helloRoute", helloRoute());
+  app.use("/api/entity", entityRoute());
+  app.use("/api/secured", apiKeyAuthMiddleware, securedRoute());
 
   app.get(
     "/api",
@@ -53,9 +64,6 @@ module.exports = async (components) => {
       });
     })
   );
-
-  app.use("/api/helloRoute", helloRoute());
-  app.use("/api/entity", entityRoute());
 
   app.use(errorMiddleware());
 
