@@ -4,18 +4,18 @@ const { sha512crypt } = require("sha512crypt-node");
 
 module.exports = {
   hash: (password, rounds = config.auth.passwordHashRounds) => {
-    let salt = crypto.randomBytes(16).toString("hex");
+    const salt = crypto.randomBytes(16).toString("hex");
     return sha512crypt(password, `$6$rounds=${rounds}$${salt}`);
   },
   compare: (password, hash) => {
-    let array = hash.split("$");
+    const array = hash.split("$");
     array.pop();
 
     return sha512crypt(password, array.join("$")) === hash;
   },
   isTooWeak: (hash) => {
-    let array = hash.split("$");
-    let round = array[2].split("=")[1];
+    const array = hash.split("$");
+    const round = array[2].split("=")[1];
     return round < config.auth.passwordHashRounds;
   },
 };

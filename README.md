@@ -246,16 +246,10 @@ Cette configuration va utiliser la commande `debug` définie dans le fichier `/s
 
 ```json
 {
-  ...
   "scripts": {
-    ...
-    "debug": "nodemon --inspect=0.0.0.0 --signal SIGINT --ignore tests/ src/index.js",
-    ...
-  },
-  ...
+    "debug": "nodemon --inspect=0.0.0.0 --signal SIGINT --ignore tests/ src/index.js"
   }
 }
-
 ```
 
 ## Workflows & CI / CD

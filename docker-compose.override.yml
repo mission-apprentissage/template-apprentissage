@@ -17,7 +17,16 @@ services:
       - TEMPLATE_APP_ENV=dev
       - TEMPLATE_APP_LOG_LEVEL=debug
 
+  mongodb:
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - template_app_mongodb_data:/data
+
 volumes:
+  template_app_mongodb_data:
+    driver: local
+    name: template_app_mongodb_data
   template_app_nginx_data:
     driver: local
     name: template_app_nginx_data

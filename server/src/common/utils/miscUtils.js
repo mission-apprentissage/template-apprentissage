@@ -9,8 +9,8 @@ const trimObjValues = (data) => {
 module.exports.trimObjValues = trimObjValues;
 
 const getDuplicates = (arr) => {
-  let seen = new Set();
-  let store = new Array();
+  const seen = new Set();
+  const store = new Array();
   arr.filter((item) => seen.size === seen.add(item).size && !store.includes(item) && store.push(item));
   return store;
 };

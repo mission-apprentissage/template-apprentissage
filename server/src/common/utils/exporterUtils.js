@@ -15,9 +15,9 @@ const toWorksheet = (collection = null, name) => {
 module.exports.toWorksheet = toWorksheet;
 
 const toXlsx = async (data, outputDirectory, fileName, workbookName, options) => {
-  let workbook = XLSX.utils.book_new();
-  let ws = XLSX.utils.json_to_sheet(data);
-  let file = `${outputDirectory}/${fileName}`;
+  const workbook = XLSX.utils.book_new();
+  const ws = XLSX.utils.json_to_sheet(data);
+  const file = `${outputDirectory}/${fileName}`;
 
   XLSX.utils.book_append_sheet(workbook, ws, workbookName);
   await XLSX.writeFile(workbook, file, { type: "file" });
@@ -29,8 +29,8 @@ const toXlsx = async (data, outputDirectory, fileName, workbookName, options) =>
 module.exports.toXlsx = toXlsx;
 
 const toCsv = async (data, outputDirectory, fileName, options = {}) => {
-  let file = `${outputDirectory}/${fileName}`;
-  let csvData = parse(data, { delimiter: options.delimiter || "," });
+  const file = `${outputDirectory}/${fileName}`;
+  const csvData = parse(data, { delimiter: options.delimiter || "," });
 
   await writeFile(file, options.utf8Bom === true ? "\ufeff" + csvData : csvData, "utf8");
 
