@@ -1,5 +1,6 @@
 const express = require("express");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
+const schemaValidate = require("../middlewares/schemaValidationMiddleware");
 const Joi = require("joi");
 const { SampleEntity } = require("../../common/model");
 const logger = require("../../common/logger");
@@ -21,30 +22,16 @@ const sampleEntitySchema = Joi.object({
  * @param {*} res
  * @param {*} next
  */
-const checkPostSchema = (req, res, next) => {
-  validateRequest(req, next, sampleEntitySchema);
-};
+const checkPostSchema = (req, res, next) => schemaValidate(req, next, sampleEntitySchema);
 
 /**
- *
+ * Check put method
  * @param {*} req
+ * @param {*} res
  * @param {*} next
- * @param {*} schema
  */
-function validateRequest(req, next, schema) {
-  const options = {
-    abortEarly: false, // include all errors
-    allowUnknown: true, // ignore unknown props
-    stripUnknown: true, // remove unknown props
-  };
-  const { error, value } = schema.validate(req.body, options);
-  if (error) {
-    next(new Error(`Validation error: ${error.details.map((x) => x.message).join(", ")}`));
-  } else {
-    req.body = value;
-    next();
-  }
-}
+const checkUpdateSchema = (req, res, next) => schemaValidate(req, next, sampleEntitySchema);
+
 // #endregion
 
 module.exports = () => {
@@ -105,6 +92,7 @@ module.exports = () => {
    */
   router.put(
     "/items",
+    checkUpdateSchema,
     tryCatch(async (req, res) => {
       const item = req.body;
       logger.info("Updating new item: ", item);
