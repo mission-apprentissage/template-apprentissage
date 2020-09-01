@@ -7,10 +7,10 @@ const { createPasswordToken } = require("../../../src/common/utils/jwtUtils");
 
 httpTests(__filename, ({ startServer }) => {
   it("Vérifie qu'un utilisateur peut faire une demande de réinitialisation de mot de passe", async () => {
-    let { httpClient, createAndLogUser } = await startServer();
+    const { httpClient, createAndLogUser } = await startServer();
     await createAndLogUser("user", "password", { permissions: { isAdmin: true } });
 
-    let response = await httpClient.post("/api/password/forgotten-password", {
+    const response = await httpClient.post("/api/password/forgotten-password", {
       username: "user",
     });
 
@@ -19,10 +19,10 @@ httpTests(__filename, ({ startServer }) => {
   });
 
   it("Vérifie qu'on ne peut pas demander la réinitialisation du mot de passe pour un utilisateur inconnu", async () => {
-    let { httpClient, createAndLogUser } = await startServer();
+    const { httpClient, createAndLogUser } = await startServer();
     await createAndLogUser("admin", "password", { permissions: { isAdmin: true } });
 
-    let response = await httpClient.post("/api/password/forgotten-password", {
+    const response = await httpClient.post("/api/password/forgotten-password", {
       username: "inconnu",
     });
 
@@ -30,10 +30,10 @@ httpTests(__filename, ({ startServer }) => {
   });
 
   it("Vérifie qu'on ne peut pas demander la réinitialisation du mot de passe pour un utilisateur invalide", async () => {
-    let { httpClient, createAndLogUser } = await startServer();
+    const { httpClient, createAndLogUser } = await startServer();
     await createAndLogUser("user123", "password");
 
-    let response = await httpClient.post("/api/password/forgotten-password", {
+    const response = await httpClient.post("/api/password/forgotten-password", {
       type: "cfa",
       username: "user123456",
     });
@@ -42,16 +42,16 @@ httpTests(__filename, ({ startServer }) => {
   });
 
   it("Vérifie qu'un utilisateur peut changer son mot de passe", async () => {
-    let { httpClient, createAndLogUser } = await startServer();
+    const { httpClient, createAndLogUser } = await startServer();
     await createAndLogUser("admin", "password", { permissions: { isAdmin: true } });
 
-    let response = await httpClient.post("/api/password/reset-password", {
+    const response = await httpClient.post("/api/password/reset-password", {
       passwordToken: createPasswordToken("admin"),
       newPassword: "Password!123456",
     });
 
     assert.strictEqual(response.status, 200);
-    let decoded = jwt.verify(response.data.token, config.auth.user.jwtSecret);
+    const decoded = jwt.verify(response.data.token, config.auth.user.jwtSecret);
     assert.ok(decoded.iat);
     assert.ok(decoded.exp);
     assert.deepStrictEqual(omit(decoded, ["iat", "exp"]), {
@@ -64,10 +64,10 @@ httpTests(__filename, ({ startServer }) => {
   });
 
   it("Vérifie qu'on doit spécifier un mot de passe valide", async () => {
-    let { httpClient, createAndLogUser } = await startServer();
+    const { httpClient, createAndLogUser } = await startServer();
     await createAndLogUser("admin", "password", { permissions: { isAdmin: true } });
 
-    let response = await httpClient.post("/api/password/reset-password", {
+    const response = await httpClient.post("/api/password/reset-password", {
       passwordToken: createPasswordToken("admin"),
       newPassword: "invalid",
     });

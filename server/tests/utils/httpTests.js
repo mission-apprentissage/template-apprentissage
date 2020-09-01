@@ -4,7 +4,7 @@ const createComponents = require("../../src/common/components/components");
 const { connectToMongoForTests, cleanAll } = require("./testUtils.js");
 const server = require("../../src/http/server");
 
-let startServer = async (options = {}) => {
+const startServer = async (options = {}) => {
   const { db } = await connectToMongoForTests();
   const components = await createComponents({ db });
   const app = await server(components);
@@ -16,7 +16,7 @@ let startServer = async (options = {}) => {
     createAndLogUser: async (username, password, options) => {
       await components.users.createUser(username, password, options);
 
-      let response = await httpClient.post("/api/login", {
+      const response = await httpClient.post("/api/login", {
         username: username,
         password: password,
       });

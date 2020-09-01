@@ -25,10 +25,10 @@ module.exports = async () => {
     },
     getUser: (username) => User.findOne({ username }),
     createUser: async (username, password, options = {}) => {
-      let hash = options.hash || sha512Utils.hash(password);
-      let permissions = options.permissions || {};
+      const hash = options.hash || sha512Utils.hash(password);
+      const permissions = options.permissions || {};
 
-      let user = new User({
+      const user = new User({
         username,
         password: hash,
         isAdmin: !!permissions.isAdmin,
@@ -38,7 +38,7 @@ module.exports = async () => {
       return user.toObject();
     },
     removeUser: async (username) => {
-      let user = await User.findOne({ username });
+      const user = await User.findOne({ username });
       if (!user) {
         throw new Error(`Unable to find user ${username}`);
       }
@@ -46,7 +46,7 @@ module.exports = async () => {
       return await user.deleteOne({ username });
     },
     changePassword: async (username, newPassword) => {
-      let user = await User.findOne({ username });
+      const user = await User.findOne({ username });
       if (!user) {
         throw new Error(`Unable to find user ${username}`);
       }

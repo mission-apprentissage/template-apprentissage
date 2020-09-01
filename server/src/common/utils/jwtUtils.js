@@ -3,10 +3,10 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 
 const createToken = (type, subject, options = {}) => {
-  let defaults = config.auth[type];
-  let secret = options.secret || defaults.jwtSecret;
-  let expiresIn = options.expiresIn || defaults.expiresIn;
-  let payload = options.payload || {};
+  const defaults = config.auth[type];
+  const secret = options.secret || defaults.jwtSecret;
+  const expiresIn = options.expiresIn || defaults.expiresIn;
+  const payload = options.payload || {};
 
   return jwt.sign(payload, secret, {
     issuer: config.appName,
@@ -19,7 +19,7 @@ module.exports = {
   createActivationToken: (subject, options = {}) => createToken("activation", subject, options),
   createPasswordToken: (subject, options = {}) => createToken("password", subject, options),
   createUserToken: (user, options = {}) => {
-    let payload = { permissions: pick(user, ["isAdmin"]) };
+    const payload = { permissions: pick(user, ["isAdmin"]) };
 
     return createToken("user", user.username, { payload, ...options });
   },

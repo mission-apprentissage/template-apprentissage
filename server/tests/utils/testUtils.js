@@ -3,12 +3,12 @@ const config = require("config");
 const { emptyDir } = require("fs-extra");
 const { connectToMongo } = require("../../src/common/mongodb");
 
-let testDataDir = path.join(__dirname, "../../.local/test");
+const testDataDir = path.join(__dirname, "../../.local/test");
 let mongoHolder = null;
 
-let connectToMongoForTests = async () => {
+const connectToMongoForTests = async () => {
   if (!mongoHolder) {
-    let uri = config.mongodb.uri.split("template-app").join("template-app_test");
+    const uri = config.mongodb.uri.split("template-app").join("template-app_test");
     mongoHolder = await connectToMongo(uri);
   }
   return mongoHolder;
@@ -17,7 +17,7 @@ let connectToMongoForTests = async () => {
 module.exports = {
   connectToMongoForTests,
   cleanAll: () => {
-    let models = require("../../src/common/model");
+    const models = require("../../src/common/model");
     return Promise.all([emptyDir(testDataDir), ...Object.values(models).map((m) => m.deleteMany())]);
   },
 };

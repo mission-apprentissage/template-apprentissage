@@ -3,7 +3,7 @@ const { closeMongoConnection } = require("../common/mongodb");
 const createComponents = require("../common/components/components");
 const logger = require("../common/logger");
 const config = require("config");
-let { access, mkdir } = require("fs").promises;
+const { access, mkdir } = require("fs").promises;
 
 process.on("unhandledRejection", (e) => console.log(e));
 process.on("uncaughtException", (e) => console.log(e));
@@ -15,16 +15,16 @@ const createTimer = () => {
       launchTime = new Date().getTime();
     },
     stop: (results) => {
-      let duration = moment.utc(new Date().getTime() - launchTime).format("HH:mm:ss.SSS");
-      let data = results && results.toJSON ? results.toJSON() : results;
+      const duration = moment.utc(new Date().getTime() - launchTime).format("HH:mm:ss.SSS");
+      const data = results && results.toJSON ? results.toJSON() : results;
       console.log(JSON.stringify(data || {}, null, 2));
       console.log(`Completed in ${duration}`);
     },
   };
 };
 
-let ensureOutputDirExists = async () => {
-  let outputDir = config.outputDir;
+const ensureOutputDirExists = async () => {
+  const outputDir = config.outputDir;
   try {
     await access(outputDir);
   } catch (e) {
@@ -57,12 +57,12 @@ const exit = async (rawError) => {
 module.exports = {
   runScript: async (job) => {
     try {
-      let timer = createTimer();
+      const timer = createTimer();
       timer.start();
 
       await ensureOutputDirExists();
-      let components = await createComponents();
-      let results = await job(components);
+      const components = await createComponents();
+      const results = await job(components);
 
       timer.stop(results);
       await exit();
