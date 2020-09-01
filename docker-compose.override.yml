@@ -30,7 +30,23 @@ services:
     volumes:
       - template_app_mongodb_data:/data
 
+  elasticsearch:
+    ports:
+      - "127.0.0.1:9200:9200"
+    volumes:
+      - template_app_data_elasticsearch:/usr/share/elasticsearch/data
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+
+  kibana:
+    ports:
+      - "127.0.0.1:5601:5601"
+    volumes:
+      - ./elasticsearch/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+
 volumes:
+  template_app_data_elasticsearch:
+    driver: local
+    name: template_app_data_elasticsearch
   template_app_mongodb_data:
     driver: local
     name: template_app_mongodb_data
