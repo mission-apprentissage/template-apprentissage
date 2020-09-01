@@ -11,7 +11,7 @@ const logger = require("../../common/logger");
  * Schema for validation
  */
 const sampleEntitySchema = Joi.object({
-  id: Joi.string().required(),
+  id: Joi.number().required(),
   nom: Joi.string().required(),
   valeur: Joi.string().required(),
 });
