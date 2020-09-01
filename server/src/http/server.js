@@ -8,9 +8,9 @@ const tryCatch = require("./middlewares/tryCatchMiddleware");
 const apiKeyAuthMiddleware = require("./middlewares/apiKeyAuthMiddleware");
 const corsMiddleware = require("./middlewares/corsMiddleware");
 const packageJson = require("../../package.json");
-const helloRoute = require("./routes/helloRoute");
-const entityRoute = require("./routes/entityRoute");
-const securedRoute = require("./routes/securedRoute");
+const hello = require("./routes/hello");
+const entity = require("./routes/entity");
+const secured = require("./routes/secured");
 
 module.exports = async (components) => {
   const { db } = components;
@@ -20,9 +20,9 @@ module.exports = async (components) => {
   app.use(corsMiddleware());
   app.use(logMiddleware());
 
-  app.use("/api/helloRoute", helloRoute());
-  app.use("/api/entity", entityRoute());
-  app.use("/api/secured", apiKeyAuthMiddleware, securedRoute());
+  app.use("/api/helloRoute", hello());
+  app.use("/api/entity", entity());
+  app.use("/api/secured", apiKeyAuthMiddleware, secured());
 
   app.get(
     "/api",
