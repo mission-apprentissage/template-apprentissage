@@ -34,6 +34,9 @@ const checkUpdateSchema = (req, res, next) => schemaValidate(req, next, sampleEn
 
 // #endregion
 
+/**
+ * Sample entity route module for GET / POST / PUT / DELETE entity
+ */
 module.exports = () => {
   const router = express.Router();
 
@@ -65,7 +68,7 @@ module.exports = () => {
   );
 
   /**
-   * Add an item
+   * Add/Post an item validated by schema
    */
   router.post(
     "/items",
@@ -88,7 +91,7 @@ module.exports = () => {
   );
 
   /**
-   * Update an item
+   * Update an item validated by schema
    */
   router.put(
     "/items",
@@ -102,7 +105,7 @@ module.exports = () => {
   );
 
   /**
-   * Update an item
+   * Delete an item by id
    */
   router.delete(
     "/items/:id",

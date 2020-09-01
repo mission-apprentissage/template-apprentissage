@@ -6,6 +6,7 @@ const logMiddleware = require("./middlewares/logMiddleware");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const tryCatch = require("./middlewares/tryCatchMiddleware");
 const apiKeyAuthMiddleware = require("./middlewares/apiKeyAuthMiddleware");
+const corsMiddleware = require("./middlewares/corsMiddleware");
 const packageJson = require("../../package.json");
 const helloRoute = require("./routes/helloRoute");
 const entityRoute = require("./routes/entityRoute");
@@ -15,14 +16,8 @@ module.exports = async (components) => {
   const { db } = components;
   const app = express();
 
-  // // enable CORS for all routes and for our specific API-Key header
-  // app.use(function (res, next) {
-  //   res.header("Access-Control-Allow-Origin", "*");
-  //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, API-Key");
-  //   next();
-  // });
-
   app.use(bodyParser.json());
+  app.use(corsMiddleware());
   app.use(logMiddleware());
 
   app.use("/api/helloRoute", helloRoute());

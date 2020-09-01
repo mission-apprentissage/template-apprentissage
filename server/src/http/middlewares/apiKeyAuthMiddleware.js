@@ -5,6 +5,6 @@ module.exports = (req, res, next) => {
   if (!apiKey || apiKey !== config.apiKey) {
     res.status(401).json({ error: "Unauthorized API Key" });
   } else {
-    return next();
+    next();
   }
 };

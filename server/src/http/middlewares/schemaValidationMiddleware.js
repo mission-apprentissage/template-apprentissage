@@ -1,5 +1,4 @@
 module.exports = (req, next, schema) => {
-  // eslint-disable-next-line no-unused-vars
   const options = {
     abortEarly: false, // include all errors
     allowUnknown: true, // ignore unknown props
