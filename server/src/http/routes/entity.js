@@ -1,11 +1,8 @@
 const express = require("express");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
-const schemaValidate = require("../middlewares/schemaValidationMiddleware");
 const Joi = require("joi");
 const { SampleEntity } = require("../../common/model");
 const logger = require("../../common/logger");
-
-// #region Validation Json Schema
 
 /**
  * Schema for validation
@@ -15,24 +12,6 @@ const sampleEntitySchema = Joi.object({
   nom: Joi.string().required(),
   valeur: Joi.string().required(),
 });
-
-/**
- * Check post method
- * @param {*} req
- * @param {*} res
- * @param {*} next
- */
-const checkPostSchema = (req, res, next) => schemaValidate(req, next, sampleEntitySchema);
-
-/**
- * Check put method
- * @param {*} req
- * @param {*} res
- * @param {*} next
- */
-const checkUpdateSchema = (req, res, next) => schemaValidate(req, next, sampleEntitySchema);
-
-// #endregion
 
 /**
  * Sample entity route module for GET / POST / PUT / DELETE entity
@@ -72,8 +51,9 @@ module.exports = () => {
    */
   router.post(
     "/items",
-    checkPostSchema,
     tryCatch(async (req, res) => {
+      await sampleEntitySchema.validateAsync(req.body, { abortEarly: false });
+
       const item = req.body;
       logger.info("Adding new item: ", item);
 
@@ -95,8 +75,8 @@ module.exports = () => {
    */
   router.put(
     "/items",
-    checkUpdateSchema,
     tryCatch(async (req, res) => {
+      await sampleEntitySchema.validateAsync(req.body, { abortEarly: false });
       const item = req.body;
       logger.info("Updating new item: ", item);
       await SampleEntity.findOneAndUpdate({ id: req.body.id }, item, { new: true });

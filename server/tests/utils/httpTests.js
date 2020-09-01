@@ -13,6 +13,18 @@ let startServer = async (options = {}) => {
   return {
     httpClient,
     components,
+    createAndLogUser: async (username, password, options) => {
+      await components.users.createUser(username, password, options);
+
+      let response = await httpClient.post("/api/login", {
+        username: username,
+        password: password,
+      });
+
+      return {
+        Authorization: "Bearer " + response.data.token,
+      };
+    },
   };
 };
 

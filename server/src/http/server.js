@@ -16,6 +16,7 @@ const secured = require("./routes/secured");
 const login = require("./routes/login");
 const authentified = require("./routes/authentified");
 const admin = require("./routes/admin");
+const password = require("./routes/password");
 
 module.exports = async (components) => {
   const { db } = components;
@@ -33,6 +34,7 @@ module.exports = async (components) => {
   app.use("/api/login", login(components));
   app.use("/api/authentified", checkJwtToken, authentified());
   app.use("/api/admin", checkJwtToken, adminOnly, admin());
+  app.use("/api/password", password(components));
 
   app.get(
     "/api",
