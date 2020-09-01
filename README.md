@@ -163,7 +163,7 @@ docker exec -t -i template_app_server /bin/bash
 De même pour consulter la liste des fichiers dans le docker :
 
 ```bash
-docker exec flux_server bash -c 'ls'
+docker exec template_app_server bash -c 'ls'
 ```
 
 ## Linter
@@ -246,16 +246,10 @@ Cette configuration va utiliser la commande `debug` définie dans le fichier `/s
 
 ```json
 {
-  ...
   "scripts": {
-    ...
-    "debug": "nodemon --inspect=0.0.0.0 --signal SIGINT --ignore tests/ src/index.js",
-    ...
-  },
-  ...
+    "debug": "nodemon --inspect=0.0.0.0 --signal SIGINT --ignore tests/ src/index.js"
   }
 }
-
 ```
 
 ## Workflows & CI / CD

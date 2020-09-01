@@ -1,4 +1,11 @@
-// eslint-disable-next-line no-unused-vars
+const { connectToMongo } = require("../mongodb");
+const createUsers = require("./users");
+
 module.exports = async (options = {}) => {
-  return {};
+  const users = options.users || (await createUsers());
+
+  return {
+    users,
+    db: options.db || (await connectToMongo()).db,
+  };
 };
