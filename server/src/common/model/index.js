@@ -8,5 +8,6 @@ const getModel = (modelName, callback = () => ({})) => {
 
 module.exports = {
   SampleEntity: getModel("sampleEntity"),
+  User: getModel("users"),
   Log: getModel("logs"),
 };
