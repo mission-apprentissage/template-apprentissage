@@ -6,7 +6,6 @@ const logMiddleware = require("./middlewares/logMiddleware");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const tryCatch = require("./middlewares/tryCatchMiddleware");
 const apiKeyAuthMiddleware = require("./middlewares/apiKeyAuthMiddleware");
-const testMiddleware = require("./middlewares/testMiddleware");
 const packageJson = require("../../package.json");
 const helloRoute = require("./routes/helloRoute");
 const entityRoute = require("./routes/entityRoute");
