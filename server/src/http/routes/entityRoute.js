@@ -1,7 +1,51 @@
 const express = require("express");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
+const Joi = require("joi");
 const { SampleEntity } = require("../../common/model");
 const logger = require("../../common/logger");
+
+// #region Validation Json Schema
+
+/**
+ * Schema for validation
+ */
+const sampleEntitySchema = Joi.object({
+  id: Joi.string().required(),
+  nom: Joi.string().required(),
+  valeur: Joi.string().required(),
+});
+
+/**
+ * Check post method
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
+const checkPostSchema = (req, res, next) => {
+  validateRequest(req, next, sampleEntitySchema);
+};
+
+/**
+ *
+ * @param {*} req
+ * @param {*} next
+ * @param {*} schema
+ */
+function validateRequest(req, next, schema) {
+  const options = {
+    abortEarly: false, // include all errors
+    allowUnknown: true, // ignore unknown props
+    stripUnknown: true, // remove unknown props
+  };
+  const { error, value } = schema.validate(req.body, options);
+  if (error) {
+    next(new Error(`Validation error: ${error.details.map((x) => x.message).join(", ")}`));
+  } else {
+    req.body = value;
+    next();
+  }
+}
+// #endregion
 
 module.exports = () => {
   const router = express.Router();
@@ -38,6 +82,7 @@ module.exports = () => {
    */
   router.post(
     "/items",
+    checkPostSchema,
     tryCatch(async (req, res) => {
       const item = req.body;
       logger.info("Adding new item: ", item);
