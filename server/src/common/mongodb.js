@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 const config = require("config");
-const logger = require("./logger");
+// const logger = require("./logger");
 
-let mongooseInstance = mongoose;
 module.exports.connectToMongo = (mongoUri = config.mongodb.uri) => {
   return new Promise((resolve, reject) => {
-    logger.info(`MongoDB: Connection to ${mongoUri}`);
+    // logger.info(`MongoDB: Connection to ${mongoUri}`);
 
     // Set up default mongoose connection
     mongoose.connect(mongoUri, {
@@ -20,15 +19,15 @@ module.exports.connectToMongo = (mongoUri = config.mongodb.uri) => {
 
     // Bind connection to error event (to get notification of connection errors)
     db.on("error", (e) => {
-      logger.error.bind(logger, "MongoDB: connection error:");
+      // logger.error.bind(logger, "MongoDB: connection error:");
       reject(e);
     });
 
     db.once("open", () => {
-      logger.info("MongoDB: Connected");
+      // logger.info("MongoDB: Connected");
       resolve({ db });
     });
   });
 };
-module.exports.mongooseInstance = mongooseInstance;
+
 module.exports.closeMongoConnection = (mongooseInst = mongoose) => mongooseInst.disconnect();

@@ -33,7 +33,7 @@ if (!u) {
 
 let l = null;
 if (!l) {
-  l = getModel("log");
+  l = getMongooseModel("log");
 }
 
 module.exports = {

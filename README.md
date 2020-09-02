@@ -29,6 +29,7 @@ Le répository template-apprentissage-infra est lui, privé car il est utilisé 
 
 ## Organisation des dossiers
 
+_TODO UPDATE_
 Ce template est organisé de la manière suivante :
 
 ```
@@ -119,6 +120,9 @@ Pour fonctionner ce template a besoin des éléments dockérisés suivants :
 - Un serveur Web Nginx jouant le role de reverse proxy, _défini dans le service `reverse_proxy` du docker-compose_.
 - Un serveur Node Express, _défini dans le service `server` du docker-compose_.
 - Un réseau _défini dans `template_app_network` du docker-compose_.
+- Une base de donnée mongoDb _défini dans le service `mongodb` du docker-compose_.
+- Un moteur de recherche elasticsearch _défini dans le service `elasticsearch` du docker-compose_.
+- Un portail kibana pour elasticsearch _défini dans le service `kibana` du docker-compose_.
 
 ### Serveur Nodes & Nginx - Reverse Proxy
 
@@ -127,6 +131,31 @@ Le serveur nginx joue le role de reverse proxy sur le port 80.
 Le serveur Web Node Express utilise le port 5000.
 
 Dans la configuration de nginx, on fait référence au fichier `/reverse_proxy/app/nginx/conf.d/locations/api.inc` qui définir la gestion de l'API Node Express.
+Dans la configuration de nginx, on fait référence au fichier `/reverse_proxy/app/nginx/conf.d/locations/ui.inc` qui définir la gestion de l'UI React.
+Dans la configuration de nginx, on fait référence au fichier `/reverse_proxy/app/nginx/conf.d/locations/es.inc` qui définir la gestion d'Elasticsearch.
+Dans la configuration de nginx, on fait référence au fichier `/reverse_proxy/app/nginx/conf.d/locations/kibana.inc` qui définir la gestion de Kibana.
+
+### Base de données MongoDb
+
+Le base de données est une MongoDb et utilise le port par défaut 27017.
+
+### Elasticsearch & Kibana
+
+Le moteur de recherche elasticsearch est défini par défaut dans le fichier `./elasticsearch/elasticsearch.yml` et utilise le port 9200 en local.
+
+Pour y accéder :
+
+```bash
+http://localhost/es
+```
+
+Le portail kibana est défini par défaut dans le fichier `./elasticsearch/kibana.yml` et utilise le port 5601 en local.
+
+Pour y accéder :
+
+```bash
+http://localhost/kibana
+```
 
 ### Démarrage de la stack
 
@@ -196,6 +225,8 @@ La structure principale du serveur Node Express est définie dans `/server/src/h
 - La liste des routes d'API
 - Le point d'entrée principal du serveur : `/server/src/http/server.js`
 
+Il est possible de tester en local le server express via `http://localhost/api`
+
 ### Logger
 
 Pour la gestion des logs nous utilisons la librairie bunyan _cf : https://www.npmjs.com/package/bunyan_
@@ -205,6 +236,7 @@ Par défaut 3 stream sont configurés :
 - Dans la console.
 - Dans un fichier JSON.
 - Dans une chaine Slack.
+- TODO Mongo
 
 Pour mettre en place les notifications Slack il est nécessaire d'utiliser les Webhooks et de créer une chaine dédiée dans votre espace de travail Slack.
 
@@ -219,6 +251,10 @@ Certains modules utilitaires sont présents dans `/server/src/common/utils`
 Un module permettant de contenir des composants "communs" et injectable dans les routes est proposé dans le fichier `/server/src/common/components/components.js`
 
 Vous pouvez ajouter dans ce fichier des élements communs à réexploiter dans l'API.
+
+## Mongoose & Mongoostatic
+
+_TODO SBS UPDATE_
 
 ## Debugger sous VSCode
 

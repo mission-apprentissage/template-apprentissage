@@ -42,6 +42,7 @@ module.exports = async (components) => {
     "/api",
     tryCatch(async (req, res) => {
       let mongodbStatus;
+      logger.info("/api called");
       await db
         .collection("sample")
         .stats()
