@@ -1,6 +1,4 @@
-const { Schema } = require("mongoose");
-
-module.exports = new Schema({
+const logSchema = {
   msg: {
     type: String,
     required: true,
@@ -17,4 +15,5 @@ module.exports = new Schema({
     type: Date,
     required: true,
   },
-});
+};
+module.exports = logSchema;

@@ -16,6 +16,7 @@
     "docker:stop": "docker-compose down",
     "docker:clean": "docker-compose kill && docker system prune --force --volumes",
     "seed": "node src/jobs/seed/index.js",
+    "clear": "node src/jobs/clear/index.js",
     "stats": "node src/jobs/stats/index.js"
   },
   "dependencies": {
@@ -28,9 +29,11 @@
     "config": "3.3.1",
     "convert-csv-to-json": "0.0.15",
     "compose-middleware": "5.0.1",
+    "iconv-lite": "0.5.1",
     "env-var": "6.1.1",
     "express": "4.17.1",
     "@elastic/elasticsearch": "7.6.1",
+    "elasticsearch-scroll-stream": "1.2.1",
     "fs-extra": "9.0.0",
     "joi": "17.2.1",
     "json2csv": "5.0.1",
@@ -38,6 +41,8 @@
     "lodash": "4.17.15",
     "moment": "2.26.0",
     "mongoose": "5.10.2",
+    "mongoose-paginate": "5.0.3",
+    "multipipe": "4.0.0",
     "passport": "0.4.1",
     "passport-http": "0.3.0",
     "passport-jwt": "4.0.0",

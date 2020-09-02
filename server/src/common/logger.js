@@ -4,7 +4,7 @@ const bunyan = require("bunyan");
 const PrettyStream = require("bunyan-prettystream");
 const BunyanSlack = require("bunyan-slack");
 const BunyanMongodbStream = require("bunyan-mongodb-stream");
-const { Log } = require("./model");
+const { Log } = require("./model/index");
 
 const createStreams = () => {
   const { type, level } = config.log;

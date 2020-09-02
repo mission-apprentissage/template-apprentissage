@@ -43,7 +43,7 @@ module.exports = async (components) => {
     tryCatch(async (req, res) => {
       let mongodbStatus;
       await db
-        .collection("sampleEntity")
+        .collection("sample")
         .stats()
         .then(() => {
           mongodbStatus = true;

@@ -1,6 +1,4 @@
-const { Schema } = require("mongoose");
-
-module.exports = new Schema({
+const sampleSchema = {
   id: {
     type: Number,
     default: null,
@@ -16,4 +14,5 @@ module.exports = new Schema({
     default: null,
     description: "Valeur de test",
   },
-});
+};
+module.exports = sampleSchema;

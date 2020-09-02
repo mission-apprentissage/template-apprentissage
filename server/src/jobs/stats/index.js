@@ -1,8 +1,8 @@
 const logger = require("../../common/logger");
 const { runScript } = require("../scriptWrapper");
-const { SampleEntity } = require("../../common/model");
+const { Sample } = require("../../common/model");
 
 runScript(async ({ db }) => {
-  const nbSampleEntities = await SampleEntity.countDocuments({});
-  logger.info(`Db ${db.name} - SampleEntities count : ${nbSampleEntities}`);
+  const nbSampleEntities = await Sample.countDocuments({});
+  logger.info(`Db ${db.name} - Sample count : ${nbSampleEntities}`);
 });

@@ -1,4 +1,4 @@
-const { User } = require("../model");
+const { User } = require("../model/index");
 const sha512Utils = require("../utils/sha512Utils");
 
 const rehashPassword = (user, password) => {
