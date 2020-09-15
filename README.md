@@ -111,6 +111,34 @@ Il faudra ensuite mettre à jour dans la configuration Docker-compose ces variab
 - `/docker-compose.yml`
 - `/docker-compose.override.yml`
 
+Il faudra ensuite mettre à jour dans la configuration (`/server/config/default.json`) et dans le Docker-compose le nom de la base de données mongo en remplaçant :
+
+```
+TEMPLATE_APP_MONGODB_URI=mongodb://mongodb:27017/template-app?retryWrites=true&w=majority
+```
+
+par
+
+```
+<nom_application>_MONGODB_URI=mongodb://mongodb:27017/<nom-application>?retryWrites=true&w=majority
+```
+
+### Package.json
+
+Il faudra aussi modifier dans le fichier `/server/package.json` les valeurs :
+
+- name : `mna-<nom_app>`
+- description : `[MNA] <Nom Application>`
+- repository : `https://github.com/mission-apprentissage/<nom_repository>.git`
+
+### Tests unitaires
+
+Dans la partie tests unitaires de l'application il est aussi nécessaire de modifier le nom de la base de données de tests, dans `/server/tests/utils/testUtils.js` :
+
+```javascript
+const uri = config.mongodb.uri.split("template-app").join("template-app_test");
+```
+
 ## Conteneurs Docker
 
 ### Présentation de la configuration Docker
