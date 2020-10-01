@@ -4,8 +4,21 @@ const { transformObject, mergeStreams } = require("../utils/streamUtils");
 const mongoosastic = require("./mongoosastic");
 const config = require("config");
 
+const getClientOptions = () => {
+  switch (config.env) {
+    case "recette":
+    case "production":
+      return {
+        node: `${config.publicUrl}/es`, // TODO HANDLE HTTPS CONNECTOR
+      };
+    case "local":
+    default:
+      return { node: `${config.publicUrl}/es` };
+  }
+};
+
 const createEsInstance = () => {
-  const options = { node: `${config.publicUrl}/es` };
+  const options = getClientOptions();
   const client = new Client({
     ...options,
     maxRetries: 5,
