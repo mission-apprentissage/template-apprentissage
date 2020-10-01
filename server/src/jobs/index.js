@@ -1,7 +1,7 @@
 const { runScript } = require("./scriptWrapper");
 const logger = require("../common/logger");
 
-runScript(async ({ db }) => {
+runScript(async () => {
   try {
     logger.info(`Start all jobs`);
  
