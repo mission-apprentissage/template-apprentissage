@@ -65,6 +65,8 @@ services:
       - elasticsearch
     networks:
       - template_app_network
+    environment:
+      - SERVER_BASEPATH=/kibana
 
 networks:
   template_app_network:
