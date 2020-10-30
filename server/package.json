@@ -1,6 +1,6 @@
 {
   "name": "mna-template-app-server",
-  "version": "1.0.5",
+  "version": "1.0.8",
   "description": "[MNA] App Template",
   "repository": "https://github.com/mission-apprentissage/template-apprentissage.git",
   "private": false,
