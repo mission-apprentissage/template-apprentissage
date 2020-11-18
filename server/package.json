@@ -73,7 +73,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "./scripts/preventSensibleFilesCommit.sh && lint-staged"
     }
   },
   "lint-staged": {
