@@ -16,7 +16,8 @@
     },
     "password": {
       "jwtSecret": "TEMPLATE_APP_AUTH_PASSWORD_JWT_SECRET"
-    }
+    },
+    "secret": "TEMPLATE_APP_AUTH_SECRET"
   },
   "log": {
     "type": "TEMPLATE_APP_LOG_TYPE",

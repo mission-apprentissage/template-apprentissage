@@ -1,4 +1,6 @@
 const express = require("express");
+const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
 const config = require("config");
 const logger = require("../common/logger");
 const bodyParser = require("body-parser");
@@ -13,11 +15,13 @@ const packageJson = require("../../package.json");
 const hello = require("./routes/hello");
 const entity = require("./routes/entity");
 const secured = require("./routes/secured");
-const login = require("./routes/login");
+const login = require("./routes/auth");
 const authentified = require("./routes/authentified");
 const admin = require("./routes/admin");
 const password = require("./routes/password");
 const stats = require("./routes/stats");
+
+require("../common/passport-config");
 
 module.exports = async (components) => {
   const { db } = components;
@@ -28,6 +32,23 @@ module.exports = async (components) => {
   app.use(bodyParser.json());
   app.use(corsMiddleware());
   app.use(logMiddleware());
+
+  if (config.env != "dev") {
+    app.set("trust proxy", 1);
+  }
+
+  app.use(
+    session({
+      saveUninitialized: false,
+      resave: true,
+      secret: config.auth.secret,
+      store: new MongoStore({ mongooseConnection: db }),
+      cookie: {
+        secure: config.env === "dev" ? false : true,
+        maxAge: config.env === "dev" ? null : 30 * 24 * 60 * 60 * 1000,
+      },
+    })
+  );
 
   app.use("/api/helloRoute", hello());
   app.use("/api/entity", entity());

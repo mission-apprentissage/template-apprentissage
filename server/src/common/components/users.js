@@ -56,5 +56,17 @@ module.exports = async () => {
 
       return user.toObject();
     },
+    structureUser: (user) => {
+      const permissions = pick(user, ["isAdmin"]);
+      const structure = {
+        permissions,
+        sub: user.username,
+        email: user.email,
+        academie: user.academie,
+        account_status: user.account_status,
+        roles: permissions.isAdmin ? ["admin", ...user.roles] : user.roles,
+      };
+      return structure;
+    },
   };
 };

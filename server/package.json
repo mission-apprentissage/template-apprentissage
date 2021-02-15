@@ -30,10 +30,12 @@
     "bunyan-slack": "0.0.10",
     "compose-middleware": "5.0.1",
     "config": "3.3.1",
+    "connect-mongo": "3.2.0",
     "convert-csv-to-json": "0.0.15",
     "elasticsearch-scroll-stream": "1.2.1",
     "env-var": "6.1.1",
     "express": "4.17.1",
+    "express-session": "1.17.1",
     "fs-extra": "9.0.0",
     "iconv-lite": "0.5.1",
     "joi": "17.2.1",
@@ -77,6 +79,9 @@
     }
   },
   "lint-staged": {
-    "*.js": ["eslint --cache --fix", "prettier --write"]
+    "*.js": [
+      "eslint --cache --fix",
+      "prettier --write"
+    ]
   }
 }
