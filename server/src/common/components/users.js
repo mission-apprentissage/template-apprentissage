@@ -1,5 +1,6 @@
 const { User } = require("../model/index");
 const sha512Utils = require("../utils/sha512Utils");
+const { pick } = require("lodash");
 
 const rehashPassword = (user, password) => {
   user.password = sha512Utils.hash(password);
