@@ -15,7 +15,7 @@ const packageJson = require("../../package.json");
 const hello = require("./routes/hello");
 const entity = require("./routes/entity");
 const secured = require("./routes/secured");
-const login = require("./routes/auth");
+const auth = require("./routes/auth");
 const authentified = require("./routes/authentified");
 const admin = require("./routes/admin");
 const password = require("./routes/password");
@@ -53,7 +53,7 @@ module.exports = async (components) => {
   app.use("/api/helloRoute", hello());
   app.use("/api/entity", entity());
   app.use("/api/secured", apiKeyAuthMiddleware, secured());
-  app.use("/api/login", login(components));
+  app.use("/api/auth", auth(components));
   app.use("/api/authentified", checkJwtToken, authentified());
   app.use("/api/admin", checkJwtToken, adminOnly, admin());
   app.use("/api/password", password(components));
@@ -63,7 +63,6 @@ module.exports = async (components) => {
     "/api",
     tryCatch(async (req, res) => {
       let mongodbStatus;
-      logger.info("/api called");
       await db
         .collection("sample")
         .stats()
@@ -82,15 +81,6 @@ module.exports = async (components) => {
         healthcheck: {
           mongodb: mongodbStatus,
         },
-      });
-    })
-  );
-
-  app.get(
-    "/api/config",
-    tryCatch(async (req, res) => {
-      return res.json({
-        config: config,
       });
     })
   );
