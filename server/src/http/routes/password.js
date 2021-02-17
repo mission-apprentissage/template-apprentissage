@@ -1,13 +1,13 @@
-const express = require("express");
-const Boom = require("boom");
 const Joi = require("joi");
+const Boom = require("boom");
 const config = require("config");
+const express = require("express");
 const passport = require("passport");
+const validators = require("../utils/validators");
 const { Strategy, ExtractJwt } = require("passport-jwt");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
-const { createUserToken } = require("../../common/utils/jwtUtils");
-const validators = require("../utils/validators");
-const { createPasswordToken } = require("../../common/utils/jwtUtils");
+// TODO : url to send to the user
+// const { createPasswordToken } = require("../../common/utils/jwtUtils");
 
 const checkPasswordToken = (users) => {
   passport.use(
@@ -48,8 +48,10 @@ module.exports = ({ users }) => {
         throw Boom.badRequest();
       }
 
-      const url = `${config.publicUrl}/reset-password?passwordToken=${createPasswordToken(username)}`;
-      return res.json({ url: url });
+      // TODO : url to send to the user
+      // const url = `${config.publicUrl}/reset-password?passwordToken=${createPasswordToken(username)}`;
+
+      return res.json();
     })
   );
 
@@ -63,8 +65,11 @@ module.exports = ({ users }) => {
         newPassword: validators.password().required(),
       }).validateAsync(req.body, { abortEarly: false });
 
-      await users.changePassword(user.username, newPassword);
-      return res.json({ token: createUserToken(user) });
+      const updatedUser = await users.changePassword(user.username, newPassword);
+
+      const payload = users.structureUser(updatedUser);
+
+      return res.json(payload);
     })
   );
 
