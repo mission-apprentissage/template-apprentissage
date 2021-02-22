@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+const passport = require("passport");
 const config = require("config");
 const logger = require("../common/logger");
 const bodyParser = require("body-parser");
@@ -26,7 +27,6 @@ require("../common/passport-config");
 module.exports = async (components) => {
   const { db } = components;
   const app = express();
-  const checkJwtToken = authMiddleware(components);
   const adminOnly = permissionsMiddleware({ isAdmin: true });
 
   app.use(bodyParser.json());
@@ -50,14 +50,17 @@ module.exports = async (components) => {
     })
   );
 
+  app.use(passport.initialize());
+  app.use(passport.session());
+
   app.use("/api/helloRoute", hello());
   app.use("/api/entity", entity());
   app.use("/api/secured", apiKeyAuthMiddleware, secured());
   app.use("/api/auth", auth(components));
-  app.use("/api/authentified", checkJwtToken, authentified());
-  app.use("/api/admin", checkJwtToken, adminOnly, admin());
+  app.use("/api/authentified", authMiddleware, authentified());
+  app.use("/api/admin", authMiddleware, adminOnly, admin());
   app.use("/api/password", password(components));
-  app.use("/api/stats", checkJwtToken, adminOnly, stats(components));
+  app.use("/api/stats", authMiddleware, adminOnly, stats(components));
 
   app.get(
     "/api",
