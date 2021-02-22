@@ -1,9 +1,9 @@
 name: Deploy
 on:
   push:
-    branches: [ master, recette ]
+    branches: [master, recette]
   pull_request:
-    branches: [ master, recette ]
+    branches: [master, recette]
 
 jobs:
   deploy:
@@ -13,10 +13,10 @@ jobs:
         uses: actions/checkout@v2
 
       - shell: bash
-        run: echo 'TEMPLATE_APP_HEAD_REF=${{ github.head_ref }}' >> $GITHUB_ENV
+        run: echo '::set-env name=TEMPLATE_APP_HEAD_REF::${{ github.head_ref }}'
 
       - shell: bash
-        run: echo 'TEMPLATE_APP_REF=${{ github.ref }}' >> $GITHUB_ENV
+        run: echo '::set-env name=TEMPLATE_APP_REF::${{ github.ref }}'
 
       - name: Check output
         run: echo ${TEMPLATE_APP_REF:-${TEMPLATE_APP_REF##*/}}
