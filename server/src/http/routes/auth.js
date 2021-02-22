@@ -14,7 +14,9 @@ module.exports = ({ users }) => {
 
       const payload = users.structureUser(user);
 
-      req.logIn(payload, () => res.json(payload));
+      req.logIn(payload, () => {
+        return res.json(payload);
+      });
     })
   );
 
