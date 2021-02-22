@@ -1,5 +1,4 @@
 const assert = require("assert");
-const config = require("config");
 const httpTests = require("../../utils/httpTests");
 const { User } = require("../../../src/common/model");
 const { hash } = require("../../../src/common/utils/sha512Utils");
@@ -15,25 +14,13 @@ httpTests(__filename, ({ startServer }) => {
     });
 
     assert.strictEqual(response.status, 200);
-    assert.deepStrictEqual({
+    assert.deepStrictEqual(response.data, {
       sub: "user",
-      iss: config.appName,
       permissions: {
         isAdmin: false,
       },
+      roles: [],
     });
-  });
-
-  it("Vérifie qu'un mot de passe invalide est rejeté", async () => {
-    const { httpClient, components } = await startServer();
-    await components.users.createUser("user", "password");
-
-    const response = await httpClient.post("/api/auth/login", {
-      username: "user",
-      password: "INVALID",
-    });
-
-    assert.strictEqual(response.status, 401);
   });
 
   it("Vérifie qu'un login invalide est rejeté", async () => {
@@ -44,7 +31,7 @@ httpTests(__filename, ({ startServer }) => {
       password: "INVALID",
     });
 
-    assert.strictEqual(response.status, 401);
+    assert.strictEqual(response.status, 404);
   });
 
   it("Vérifie que le mot de passe est rehashé si trop faible", async () => {
@@ -92,7 +79,7 @@ httpTests(__filename, ({ startServer }) => {
       password: "invalid",
     });
 
-    assert.strictEqual(response.status, 401);
+    assert.strictEqual(response.status, 404);
     const found = await User.findOne({ username: "user" });
     assert.strictEqual(previous.password, found.password);
   });

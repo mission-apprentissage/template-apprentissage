@@ -1,7 +1,4 @@
 const assert = require("assert");
-const config = require("config");
-const omit = require("lodash").omit;
-const jwt = require("jsonwebtoken");
 const httpTests = require("../../utils/httpTests");
 const { createPasswordToken } = require("../../../src/common/utils/jwtUtils");
 
@@ -15,7 +12,6 @@ httpTests(__filename, ({ startServer }) => {
     });
 
     assert.strictEqual(response.status, 200);
-    assert.ok(response.data.url);
   });
 
   it("Vérifie qu'on ne peut pas demander la réinitialisation du mot de passe pour un utilisateur inconnu", async () => {
@@ -47,19 +43,18 @@ httpTests(__filename, ({ startServer }) => {
 
     const response = await httpClient.post("/api/password/reset-password", {
       passwordToken: createPasswordToken("admin"),
-      newPassword: "Password!123456",
+      newPassword: "Password!123",
     });
 
+    // console.log("response", response);
+
     assert.strictEqual(response.status, 200);
-    const decoded = jwt.verify(response.data.token, config.auth.user.jwtSecret);
-    assert.ok(decoded.iat);
-    assert.ok(decoded.exp);
-    assert.deepStrictEqual(omit(decoded, ["iat", "exp"]), {
+    assert.deepStrictEqual(response.data, {
       sub: "admin",
-      iss: config.appName,
       permissions: {
         isAdmin: true,
       },
+      roles: ["admin"],
     });
   });
 

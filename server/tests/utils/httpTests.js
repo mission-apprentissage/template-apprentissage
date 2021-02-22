@@ -16,14 +16,10 @@ const startServer = async () => {
     createAndLogUser: async (username, password, options) => {
       await components.users.createUser(username, password, options);
 
-      const response = await httpClient.post("/api/login", {
+      await httpClient.post("/api/auth/login", {
         username: username,
         password: password,
       });
-
-      return {
-        Authorization: "Bearer " + response.data.token,
-      };
     },
   };
 };
