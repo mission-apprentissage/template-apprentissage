@@ -1,5 +1,6 @@
 const express = require("express");
 const config = require("config");
+const helmet = require("helmet");
 const logger = require("../common/logger");
 const bodyParser = require("body-parser");
 const logMiddleware = require("./middlewares/logMiddleware");
@@ -25,6 +26,7 @@ module.exports = async (components) => {
   const checkJwtToken = authMiddleware(components);
   const adminOnly = permissionsMiddleware({ isAdmin: true });
 
+  app.use(helmet.contentSecurityPolicy());
   app.use(bodyParser.json());
   app.use(corsMiddleware());
   app.use(logMiddleware());
