@@ -1,30 +1,30 @@
-import { useState, useCallback, useEffect } from "react";
-import { _get } from "../httpClient";
+import { useState, useCallback, useEffect } from 'react'
+import { _get } from '../httpClient'
 
 export function useFetch(url, initialState = null) {
-  const [response, setResponse] = useState(initialState);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [response, setResponse] = useState(initialState)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const _fetch = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
 
     try {
-      const response = await _get(url);
-      setResponse(response);
-      setLoading(false);
+      const response = await _get(url)
+      setResponse(response)
+      setLoading(false)
     } catch (error) {
-      setError(error);
+      setError(error)
     }
-  }, [url]);
+  }, [url])
 
   useEffect(() => {
     async function fetchData() {
-      return _fetch();
+      return _fetch()
     }
-    fetchData();
-  }, [url, _fetch]);
+    fetchData()
+  }, [url, _fetch])
 
-  return [response, loading, error];
+  return [response, loading, error]
 }

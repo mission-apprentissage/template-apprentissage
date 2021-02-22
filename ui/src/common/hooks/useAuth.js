@@ -1,18 +1,15 @@
-import { useAuthState, anonymous } from "../auth";
-import decodeJWT from "../utils/decodeJWT";
+import { useAuthState, anonymous } from '../auth'
 
 export default function useAuth() {
-  let [auth, setAuth] = useAuthState();
+  let [auth, setAuth] = useAuthState()
 
-  let setAuthFromToken = (token) => {
-    if (!token) {
-      sessionStorage.removeItem("template_app:token");
-      setAuth(anonymous);
+  let setAuthFromToken = (user) => {
+    if (!user) {
+      setAuth(anonymous)
     } else {
-      sessionStorage.setItem("template_app:token", token);
-      setAuth(decodeJWT(token));
+      setAuth(user)
     }
-  };
+  }
 
-  return [auth, setAuthFromToken];
+  return [auth, setAuthFromToken]
 }
