@@ -1,4 +1,5 @@
 const config = require("config");
+const { throttle } = require("lodash");
 const util = require("util");
 const bunyan = require("bunyan");
 const PrettyStream = require("bunyan-prettystream");
@@ -8,7 +9,6 @@ const { Log } = require("./model/index");
 
 const createStreams = () => {
   const { type, level } = config.log;
-  const envName = config.env;
 
   const jsonStream = () => {
     return {
@@ -37,9 +37,10 @@ const createStreams = () => {
   };
 
   const slackStream = () => {
-    const stream = new BunyanSlack(
+    let { env, slackWebhookUrl } = config;
+    let stream = new BunyanSlack(
       {
-        webhook_url: config.slackWebhookUrl,
+        webhook_url: slackWebhookUrl,
         customFormatter: (record, levelName) => {
           if (record.type === "http") {
             record = {
@@ -49,7 +50,7 @@ const createStreams = () => {
             };
           }
           return {
-            text: util.format(`[%s][${envName}] %O`, levelName.toUpperCase(), record),
+            text: util.format(`[SERVER][${env}] %O`, levelName.toUpperCase(), record),
           };
         },
       },
@@ -57,6 +58,7 @@ const createStreams = () => {
         console.log("Unable to send log to slack", error);
       }
     );
+    stream.write = throttle(stream.write, 5000);
 
     return {
       name: "slack",
