@@ -10,7 +10,7 @@ module.exports = ({ users }) => {
       const { username, password } = req.body;
       const user = await users.authenticate(username, password);
 
-      if (!user) res.status("404");
+      if (!user) res.sendStatus("404");
 
       const payload = users.structureUser(user);
 
