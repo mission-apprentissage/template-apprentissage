@@ -39,6 +39,7 @@ services:
       - mongodb
     environment:
       - TEMPLATE_APP_MONGODB_URI=mongodb://mongodb:27017/template-app?retryWrites=true&w=majority
+      - TEMPLATE_APP_ELASTICSEARCH_NODE=http://elasticsearch:9200
 
   mongodb:
     image: mongo:4.2.6-bionic
