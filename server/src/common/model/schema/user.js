@@ -15,5 +15,10 @@ const usersSchema = {
     default: false,
     description: "true si l'utilisateur est administrateur",
   },
+  roles: {
+    type: [String],
+    default: [],
+    description: "Roles de l'utilisateur",
+  },
 };
 module.exports = usersSchema;
