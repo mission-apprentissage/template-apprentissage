@@ -3,6 +3,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const passport = require("passport");
 const config = require("config");
+const helmet = require("helmet");
 const logger = require("../common/logger");
 const bodyParser = require("body-parser");
 const logMiddleware = require("./middlewares/logMiddleware");
@@ -29,6 +30,7 @@ module.exports = async (components) => {
   const app = express();
   const adminOnly = permissionsMiddleware({ isAdmin: true });
 
+  app.use(helmet.contentSecurityPolicy());
   app.use(bodyParser.json());
   app.use(corsMiddleware());
   app.use(logMiddleware());
