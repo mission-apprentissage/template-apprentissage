@@ -12,7 +12,7 @@ const ResetPasswordPage = () => {
 
   const changePassword = async (values, { setStatus }) => {
     try {
-      const user = await _post('/api/password/reset-password', { ...values, passwordToken })
+      const user = await _post('/api/password/reset-password', { ...values, tobechanged: 'passwordToken' })
       setAuth(user)
       router.push('/')
     } catch (e) {
