@@ -12,6 +12,9 @@ module.exports = {
     'plugin:jsx-a11y/recommended',
     'plugin:prettier/recommended',
   ],
+  globals: {
+    fetch: false,
+  },
   rules: {
     'import/no-anonymous-default-export': [0],
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
@@ -19,6 +22,15 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     // This rule is not compatible with Next.js's <Link /> components
     'jsx-a11y/anchor-is-valid': 'off',
+    'react/no-unescaped-entities': 'off',
+    'react/prop-types': 'off',
   },
   parser: 'babel-eslint',
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 2018,
+    sourceType: 'module',
+  },
 }
