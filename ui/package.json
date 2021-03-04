@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "next dev",
     "start": "next start",
-    "build": "next build --profile",
+    "build": "next build",
     "lint": "eslint ."
   },
   "browserslist": {
