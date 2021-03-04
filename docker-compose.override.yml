@@ -12,6 +12,9 @@ services:
     volumes:
       - ./ui:/app #Allows source folders to be watched
       - /app/.next
+    build:
+      args:
+        - ENV=dev
 
   server:
     command: ["yarn", "debug"]
