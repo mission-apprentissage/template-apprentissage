@@ -1,5 +1,5 @@
 import { createGlobalState } from 'react-hooks-global-state'
-import { subscribeToHttpEvent } from './httpClient'
+import { subscribeToHttpEvent } from './eventsHanlder'
 
 const anonymous = { sub: 'anonymous', permissions: {} }
 

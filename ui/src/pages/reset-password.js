@@ -1,6 +1,6 @@
 import { Box, Button, Center, FormControl, FormErrorMessage, FormLabel, Heading, Input, Text } from '@chakra-ui/react'
 import { Field, Form, Formik } from 'formik'
-import useRouter from 'next/router'
+import { useRouter } from 'next/router'
 import * as Yup from 'yup'
 
 import useAuth from '../common/hooks/useAuth'
@@ -12,7 +12,7 @@ const ResetPasswordPage = () => {
 
   const changePassword = async (values, { setStatus }) => {
     try {
-      const user = await _post('/api/password/reset-password', { ...values, tobechanged: 'passwordToken' })
+      const user = await _post('/api/password/reset-password', { ...values })
       setAuth(user)
       router.push('/')
     } catch (e) {
@@ -23,7 +23,7 @@ const ResetPasswordPage = () => {
             Le lien est expiré ou invalide, merci de prendre contact avec un administrateur en précisant votre adresse
             mail :
             <br />
-            <a href="mailto:catalogue@apprentissage.beta.gouv.fr">catalogue@apprentissage.beta.gouv.fr</a>
+            <a href="mailto:MAIL">MAIL</a>
           </span>
         ),
       })
