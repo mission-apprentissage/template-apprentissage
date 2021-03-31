@@ -54,6 +54,7 @@ services:
     container_name: template_app_elasticsearch
     environment:
       - ES_JAVA_OPTS=-Xmx512m -Xms512m
+      - cluster.name=docker-cluster
       - discovery.type=single-node
     mem_limit: 1g
     networks:
@@ -67,8 +68,7 @@ services:
     networks:
       - template_app_network
     environment:
-      - SERVER_BASEPATH=/kibana
-
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
 networks:
   template_app_network:
     name: template_app_network
