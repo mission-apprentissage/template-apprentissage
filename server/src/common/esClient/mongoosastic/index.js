@@ -20,8 +20,16 @@ function timeout(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function getMapping(schema) {
+function getMapping(schema, requireAsciiFolding = false) {
   const properties = {};
+
+  // paramètre optionnel indiquant que la recherche sur le champ est insensible à la casse et aux accents
+  const asciiFoldingParameters = requireAsciiFolding
+    ? {
+        analyzer: "folding",
+        search_analyzer: "folding",
+      }
+    : {};
 
   for (let i = 0; i < Object.keys(schema.paths).length; i++) {
     const key = Object.keys(schema.paths)[i];
@@ -43,12 +51,14 @@ function getMapping(schema) {
     } else
       switch (mongooseType) {
         case "ObjectID":
-        case "String":
+        case "String": {
           properties[key] = {
             type: "text",
             fields: { keyword: { type: "keyword", ignore_above: 256 } },
+            ...asciiFoldingParameters,
           };
           break;
+        }
         case "Date":
           properties[key] = { type: "date" };
           break;
@@ -58,15 +68,19 @@ function getMapping(schema) {
         case "Boolean":
           properties[key] = { type: "boolean" };
           break;
-
         case "Array":
           if (schema.paths[key].caster.instance === "String") {
             properties[key] = {
               type: "text",
               fields: { keyword: { type: "keyword", ignore_above: 256 } },
+              ...asciiFoldingParameters,
             };
+          } else if (schema.paths[key].caster.instance === "Mixed") {
+            properties[key] = { type: "nested" };
           }
-
+          break;
+        case "Mixed":
+          properties[key] = { type: "nested" };
           break;
         default:
           break;
@@ -86,17 +100,35 @@ function Mongoosastic(schema, options) {
   // ElasticSearch Client
   schema.statics.esClient = esClient;
 
-  schema.statics.createMapping = async function createMapping() {
+  schema.statics.createMapping = async function createMapping(requireAsciiFolding = false) {
     try {
       const exists = await esClient.indices.exists({ index: indexName });
 
-      let includeTypeNameParameters = isMappingNeedingGeoPoint ? { include_type_name: true } : {};
+      let includeTypeNameParameters =
+        isMappingNeedingGeoPoint || requireAsciiFolding ? { include_type_name: true } : {};
+
+      let asciiFoldingParameters = requireAsciiFolding
+        ? {
+            body: {
+              settings: {
+                analysis: {
+                  analyzer: {
+                    folding: {
+                      tokenizer: "standard",
+                      filter: ["lowercase", "asciifolding"],
+                    },
+                  },
+                },
+              },
+            },
+          }
+        : {};
 
       if (!exists.body) {
-        await esClient.indices.create({ index: indexName, ...includeTypeNameParameters });
+        await esClient.indices.create({ index: indexName, ...includeTypeNameParameters, ...asciiFoldingParameters });
       }
       const completeMapping = {};
-      completeMapping[typeName] = getMapping(schema);
+      completeMapping[typeName] = getMapping(schema, requireAsciiFolding);
 
       await esClient.indices.putMapping({
         index: indexName,
@@ -191,6 +223,17 @@ function Mongoosastic(schema, options) {
     }
   }
 
+  function postSaveMany(docs) {
+    return new Promise(async (resolve, reject) => {
+      for (let i = 0; i < docs.length; i++) {
+        try {
+          await postSave(docs[i]);
+        } catch (e) {}
+      }
+      resolve();
+    });
+  }
+
   /**
    * Use standard Mongoose Middleware hooks
    * to persist to Elasticsearch
@@ -202,16 +245,8 @@ function Mongoosastic(schema, options) {
     inSchema.post("save", postSave);
     inSchema.post("findOneAndUpdate", postSave);
 
-    inSchema.post("insertMany", (docs) => {
-      return new Promise(async (resolve, reject) => {
-        for (let i = 0; i < docs.length; i++) {
-          try {
-            await postSave(docs[i]);
-          } catch (e) {}
-        }
-        resolve();
-      });
-    });
+    inSchema.post("insertMany", postSaveMany);
+    inSchema.post("updateMany", postSaveMany);
   }
   setUpMiddlewareHooks(schema);
 }
