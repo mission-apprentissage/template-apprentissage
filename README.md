@@ -1,6 +1,6 @@
 ![](https://avatars1.githubusercontent.com/u/63645182?s=200&v=4)
 
-# Template Apprentissage
+# mnaprojectname
 
 ## Pré-requis
 
@@ -10,7 +10,7 @@
 
 ## Présentation
 
-Ce template permets de créer la structure d'une application exemple selon 4 modèles différents :
+Ce template permet de créer la structure d'une application exemple selon 4 modèles différents :
 
 - `express` pour un modèle d'application de type API Node Express
 - `express-mongo` pour un modèle d'application de type API Node Express avec une base de données MongoDb
@@ -25,17 +25,17 @@ Chacun de ces modèles est accessible via une branche dédiée du repository.
 
 Ce template fonctionne de manière autonome en local avec des conteneurs docker.
 
-Pour déployer et faire fonctionner l'application sur un server dédié dans Azure il faut récupérer le contenu du
-repository template-apprentissage-infra pour le modèle choisi.
+Pour déployer et faire fonctionner l'application sur un server dédié il faut récupérer le contenu du repository infra
+pour le modèle choisi.
 
-Le repository template-apprentissage-infra est lui, privé car il est utilisé pour contenir l'ensemble des données
+Le repository infra est lui, privé car il est utilisé pour contenir l'ensemble des données
 sensibles (Clés SSH, mots de passes ...) nécessaires à la mise en place de votre application, merci de suivre sa
 documentation dédiée pour déployer votre application.
 
 ## Organisation des dossiers
 
 _TODO UPDATE_
-Ce template est organisé de la manière suivante :
+Ce projet est organisé de la manière suivante :
 
 ```
     |-- .github
@@ -97,8 +97,8 @@ Ensuite dans la définition des conteneurs Docker ces variables d'environnements
 
 ### Nom de l'application
 
-Avant de démarrer il convient de modifier le nom de l'application dans l'ensemble des fichiers concernés.
-Lancer la commande suivante :
+Avant de démarrer il convient de modifier le nom de l'application dans l'ensemble des fichiers concernés. Lancer la
+commande suivante :
 
 ```shell
 bash init.sh <le nom de l'application>
@@ -107,7 +107,7 @@ bash init.sh <le nom de l'application>
 N'oubliez pas de commiter les changements
 
 ```shell
-git commit -a -m "Set project name to <nom>"
+git commit --no-verify -a -m "Set project name to <nom>"
 ```
 
 Une fois le nom du projet défini, le script `init.sh` peut être supprimé.
@@ -125,7 +125,7 @@ const uri = config.mongodb.uri.split("mnaprojectname").join("mnaprojectname_test
 
 ### Présentation de la configuration Docker
 
-Pour fonctionner ce template a besoin des éléments dockérisés suivants :
+Pour fonctionner ce projet a besoin des éléments dockérisés suivants :
 
 - Un serveur Web Nginx jouant le role de reverse proxy, _défini dans le service `reverse_proxy` du docker-compose_.
 - Un serveur Node Express, _défini dans le service `server` du docker-compose_.

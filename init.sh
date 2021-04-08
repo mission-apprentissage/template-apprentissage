@@ -9,7 +9,7 @@ function replace_pattern_in_files() {
   local project_name="${2}"
 
   find "${PROJECT_DIR}" -type f ! -path "*init.sh*" ! -path "*node_modules*" ! -path "*.git*" \
-    -exec sed -i "s/${pattern}/${project_name}/g" {} \;
+    -exec sed -i "s#${pattern}#${project_name}#g" {} \;
 }
 
 replace_pattern_in_files mnaprojectname "${PROJECT_NAME}"
