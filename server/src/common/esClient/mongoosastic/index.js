@@ -15,14 +15,13 @@ const serialize = require("./serialize");
 // https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/bulk_examples.html
 
 let isMappingNeedingGeoPoint = false;
+const exclude = ["id", "__v", "_id"];
 
 function timeout(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function getMapping(schema, requireAsciiFolding = false) {
-  const properties = {};
-
+function getProperties(type, instance = null, requireAsciiFolding = false) {
   // paramètre optionnel indiquant que la recherche sur le champ est insensible à la casse et aux accents
   const asciiFoldingParameters = requireAsciiFolding
     ? {
@@ -31,14 +30,44 @@ function getMapping(schema, requireAsciiFolding = false) {
       }
     : {};
 
+  if (type === "ObjectID" || type === "String")
+    return {
+      type: "text",
+      fields: { keyword: { type: "keyword", ignore_above: 256 } },
+      ...asciiFoldingParameters,
+    };
+
+  if (type === "Date") return { type: "date" };
+  if (type === "Number") return { type: "long" };
+  if (type === "Boolean") return { type: "boolean" };
+  if (type === "Mixed") return { type: "nested" };
+
+  if (type === "Array") {
+    if (instance === "String") {
+      return {
+        type: "text",
+        fields: { keyword: { type: "keyword", ignore_above: 256 } },
+        ...asciiFoldingParameters,
+      };
+    }
+
+    if (instance === "Mixed") {
+      return { type: "nested" };
+    }
+  }
+}
+
+function getMapping(schema, requireAsciiFolding = false) {
+  const properties = {};
+
   for (let i = 0; i < Object.keys(schema.paths).length; i++) {
     const key = Object.keys(schema.paths)[i];
 
-    const exclude = ["id", "__v", "_id"];
     if (exclude.includes(key)) {
       continue;
     }
     const mongooseType = schema.paths[key].instance;
+    const isSubDocument = typeof schema.paths[key].caster === "function";
 
     if (schema.paths[key].options.es_mapping) {
       properties[key] = schema.paths[key].options.es_mapping;
@@ -48,43 +77,22 @@ function getMapping(schema, requireAsciiFolding = false) {
     if (/geo_/.test(key)) {
       properties[key] = { type: "geo_point" };
       isMappingNeedingGeoPoint = true;
-    } else
-      switch (mongooseType) {
-        case "ObjectID":
-        case "String": {
-          properties[key] = {
-            type: "text",
-            fields: { keyword: { type: "keyword", ignore_above: 256 } },
-            ...asciiFoldingParameters,
-          };
-          break;
-        }
-        case "Date":
-          properties[key] = { type: "date" };
-          break;
-        case "Number":
-          properties[key] = { type: "long" };
-          break;
-        case "Boolean":
-          properties[key] = { type: "boolean" };
-          break;
-        case "Array":
-          if (schema.paths[key].caster.instance === "String") {
-            properties[key] = {
-              type: "text",
-              fields: { keyword: { type: "keyword", ignore_above: 256 } },
-              ...asciiFoldingParameters,
-            };
-          } else if (schema.paths[key].caster.instance === "Mixed") {
-            properties[key] = { type: "nested" };
+    } else {
+      if (isSubDocument) {
+        properties[key] = { type: "nested", properties: {} };
+        for (let i = 0; i < Object.keys(schema.paths[key].caster.schema.paths).length; i++) {
+          const subDocumentKey = Object.keys(schema.paths[key].caster.schema.paths)[i];
+          if (exclude.includes(subDocumentKey)) {
+            continue;
           }
-          break;
-        case "Mixed":
-          properties[key] = { type: "nested" };
-          break;
-        default:
-          break;
+          let { instance, caster } = schema.paths[key].caster.schema.paths[subDocumentKey];
+
+          properties[key].properties[subDocumentKey] = getProperties(instance, caster?.instance, requireAsciiFolding);
+        }
+      } else {
+        properties[key] = getProperties(mongooseType, schema.paths[key].caster?.instance, requireAsciiFolding);
       }
+    }
   }
 
   return { properties };
@@ -153,7 +161,7 @@ function Mongoosastic(schema, options) {
         _opts.id = this._id.toString();
         await esClient.index(_opts);
       } catch (e) {
-        console.log(e);
+        console.log(e, e.meta.body.error);
         console.log(`Error index ${this._id.toString()}`, e.message || e);
         return reject();
       }
