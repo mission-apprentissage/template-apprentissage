@@ -40,6 +40,7 @@ services:
     environment:
       - MNAPROJECTNAME_MONGODB_URI=mongodb://mongodb:27017/template-app?retryWrites=true&w=majority
       - MNAPROJECTNAME_ELASTICSEARCH_NODE=http://elasticsearch:9200
+      - MNAPROJECTNAME_LOG_DESTINATIONS=stdout,mongodb
 
   mongodb:
     image: mongo:4.2.6-bionic
