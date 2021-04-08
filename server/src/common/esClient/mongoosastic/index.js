@@ -8,6 +8,7 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
+
 "use strict";
 
 const serialize = require("./serialize");
