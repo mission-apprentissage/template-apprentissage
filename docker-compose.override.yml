@@ -3,7 +3,7 @@ version: "2.4"
 services:
   reverse_proxy:
     volumes:
-      - template_app_nginx_data:/data
+      - mnaprojectname_nginx_data:/data
 
   ui:
     command: yarn start
@@ -19,37 +19,37 @@ services:
     volumes:
       - ./server/src:/app/src # Allows source folders to be watched
       - ./server/config:/app/config
-      - template_app_server_data:/data
+      - mnaprojectname_server_data:/data
     environment:
-      - TEMPLATE_APP_ENV=dev
-      - TEMPLATE_APP_LOG_LEVEL=debug
+      - mnaprojectname_ENV=dev
+      - mnaprojectname_LOG_LEVEL=debug
 
   mongodb:
     ports:
       - "127.0.0.1:27017:27017"
     volumes:
-      - template_app_mongodb_data:/data
+      - mnaprojectname_mongodb_data:/data
 
   elasticsearch:
     ports:
       - "127.0.0.1:9200:9200"
     volumes:
-      - template_app_data_elasticsearch:/usr/share/elasticsearch/data
+      - mnaprojectname_data_elasticsearch:/usr/share/elasticsearch/data
 
   kibana:
     ports:
       - "127.0.0.1:5601:5601"
 
 volumes:
-  template_app_data_elasticsearch:
+  mnaprojectname_data_elasticsearch:
     driver: local
-    name: template_app_data_elasticsearch
-  template_app_mongodb_data:
+    name: mnaprojectname_data_elasticsearch
+  mnaprojectname_mongodb_data:
     driver: local
-    name: template_app_mongodb_data
-  template_app_nginx_data:
+    name: mnaprojectname_mongodb_data
+  mnaprojectname_nginx_data:
     driver: local
-    name: template_app_nginx_data
-  template_app_server_data:
+    name: mnaprojectname_nginx_data
+  mnaprojectname_server_data:
     driver: local
-    name: template_app_server_data
+    name: mnaprojectname_server_data

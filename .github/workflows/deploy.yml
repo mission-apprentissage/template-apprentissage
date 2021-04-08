@@ -13,18 +13,18 @@ jobs:
         uses: actions/checkout@v2
 
       - shell: bash
-        run: echo 'TEMPLATE_APP_HEAD_REF=${{ github.head_ref }}' >> $GITHUB_ENV
+        run: echo 'MNAPROJECTNAME_HEAD_REF=${{ github.head_ref }}' >> $GITHUB_ENV
 
       - shell: bash
-        run: echo 'TEMPLATE_APP_REF=${{ github.ref }}' >> $GITHUB_ENV
+        run: echo 'MNAPROJECTNAME_REF=${{ github.ref }}' >> $GITHUB_ENV
 
       - name: Check output
-        run: echo ${TEMPLATE_APP_REF:-${TEMPLATE_APP_REF##*/}}
+        run: echo ${MNAPROJECTNAME_REF:-${MNAPROJECTNAME_REF##*/}}
 
       - name: Request deployment recette
         uses: peter-evans/repository-dispatch@v1
         with:
-          repository: mission-apprentissage/template-apprentissage-infra
+          repository: mission-apprentissage/MNAPROJECTNAME-infra
           token: ${{ secrets.DEVOPS_ACCESS_TOKEN }}
           event-type: deploy
           client-payload: '{"envName": "recette", "branchName":"recette"}'
@@ -33,7 +33,7 @@ jobs:
       - name: Request deployment production
         uses: peter-evans/repository-dispatch@v1
         with:
-          repository: mission-apprentissage/template-apprentissage-infra
+          repository: mission-apprentissage/MNAPROJECTNAME-infra
           token: ${{ secrets.DEVOPS_ACCESS_TOKEN }}
           event-type: deploy
           client-payload: '{"envName": "production", "branchName":"master"}'

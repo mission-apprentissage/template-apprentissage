@@ -8,7 +8,7 @@ let mongoHolder = null;
 
 const connectToMongoForTests = async () => {
   if (!mongoHolder) {
-    const uri = config.mongodb.uri.split("template-app").join("template-app_test");
+    const uri = config.mongodb.uri.split("mnaprojectname").join("template-app_test");
     mongoHolder = await connectToMongo(uri);
   }
   return mongoHolder;
