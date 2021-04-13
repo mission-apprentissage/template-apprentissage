@@ -22,8 +22,8 @@
     }
   },
   "log": {
-    "type": "MNAPROJECTNAME_LOG_TYPE",
-    "level": "MNAPROJECTNAME_LOG_LEVEL"
+    "level": "MNAPROJECTNAME_LOG_LEVEL",
+    "destinations": "MNAPROJECTNAME_LOG_DESTINATIONS"
   },
   "slackWebhookUrl": "MNAPROJECTNAME_SLACK_WEBHOOK_URL",
   "outputDir": "MNAPROJECTNAME_OUTPUT_DIR"
