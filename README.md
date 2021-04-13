@@ -172,27 +172,26 @@ http://localhost/kibana
 
 ### Démarrage de la stack
 
-Pour créer la stack et monter l'environnement il suffit de lancer la commande suivante depuis le répertoire `/server` :
+Pour créer la stack et monter l'environnement il suffit de lancer la commande suivante :
 
 ```bash
-yarn docker:start
+make start
 ```
 
 ### Arret de la stack
 
-Il est possible de stopper les conteneur en lancant la commande suivante depuis le répertoire `/server` :
+Il est possible de stopper les conteneur en lancant la commande suivante :
 
 ```bash
-yarn docker:stop
+make stop
 ```
 
 ### Suppression de la stack
 
-Pour supprimer l'ensemble de la stack et tuer tous les conteneurs il suffit de lancer la commande suivante depuis le
-répertoire `/server` :
+Pour supprimer l'ensemble de la stack et tuer tous les conteneurs il suffit de lancer la commande suivante :
 
 ```bash
-yarn docker:clean
+make clean
 ```
 
 ### Vérification du montage de la stack
@@ -215,7 +214,7 @@ docker exec mnaprojectname_server bash -c 'ls'
 Un linter (via ESLint) est mis en place dans le projet, pour le lancer :
 
 ```bash
-yarn lint
+make lint
 ```
 
 ## Tests

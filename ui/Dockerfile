@@ -1,16 +1,16 @@
-FROM node:12.16.1-stretch
-
-#Install and cache node_modules
-COPY package.json yarn.lock /tmp/
-RUN cd /tmp && \
-    yarn install --frozen-lockfile && \
-    mkdir -p /app && \
-    mv /tmp/node_modules /app/
+FROM node:14.15.3-alpine
 
 WORKDIR /app
-COPY ./ /app
 
-RUN yarn build
+# Install dependencies
+COPY package.json yarn.lock /app/
+RUN yarn install --production --frozen-lockfile && \
+    yarn global add local-web-server
+
+# Build site
+COPY . ./
+RUN yarn build && \
+    mv /app/build /site
 
 EXPOSE 3000
-CMD yarn serve
+CMD ws --port 3000 -d /site --log.format dev --spa index.html
