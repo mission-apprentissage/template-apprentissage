@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json yarn.lock /app/
-RUN yarn install --production --frozen-lockfile && \
+RUN yarn install --frozen-lockfile && \
     yarn global add local-web-server
 
 # Build site
