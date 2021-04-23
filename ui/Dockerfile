@@ -9,7 +9,7 @@ RUN yarn install --frozen-lockfile && \
 
 # Build site
 COPY . ./
-RUN yarn build && \
+RUN INLINE_RUNTIME_CHUNK=false yarn build && \
     mv /app/build /site
 
 EXPOSE 3000
