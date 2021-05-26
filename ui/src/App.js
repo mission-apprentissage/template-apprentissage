@@ -1,13 +1,16 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import Layout from "./pages/Layout";
+
 import "tabler-react/dist/Tabler.css";
-import DashboardPage from "./pages/DashboardPage";
 import useAuth from "./common/hooks/useAuth";
-import HomePage from "./pages/HomePage";
-import ResetPasswordPage from "./pages/password/ResetPasswordPage";
-import ForgottenPasswordPage from "./pages/password/ForgottenPasswordPage";
+
+// Route-based code splitting @see https://reactjs.org/docs/code-splitting.html#route-based-code-splitting
+const Layout = lazy(() => import("./pages/Layout"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const ResetPasswordPage = lazy(() => import("./pages/password/ResetPasswordPage"));
+const ForgottenPasswordPage = lazy(() => import("./pages/password/ForgottenPasswordPage"));
 
 function PrivateRoute({ children, ...rest }) {
   let [auth] = useAuth();
@@ -28,14 +31,16 @@ export default () => {
   return (
     <div className="App">
       <Router>
-        <Switch>
-          <PrivateRoute exact path="/">
-            <Layout>{auth && auth.permissions.isAdmin ? <DashboardPage /> : <HomePage />}</Layout>
-          </PrivateRoute>
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/reset-password" component={ResetPasswordPage} />
-          <Route exact path="/forgotten-password" component={ForgottenPasswordPage} />
-        </Switch>
+        <Suspense fallback={<div />}>
+          <Switch>
+            <PrivateRoute exact path="/">
+              <Layout>{auth && auth.permissions.isAdmin ? <DashboardPage /> : <HomePage />}</Layout>
+            </PrivateRoute>
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/reset-password" component={ResetPasswordPage} />
+            <Route exact path="/forgotten-password" component={ForgottenPasswordPage} />
+          </Switch>
+        </Suspense>
       </Router>
     </div>
   );
