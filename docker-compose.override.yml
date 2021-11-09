@@ -22,8 +22,8 @@ services:
       - ./server/config:/app/config
       - mnaprojectname_server_data:/data
     environment:
-      - mnaprojectname_ENV=dev
-      - mnaprojectname_LOG_LEVEL=debug
+      - MNAPROJECTNAME_ENV=dev
+      - MNAPROJECTNAME_LOG_LEVEL=debug
 
   mongodb:
     ports:
