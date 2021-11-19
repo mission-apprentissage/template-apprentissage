@@ -8,7 +8,12 @@ readonly TARGET_DIR="build/${PROJECT_NAME}"
 function build_project(){
   mkdir -p "${TARGET_DIR}"
   rsync -av --progress "${PROJECT_DIR}/" "${TARGET_DIR}" \
-    --exclude build --exclude .git --exclude generate.sh --exclude server/node_modules --exclude ui/node_modules
+    --exclude build \
+    --exclude .git \
+    --exclude README.md \
+    --exclude generate.sh \
+    --exclude server/node_modules \
+    --exclude ui/node_modules
 }
 
 function replace_pattern_in_files() {
@@ -21,7 +26,7 @@ function replace_pattern_in_files() {
 build_project
 replace_pattern_in_files mnaprojectname "${PROJECT_NAME}"
 replace_pattern_in_files MNAPROJECTNAME "${PROJECT_NAME^^}"
-
+mv "${TARGET_DIR}/_README.md" "${TARGET_DIR}/README.md"
 
 echo ""
 echo "Projet généré dans ${TARGET_DIR}"
