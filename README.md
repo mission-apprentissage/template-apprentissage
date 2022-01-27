@@ -16,8 +16,6 @@ Ce template permet de créer la structure d'une application exemple selon 4 mod�
 - `express-mongo` pour un modèle d'application de type API Node Express avec une base de données MongoDb
 - `express-mongo-ui` pour un modèle d'application de type API Node Express avec une base de données MongoDb et une UI en
   React
-- `express-mongo-ui-elastic` pour un modèle d'application de type API Node Express avec une base de données MongoDb et
-  une UI en React et un moteur de recherche ElasticSearch attaché
 
 Chacun de ces modèles est accessible via une branche dédiée du repository.
 
@@ -131,8 +129,6 @@ Pour fonctionner ce projet a besoin des éléments dockérisés suivants :
 - Un serveur Node Express, _défini dans le service `server` du docker-compose_.
 - Un réseau _défini dans `mnaprojectname_network` du docker-compose_.
 - Une base de donnée mongoDb _défini dans le service `mongodb` du docker-compose_.
-- Un moteur de recherche elasticsearch _défini dans le service `elasticsearch` du docker-compose_.
-- Un portail kibana pour elasticsearch _défini dans le service `kibana` du docker-compose_.
 
 ### Serveur Nodes & Nginx - Reverse Proxy
 
@@ -142,33 +138,11 @@ Le serveur Web Node Express utilise le port 5000.
 
 Dans la configuration de nginx, on fait référence au fichier `/reverse_proxy/app/nginx/conf.d/locations/api.inc` qui
 définir la gestion de l'API Node Express. Dans la configuration de nginx, on fait référence au
-fichier `/reverse_proxy/app/nginx/conf.d/locations/ui.inc` qui définir la gestion de l'UI React. Dans la configuration
-de nginx, on fait référence au fichier `/reverse_proxy/app/nginx/conf.d/locations/es.inc` qui définir la gestion
-d'Elasticsearch. Dans la configuration de nginx, on fait référence au
-fichier `/reverse_proxy/app/nginx/conf.d/locations/kibana.inc` qui définir la gestion de Kibana.
+fichier `/reverse_proxy/app/nginx/conf.d/locations/ui.inc` qui définir la gestion de l'UI React. 
 
 ### Base de données MongoDb
 
 Le base de données est une MongoDb et utilise le port par défaut 27017.
-
-### Elasticsearch & Kibana
-
-Le moteur de recherche elasticsearch est défini par défaut dans le fichier `./elasticsearch/elasticsearch.yml` et
-utilise le port 9200 en local.
-
-Pour y accéder :
-
-```bash
-http://localhost/es
-```
-
-Le portail kibana est défini par défaut dans le fichier `./elasticsearch/kibana.yml` et utilise le port 5601 en local.
-
-Pour y accéder :
-
-```bash
-http://localhost/kibana
-```
 
 ### Démarrage de la stack
 

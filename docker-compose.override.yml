@@ -31,20 +31,7 @@ services:
     volumes:
       - mnaprojectname_mongodb_data:/data
 
-  elasticsearch:
-    ports:
-      - "127.0.0.1:9200:9200"
-    volumes:
-      - mnaprojectname_data_elasticsearch:/usr/share/elasticsearch/data
-
-  kibana:
-    ports:
-      - "127.0.0.1:5601:5601"
-
 volumes:
-  mnaprojectname_data_elasticsearch:
-    driver: local
-    name: mnaprojectname_data_elasticsearch
   mnaprojectname_mongodb_data:
     driver: local
     name: mnaprojectname_mongodb_data

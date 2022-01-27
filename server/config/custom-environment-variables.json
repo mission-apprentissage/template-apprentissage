@@ -5,9 +5,6 @@
   "mongodb": {
     "uri": "MNAPROJECTNAME_MONGODB_URI"
   },
-  "elasticSearch": {
-    "node": "MNAPROJECTNAME_ELASTICSEARCH_NODE"
-  },
   "apiKey": "MNAPROJECTNAME_API_KEY",
   "auth": {
     "passwordHashRounds": "MNAPROJECTNAME_AUTH_PASSWORD_HASH_ROUNDS",

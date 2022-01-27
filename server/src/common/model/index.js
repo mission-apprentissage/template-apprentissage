@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
 const { mongooseInstance } = require("../mongodb");
-const { mongoosastic, getElasticInstance } = require("../esClient");
 const { sampleSchema, userSchema } = require("../model/schema");
 
 const getMongoostaticModel = (modelName, schema, instanceMongoose = mongooseInstance) => {
   const Schema = new instanceMongoose.Schema(schema);
-  Schema.plugin(mongoosastic, { esClient: getElasticInstance(), index: modelName });
   Schema.plugin(require("mongoose-paginate"));
   return mongooseInstance.model(modelName, Schema);
 };

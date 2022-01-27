@@ -5,9 +5,6 @@
   "mongodb": {
     "uri": "mongodb://127.0.0.1:27017/mnaprojectname?retryWrites=true&w=majority"
   },
-  "elasticSearch": {
-    "node": "http://localhost:9200"
-  },
   "apiKey": "12345",
   "auth": {
     "passwordHashRounds": 1001,

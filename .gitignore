@@ -1,5 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 build/
+.idea/
 
 # dependencies
 /node_modules
@@ -116,7 +117,6 @@ atlassian-ide-plugin.xml
 # Webpack directories
 .webpack
 
-build/
 packaged.yaml
 /public/stack.json
 .DS_Store
