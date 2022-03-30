@@ -4,17 +4,24 @@ services:
   reverse_proxy:
     volumes:
       - mnaprojectname_nginx_data:/data
+    build:
+      args:
+        - ENV=development
 
   ui:
-    command: yarn start
+    build:
+      context: ui
+      dockerfile: Dockerfile.dev
+    # env_file: ./ui/.env
+    volumes:
+      - ./ui:/app
+      - /app/node_modules
+      - /app/.next
     mem_limit: 1g
     stdin_open: true
-    volumes:
-      - ./ui:/app #Allows source folders to be watched
-      - /app/node_modules/
 
   server:
-    command: [ "yarn", "debug" ]
+    command: ["yarn", "debug"]
     ports:
       - "127.0.0.1:9229:9229" # Allows remote debugging
     volumes:

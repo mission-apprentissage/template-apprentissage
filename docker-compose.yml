@@ -42,9 +42,9 @@ services:
       - MNAPROJECTNAME_LOG_DESTINATIONS=stdout,mongodb
 
   mongodb:
-    image: mongo:5.0.2-focal
+    image: mongo:5.0.6-focal
     container_name: mnaprojectname_mongodb
-    mem_limit: 1g
+    mem_limit: 2g
     restart: unless-stopped
     networks:
       - mnaprojectname_network
