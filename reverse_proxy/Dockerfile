@@ -1,4 +1,6 @@
-FROM nginx:latest
+FROM nginx:1.21
+
+ARG ENV
 
 RUN apt-get update \
     && apt-get install -y logrotate nginx-extras
