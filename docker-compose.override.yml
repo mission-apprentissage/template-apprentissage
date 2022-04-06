@@ -12,7 +12,6 @@ services:
     build:
       context: ui
       dockerfile: Dockerfile.dev
-    # env_file: ./ui/.env
     volumes:
       - ./ui:/app
       - /app/node_modules
