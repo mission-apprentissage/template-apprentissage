@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { mongooseInstance } = require("../mongodb");
-const { sampleSchema, userSchema } = require("../model/schema");
+const { sampleSchema } = require("../model/schema");
 
 const getMongoostaticModel = (modelName, schema, instanceMongoose = mongooseInstance) => {
   const Schema = new instanceMongoose.Schema(schema);
@@ -24,11 +24,6 @@ if (!s) {
   s = getModel("sample", sampleSchema);
 }
 
-let u = null;
-if (!u) {
-  u = getModel("user", userSchema);
-}
-
 let l = null;
 if (!l) {
   l = getMongooseModel("log");
@@ -36,6 +31,5 @@ if (!l) {
 
 module.exports = {
   Sample: s,
-  User: u,
   Log: l,
 };
