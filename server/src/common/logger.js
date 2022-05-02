@@ -5,7 +5,7 @@ const bunyan = require("bunyan");
 const PrettyStream = require("bunyan-prettystream");
 const BunyanSlack = require("bunyan-slack");
 const BunyanMongodbStream = require("bunyan-mongodb-stream");
-const { logSchema } = require("./model");
+const { Log } = require("./model");
 
 function jsonStream(level) {
   return {
@@ -29,7 +29,7 @@ function mongoDBStream() {
   return {
     name: "mongodb",
     level: "info",
-    stream: BunyanMongodbStream({ model: logSchema }),
+    stream: BunyanMongodbStream({ model: Log }),
   };
 }
 
