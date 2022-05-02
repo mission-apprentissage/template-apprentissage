@@ -1,4 +1,23 @@
-install: install-server install-ui
+
+install: install-server install-ui hooks
+
+start:
+	docker-compose up --build --force-recreate
+
+stop:
+	docker-compose stop
+
+clean:
+	docker-compose kill && docker system prune --force --volumes
+
+test:
+	yarn --cwd server test
+
+coverage:
+	yarn --cwd server coverage
+
+lint:
+	yarn --cwd server lint
 
 install-server:
 	yarn --cwd server install --frozen-lockfile
@@ -6,22 +25,8 @@ install-server:
 install-ui:
 	yarn --cwd ui install --frozen-lockfile
 
-start:
-	docker-compose up --build --force-recreate
+hooks:
+	git config core.hooksPath misc/git-hooks
+	chmod +x misc/git-hooks/*
 
-start-mongodb:
-	docker-compose up -d mongodb
-
-stop:
-	docker-compose stop
-
-test:
-	yarn --cwd server test
-
-lint:
-	yarn --cwd server lint
-
-clean:
-	docker-compose down
-
-ci: install-server lint start-mongodb test clean
+ci: install-server lint coverage
