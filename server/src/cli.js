@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { program: cli } = require("commander");
 const runScript = require("./common/runScript");
 

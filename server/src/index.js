@@ -1,6 +1,7 @@
+require("dotenv").config();
 const server = require("./http/server");
 const logger = require("./common/logger");
-const config = require("config");
+const config = require("./config");
 const { connectToMongodb } = require("./common/mongodb");
 
 process.on("unhandledRejection", (e) => logger.error("An unexpected error occurred", e));
