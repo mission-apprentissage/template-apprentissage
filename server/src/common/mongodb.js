@@ -4,7 +4,7 @@ const logger = require("./logger");
 
 mongoose.set("useCreateIndex", true);
 
-module.exports.connectToMongo = (mongoUri = config.mongodb.uri) => {
+module.exports.connectToMongodb = (mongoUri = config.mongodb.uri) => {
   return new Promise((resolve, reject) => {
     logger.debug(`MongoDB: Connection to ${mongoUri}`);
 

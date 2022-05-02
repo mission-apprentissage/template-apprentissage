@@ -1,6 +1,6 @@
 // eslint-disable-next-line node/no-unpublished-require
 const prettyMilliseconds = require("pretty-ms");
-const { closeMongoConnection, connectToMongo } = require("./mongodb");
+const { closeMongoConnection, connectToMongodb } = require("./mongodb");
 const logger = require("./logger");
 const { isEmpty } = require("lodash");
 
@@ -50,7 +50,7 @@ async function runScript(job) {
     const timer = createTimer();
     timer.start();
 
-    await connectToMongo();
+    await connectToMongodb();
 
     const results = await job();
 

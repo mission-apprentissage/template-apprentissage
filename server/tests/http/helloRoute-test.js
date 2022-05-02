@@ -1,7 +1,7 @@
 const assert = require("assert");
-const httpTests = require("../../utils/httpTests");
+const { startServer } = require("../utils/testUtils");
 
-httpTests(__filename, ({ startServer }) => {
+describe("helloRoute", () => {
   it("Vérifie que la route fonctionne", async () => {
     const { httpClient } = await startServer();
 
