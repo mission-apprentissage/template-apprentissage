@@ -10,7 +10,7 @@
   "scripts": {
     "start": "nodemon --ignore tests/ src/index.js",
     "debug": "nodemon --inspect=0.0.0.0 --signal SIGINT --ignore tests/ src/index.js",
-    "test": "MNAPROJECTNAMEL_LOG_LEVEL=fatal mocha tests/**/*-test.js",
+    "test": "MNAPROJECTNAMEL_LOG_LEVEL=fatal mocha --exit tests/**/*-test.js",
     "cli": "MNAPROJECTNAMEL_LOG_DESTINATIONS=stderr node src/cli.js",
     "coverage": "nyc --temp-dir .coverage/.nyc_output --report-dir .coverage --reporter=lcov --reporter=html yarn test",
     "lint": "eslint src/ tests/"

@@ -1,7 +1,6 @@
 const express = require("express");
 const logger = require("../../common/logger");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
-const logicModule = require("../../logic/logicModule");
 
 /**
  * Sample route module for displaying hello message
@@ -12,10 +11,9 @@ module.exports = () => {
   router.get(
     "/",
     tryCatch(async (req, res) => {
-      const msg = logicModule.getTestMessage("Hello World");
-      logger.info(msg);
+      logger.info("Hello World");
       return res.json({
-        message: msg,
+        message: "Hello World",
       });
     })
   );

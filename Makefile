@@ -44,4 +44,7 @@ hooks:
 	git config core.hooksPath misc/git-hooks
 	chmod +x misc/git-hooks/*
 
-ci: install lint coverage
+start-mongodb:
+	docker-compose up -d mongodb
+
+ci: install lint start-mongodb coverage clean

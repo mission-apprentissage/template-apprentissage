@@ -1,5 +1,6 @@
 const express = require("express");
 const config = require("config");
+const mongoose = require("mongoose");
 const logger = require("../common/logger");
 const bodyParser = require("body-parser");
 const logMiddleware = require("./middlewares/logMiddleware");
@@ -8,11 +9,8 @@ const tryCatch = require("./middlewares/tryCatchMiddleware");
 const corsMiddleware = require("./middlewares/corsMiddleware");
 const packageJson = require("../../package.json");
 const hello = require("./routes/hello");
-const entity = require("./routes/entity");
-const stats = require("./routes/stats");
 
-module.exports = async (components) => {
-  const { db } = components;
+module.exports = async () => {
   const app = express();
 
   app.use(bodyParser.json());
@@ -20,16 +18,13 @@ module.exports = async (components) => {
   app.use(logMiddleware());
 
   app.use("/api/helloRoute", hello());
-  app.use("/api/entity", entity());
-  app.use("/api/stats", stats(components));
 
   app.get(
     "/api",
     tryCatch(async (req, res) => {
       let mongodbStatus;
-      logger.info("/api called");
-      await db
-        .collection("sample")
+
+      await mongoose.connection.db
         .stats()
         .then(() => {
           mongodbStatus = true;
@@ -46,15 +41,6 @@ module.exports = async (components) => {
         healthcheck: {
           mongodb: mongodbStatus,
         },
-      });
-    })
-  );
-
-  app.get(
-    "/api/config",
-    tryCatch(async (req, res) => {
-      return res.json({
-        config: config,
       });
     })
   );
