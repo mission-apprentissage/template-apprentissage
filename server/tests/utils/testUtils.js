@@ -1,23 +1,21 @@
-const path = require("path");
-const config = require("config");
-const { emptyDir } = require("fs-extra");
-const { connectToMongo } = require("../../src/common/mongodb");
+const models = require("../../src/common/model");
+const server = require("../../src/http/server");
+const axiosist = require("axiosist"); // eslint-disable-line node/no-unpublished-require
 
-const testDataDir = path.join(__dirname, "../../.local/test");
-let mongoHolder = null;
+async function startServer() {
+  const app = await server();
+  const httpClient = axiosist(app);
 
-const connectToMongoForTests = async () => {
-  if (!mongoHolder) {
-    const uri = config.mongodb.uri.split("mnaprojectname").join("mnaprojectname_test");
-    mongoHolder = await connectToMongo(uri);
-  }
-  return mongoHolder;
-};
+  return {
+    httpClient,
+  };
+}
+
+function cleanAll() {
+  return Promise.all(Object.values(models).map((m) => m.deleteMany()));
+}
 
 module.exports = {
-  connectToMongoForTests,
-  cleanAll: () => {
-    const models = require("../../src/common/model");
-    return Promise.all([emptyDir(testDataDir), ...Object.values(models).map((m) => m.deleteMany())]);
-  },
+  startServer,
+  cleanAll,
 };

@@ -24,7 +24,9 @@ module.exports = async () => {
     tryCatch(async (req, res) => {
       let mongodbStatus;
 
-      await mongoose.connection.db
+      let db = mongoose.connection;
+      await db
+        .collection("samples")
         .stats()
         .then(() => {
           mongodbStatus = true;
