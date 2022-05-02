@@ -10,15 +10,9 @@
   "scripts": {
     "start": "nodemon --ignore tests/ src/index.js",
     "debug": "nodemon --inspect=0.0.0.0 --signal SIGINT --ignore tests/ src/index.js",
-    "test": "mocha --recursive --exit --timeout 5000 tests/",
-    "lint": "eslint src/ tests/",
-    "docker:start": "docker-compose up -d --build --force-recreate",
-    "docker:stop": "docker-compose down",
-    "docker:clean": "docker-compose kill && docker system prune --force --volumes",
-    "seed": "node src/jobs/seed/index.js",
-    "jobs": "node src/jobs/index.js",
-    "clear": "node src/jobs/clear/index.js",
-    "stats": "node src/jobs/stats/index.js"
+    "test": "MNAPROJECTNAMEL_LOG_LEVEL=fatal mocha tests/**/*-test.js",
+    "coverage": "nyc --temp-dir .coverage/.nyc_output --report-dir .coverage --reporter=lcov --reporter=html yarn test",
+    "lint": "eslint src/ tests/"
   },
   "dependencies": {
     "body-parser": "1.19.0",
@@ -54,16 +48,11 @@
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "3.1.3",
-    "husky": ">=4",
     "lint-staged": ">=10",
     "mocha": "7.1.2",
     "nodemon": "2.0.3",
+    "nyc": "15.1.0",
     "prettier": "2.0.5"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "./scripts/preventSensibleFilesCommit.sh && lint-staged"
-    }
   },
   "lint-staged": {
     "*.js": [

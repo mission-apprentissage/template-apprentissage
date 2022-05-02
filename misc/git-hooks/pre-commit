@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly SENSIBLE_FILES_PATTERN="\.(csv|xls|xls(x?)|json|env)$"
+readonly EXCEPTION="package.json$"
+
+files=$(git diff --cached --name-only | grep -v -E "$EXCEPTION" | grep -E "$SENSIBLE_FILES_PATTERN")
+if [ -z "$files" ]; then
+  make lint
+  make test
+else
+  echo
+  echo "ERROR: Preventing commit of potentially sensible files:"
+  echo
+  echo "$files" | sed "s/^/   /"
+  echo
+  echo "Either reset those files, add them to .gitignore or remove them."
+  echo
+  echo "If you know what you are doing, please double-check that you are not commiting"
+  echo "any credentials, password or sensible data and run git commit again with --no-verify."
+  echo
+  exit 1
+fi
+
