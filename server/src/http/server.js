@@ -1,5 +1,5 @@
 const express = require("express");
-const config = require("config");
+const config = require("../config");
 const mongoose = require("mongoose");
 const logger = require("../common/logger");
 const bodyParser = require("body-parser");
@@ -37,7 +37,6 @@ module.exports = async () => {
         });
 
       return res.json({
-        name: `Serveur MNA - ${config.appName}`,
         version: packageJson.version,
         env: config.env,
         healthcheck: {
