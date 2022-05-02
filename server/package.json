@@ -40,8 +40,7 @@
     "moment": "2.26.0",
     "mongoose": "5.10.2",
     "mongoose-paginate": "5.0.3",
-    "multipipe": "4.0.0",
-    "xlsx": "0.16.1"
+    "multipipe": "4.0.0"
   },
   "engines": {
     "node": ">=12.11.0"
