@@ -10,14 +10,29 @@ stop:
 clean:
 	docker-compose kill && docker system prune --force --volumes
 
-test:
+test-server:
 	yarn --cwd server test
 
-coverage:
+test-ui:
+	yarn --cwd ui test:ci
+
+test: test-server test-ui
+
+coverage-server:
 	yarn --cwd server coverage
 
-lint:
+coverage-ui:
+	yarn --cwd ui coverage
+
+coverage: coverage-server coverage-ui
+
+lint-server:
 	yarn --cwd server lint
+
+lint-ui:
+	yarn --cwd ui lint
+
+lint: lint-server lint-ui
 
 install-server:
 	yarn --cwd server install --frozen-lockfile
@@ -29,4 +44,4 @@ hooks:
 	git config core.hooksPath misc/git-hooks
 	chmod +x misc/git-hooks/*
 
-ci: install-server lint coverage
+ci: install lint coverage
