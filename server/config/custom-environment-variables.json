@@ -5,7 +5,6 @@
   "mongodb": {
     "uri": "MNAPROJECTNAME_MONGODB_URI"
   },
-  "apiKey": "MNAPROJECTNAME_API_KEY",
   "log": {
     "level": "MNAPROJECTNAME_LOG_LEVEL",
     "destinations": "MNAPROJECTNAME_LOG_DESTINATIONS"

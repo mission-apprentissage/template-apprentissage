@@ -5,12 +5,10 @@ const bodyParser = require("body-parser");
 const logMiddleware = require("./middlewares/logMiddleware");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const tryCatch = require("./middlewares/tryCatchMiddleware");
-const apiKeyAuthMiddleware = require("./middlewares/apiKeyAuthMiddleware");
 const corsMiddleware = require("./middlewares/corsMiddleware");
 const packageJson = require("../../package.json");
 const hello = require("./routes/hello");
 const entity = require("./routes/entity");
-const secured = require("./routes/secured");
 const stats = require("./routes/stats");
 
 module.exports = async (components) => {
@@ -23,7 +21,6 @@ module.exports = async (components) => {
 
   app.use("/api/helloRoute", hello());
   app.use("/api/entity", entity());
-  app.use("/api/secured", apiKeyAuthMiddleware, secured());
   app.use("/api/stats", stats(components));
 
   app.get(

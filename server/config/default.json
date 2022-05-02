@@ -5,7 +5,6 @@
   "mongodb": {
     "uri": "mongodb://127.0.0.1:27017/mnaprojectname?retryWrites=true&w=majority"
   },
-  "apiKey": "12345",
   "log": {
     "level": "info",
     "destinations": "stdout"
