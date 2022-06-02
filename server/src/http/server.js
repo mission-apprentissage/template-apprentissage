@@ -1,13 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
 import config from "../config.js";
-import logger from "../common/logger.js";
+import { logger } from "../common/logger.js";
 import { logMiddleware } from "./middlewares/logMiddleware.js";
 import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 import { tryCatch } from "./middlewares/tryCatchMiddleware.js";
 import hello from "./routes/helloRoutes.js";
 import { dbCollection } from "../common/mongodb.js";
-import { packageJson } from "../common/esmUtils.js";
+import { packageJson } from "../common/esm.js";
 
 export default async () => {
   const app = express();

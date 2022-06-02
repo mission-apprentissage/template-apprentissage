@@ -2,9 +2,9 @@ import { MongoClient } from "mongodb";
 import { writeData } from "oleoduc";
 import config from "../config.js";
 import { getCollectionDescriptors } from "./collections/collections.js";
-import bunyan from "./logger.js";
+import { getLoggerWithContext } from "./logger.js";
 
-const logger = bunyan.child({ context: "db" });
+const logger = getLoggerWithContext("db");
 
 let clientHolder;
 function ensureInitialization() {

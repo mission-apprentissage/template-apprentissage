@@ -1,5 +1,5 @@
 import express from "express";
-import logger from "../../common/logger.js";
+import { logger } from "../../common/logger.js";
 import { tryCatch } from "../middlewares/tryCatchMiddleware.js";
 import { arrayOf, validate } from "../utils/validators.js";
 import Joi from "joi";
