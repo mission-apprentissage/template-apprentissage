@@ -1,7 +1,7 @@
-const server = require("../../src/http/server");
-const axiosist = require("axiosist"); // eslint-disable-line node/no-unpublished-require
+import server from "../../src/http/server.js";
+import axiosist from "axiosist"; // eslint-disable-line node/no-unpublished-import
 
-async function startServer() {
+export async function startServer() {
   const app = await server();
   const httpClient = axiosist(app);
 
@@ -9,7 +9,3 @@ async function startServer() {
     httpClient,
   };
 }
-
-module.exports = {
-  startServer,
-};

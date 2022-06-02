@@ -1,7 +1,9 @@
-const logger = require("../common/logger").child({ context: "script" });
-const { closeMongodbConnection, connectToMongodb, configureValidation } = require("../common/mongodb");
-const prettyMilliseconds = require("pretty-ms");
-const { isEmpty } = require("lodash");
+import prettyMilliseconds from "pretty-ms";
+import { isEmpty } from "lodash-es";
+import { closeMongodbConnection, connectToMongodb, configureValidation, configureIndexes } from "./mongodb.js";
+import bunyan from "../common/logger.js";
+
+const logger = bunyan.child({ context: "script" });
 
 process.on("unhandledRejection", (e) => logger.error(e));
 process.on("uncaughtException", (e) => logger.error(e));
@@ -51,6 +53,7 @@ async function runScript(job) {
 
     await connectToMongodb();
     await configureValidation();
+    await configureIndexes();
 
     const results = await job();
 
@@ -61,4 +64,4 @@ async function runScript(job) {
   }
 }
 
-module.exports = runScript;
+export { runScript };

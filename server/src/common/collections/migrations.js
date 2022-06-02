@@ -1,19 +1,17 @@
-const { object, objectId, number } = require("./schemas/jsonSchemaTypes");
+import { object, objectId, number } from "./jsonSchema/jsonSchemaTypes.js";
 
-module.exports = {
-  name: "migrations",
-  schema: () => {
-    let required = ["version"];
+export const name = "migrations";
 
-    return object(
-      {
-        _id: objectId(),
-        version: number(),
-      },
-      { required }
-    );
-  },
-  indexes: () => {
-    return [[{ version: 1 }]];
-  },
-};
+export function indexes() {
+  return [[{ version: 1 }]];
+}
+
+export function schema() {
+  return object(
+    {
+      _id: objectId(),
+      version: number(),
+    },
+    { required: ["version"] }
+  );
+}

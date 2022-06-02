@@ -1,20 +1,18 @@
-const express = require("express");
-const config = require("../config");
-const logger = require("../common/logger");
-const bodyParser = require("body-parser");
-const logMiddleware = require("./middlewares/logMiddleware");
-const errorMiddleware = require("./middlewares/errorMiddleware");
-const tryCatch = require("./middlewares/tryCatchMiddleware");
-const corsMiddleware = require("./middlewares/corsMiddleware");
-const packageJson = require("../../package.json");
-const hello = require("./routes/helloRoutes");
-const { dbCollection } = require("../common/mongodb");
+import express from "express";
+import bodyParser from "body-parser";
+import config from "../config.js";
+import logger from "../common/logger.js";
+import { logMiddleware } from "./middlewares/logMiddleware.js";
+import { errorMiddleware } from "./middlewares/errorMiddleware.js";
+import { tryCatch } from "./middlewares/tryCatchMiddleware.js";
+import hello from "./routes/helloRoutes.js";
+import { dbCollection } from "../common/mongodb.js";
+import { packageJson } from "../common/esmUtils.js";
 
-module.exports = async () => {
+export default async () => {
   const app = express();
 
   app.use(bodyParser.json());
-  app.use(corsMiddleware());
   app.use(logMiddleware());
   app.use(hello());
 

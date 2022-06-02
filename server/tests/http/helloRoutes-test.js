@@ -1,5 +1,5 @@
-const assert = require("assert");
-const { startServer } = require("../utils/testUtils");
+import assert from "assert";
+import { startServer } from "../utils/testUtils.js";
 
 describe("helloRoute", () => {
   it("Vérifie que la route fonctionne", async () => {
