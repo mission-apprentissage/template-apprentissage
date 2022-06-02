@@ -1,6 +1,6 @@
-const env = require("env-var");
+import env from "env-var";
 
-module.exports = {
+const config = {
   env: env.get("MNAPROJECTNAME_ENV").default("local").asString(),
   publicUrl: env.get("MNAPROJECTNAME_PUBLIC_URL").default("http://localhost").asString(),
   log: {
@@ -16,3 +16,5 @@ module.exports = {
       .asString(),
   },
 };
+
+export default config;

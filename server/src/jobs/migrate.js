@@ -1,4 +1,4 @@
-const { configureIndexes, configureValidation, dbCollection } = require("../common/mongodb");
+import { configureIndexes, configureValidation, dbCollection } from "../common/mongodb.js";
 
 const VERSION = 0;
 
@@ -22,12 +22,10 @@ function _saveMigration() {
   return dbCollection("migrations").insertOne({ version: VERSION });
 }
 
-async function migrate(options = {}) {
+export async function migrate(options = {}) {
   await _ensureMigrationCanBeRun();
   await _prepareMigration(options);
   let res = await tasks();
   await _saveMigration();
   return res;
 }
-
-module.exports = migrate;

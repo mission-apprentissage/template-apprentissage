@@ -1,22 +1,23 @@
-const { stopMongod, removeAll, startMongod } = require("./mongoMemoryServer");
-const nock = require("nock"); // eslint-disable-line node/no-unpublished-require
+import "./testConfig.js";
+import nock from "nock"; // eslint-disable-line node/no-unpublished-import
+import { stopMongod, removeAll, startMongod } from "./mongoMemoryServer.js";
 
 nock.disableNetConnect();
 nock.enableNetConnect((host) => {
   return host.startsWith("127.0.0.1") || host.indexOf("fastdl.mongodb.org") !== -1;
 });
 
-exports.mochaGlobalSetup = function () {
+export function mochaGlobalSetup() {
   return startMongod();
-};
+}
 
-exports.mochaHooks = {
+export const mochaHooks = {
   afterEach: async function () {
     nock.cleanAll();
     return removeAll();
   },
 };
 
-exports.mochaGlobalTeardown = function () {
+export function mochaGlobalTeardown() {
   return stopMongod();
-};
+}

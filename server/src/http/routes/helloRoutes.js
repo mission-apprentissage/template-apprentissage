@@ -1,11 +1,11 @@
-const express = require("express");
-const logger = require("../../common/logger");
-const tryCatch = require("../middlewares/tryCatchMiddleware");
+import express from "express";
+import logger from "../../common/logger.js";
+import { tryCatch } from "../middlewares/tryCatchMiddleware.js";
 
 /**
  * Sample route module for displaying hello message
  */
-module.exports = () => {
+export default () => {
   const router = express.Router();
 
   router.get(
