@@ -8,6 +8,15 @@ describe("helloRoute", () => {
     const response = await httpClient.get("/api/hello");
 
     assert.strictEqual(response.status, 200);
-    assert.ok(response.data.message);
+    assert.deepStrictEqual(response.data.hello, []);
+  });
+
+  it("Vérifie qu'on peut passer des messages", async () => {
+    const { httpClient } = await startServer();
+
+    const response = await httpClient.get("/api/hello?messages=world");
+
+    assert.strictEqual(response.status, 200);
+    assert.deepStrictEqual(response.data.hello, ["world"]);
   });
 });
