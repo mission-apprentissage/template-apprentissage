@@ -117,7 +117,7 @@ const createStreams = () => {
     });
 };
 
-export default bunyan.createLogger({
+export const logger = bunyan.createLogger({
   name: "trajectoire-pro",
   serializers: {
     ...bunyan.stdSerializers,
@@ -130,3 +130,7 @@ export default bunyan.createLogger({
   },
   streams: createStreams(),
 });
+
+export function getLoggerWithContext(context) {
+  return logger.child({ context });
+}
