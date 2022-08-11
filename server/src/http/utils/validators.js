@@ -1,5 +1,18 @@
-const Joi = require("joi");
+import Joi from "joi";
 
-module.exports = {
-  password: () => Joi.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/),
-};
+const customJoi = Joi.extend((joi) => ({
+  type: "arrayOf",
+  base: joi.array(),
+  // eslint-disable-next-line no-unused-vars
+  coerce(value, helpers) {
+    return { value: value.split ? value.split(",") : value };
+  },
+}));
+
+export function arrayOf(itemSchema = Joi.string()) {
+  return customJoi.arrayOf().items(itemSchema).single();
+}
+
+export function validate(obj, validators) {
+  return Joi.object(validators).validateAsync(obj, { abortEarly: false });
+}

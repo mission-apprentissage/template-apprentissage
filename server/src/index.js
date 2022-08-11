@@ -1,13 +1,15 @@
-const server = require("./http/server");
-const logger = require("./common/logger");
-const config = require("config");
-const createComponents = require("./common/components/components");
+import "dotenv/config";
+import server from "./http/server.js";
+import { logger } from "./common/logger.js";
+import { connectToMongodb, configureValidation } from "./common/mongodb.js";
 
-process.on("unhandledRejection", (e) => logger.error("An unexpected error occurred", e));
-process.on("uncaughtException", (e) => logger.error("An unexpected error occurred", e));
+process.on("unhandledRejection", (e) => logger.error(e, "An unexpected error occurred"));
+process.on("uncaughtException", (e) => logger.error(e, "An unexpected error occurred"));
 
 (async function () {
-  const components = await createComponents();
-  const http = await server(components);
-  http.listen(5000, () => logger.info(`${config.appName} - Server ready and listening on port ${5000}`));
+  await connectToMongodb();
+  await configureValidation();
+
+  const http = await server();
+  http.listen(5000, () => logger.info(`Server ready and listening on port ${5000}`));
 })();

@@ -1,4 +1,4 @@
-module.exports = (callback) => {
+export function tryCatch(callback) {
   return async (req, res, next) => {
     try {
       await callback(req, res, next);
@@ -7,4 +7,4 @@ module.exports = (callback) => {
       return next(e);
     }
   };
-};
+}

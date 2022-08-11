@@ -1,50 +1,27 @@
-const express = require("express");
-const config = require("config");
-const logger = require("../common/logger");
-const bodyParser = require("body-parser");
-const logMiddleware = require("./middlewares/logMiddleware");
-const errorMiddleware = require("./middlewares/errorMiddleware");
-const tryCatch = require("./middlewares/tryCatchMiddleware");
-const apiKeyAuthMiddleware = require("./middlewares/apiKeyAuthMiddleware");
-const corsMiddleware = require("./middlewares/corsMiddleware");
-const authMiddleware = require("./middlewares/authMiddleware");
-const permissionsMiddleware = require("./middlewares/permissionsMiddleware");
-const packageJson = require("../../package.json");
-const hello = require("./routes/hello");
-const entity = require("./routes/entity");
-const secured = require("./routes/secured");
-const login = require("./routes/login");
-const authentified = require("./routes/authentified");
-const admin = require("./routes/admin");
-const password = require("./routes/password");
-const stats = require("./routes/stats");
+import express from "express";
+import bodyParser from "body-parser";
+import config from "../config.js";
+import { logger } from "../common/logger.js";
+import { logMiddleware } from "./middlewares/logMiddleware.js";
+import { errorMiddleware } from "./middlewares/errorMiddleware.js";
+import { tryCatch } from "./middlewares/tryCatchMiddleware.js";
+import hello from "./routes/helloRoutes.js";
+import { dbCollection } from "../common/mongodb.js";
+import { packageJson } from "../common/esm.js";
 
-module.exports = async (components) => {
-  const { db } = components;
+export default async () => {
   const app = express();
-  const checkJwtToken = authMiddleware(components);
-  const adminOnly = permissionsMiddleware({ isAdmin: true });
 
   app.use(bodyParser.json());
-  app.use(corsMiddleware());
   app.use(logMiddleware());
-
-  app.use("/api/helloRoute", hello());
-  app.use("/api/entity", entity());
-  app.use("/api/secured", apiKeyAuthMiddleware, secured());
-  app.use("/api/login", login(components));
-  app.use("/api/authentified", checkJwtToken, authentified());
-  app.use("/api/admin", checkJwtToken, adminOnly, admin());
-  app.use("/api/password", password(components));
-  app.use("/api/stats", checkJwtToken, adminOnly, stats(components));
+  app.use(hello());
 
   app.get(
     "/api",
     tryCatch(async (req, res) => {
       let mongodbStatus;
-      logger.info("/api called");
-      await db
-        .collection("sample")
+
+      await dbCollection("logs")
         .stats()
         .then(() => {
           mongodbStatus = true;
@@ -55,21 +32,11 @@ module.exports = async (components) => {
         });
 
       return res.json({
-        name: `Serveur MNA - ${config.appName}`,
         version: packageJson.version,
         env: config.env,
         healthcheck: {
           mongodb: mongodbStatus,
         },
-      });
-    })
-  );
-
-  app.get(
-    "/api/config",
-    tryCatch(async (req, res) => {
-      return res.json({
-        config: config,
       });
     })
   );

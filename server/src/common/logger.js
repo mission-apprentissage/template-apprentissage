@@ -1,39 +1,77 @@
-const config = require("config");
-const util = require("util");
-const { throttle } = require("lodash");
-const bunyan = require("bunyan");
-const PrettyStream = require("bunyan-prettystream");
-const BunyanSlack = require("bunyan-slack");
-const BunyanMongodbStream = require("bunyan-mongodb-stream");
-const { Log } = require("./model/index");
+import util from "util";
+import { throttle, omit, isEmpty } from "lodash-es";
+import bunyan from "bunyan";
+import BunyanSlack from "bunyan-slack";
+import chalk from "chalk"; // eslint-disable-line node/no-unpublished-import
+import { compose, writeData, transformData } from "oleoduc";
+import config from "../config.js";
 
-function jsonStream(level) {
-  return {
-    name: "json",
-    level,
-    stream: process.stdout,
+function prettyPrintStream(outputName) {
+  let levels = {
+    10: chalk.grey.bold("TRACE"),
+    20: chalk.green.bold("DEBUG"),
+    30: chalk.blue.bold("INFO"),
+    40: chalk.yellow.bold("WARN"),
+    50: chalk.red.bold("ERROR"),
+    60: chalk.magenta.bold("FATAL"),
   };
+
+  return compose(
+    transformData((raw) => {
+      let stack = raw.err?.stack;
+      let message = stack ? `${raw.msg}\n${stack}` : raw.msg;
+      let rest = omit(raw, [
+        //Bunyan core fields https://github.com/trentm/node-bunyan#core-fields
+        "v",
+        "level",
+        "name",
+        "hostname",
+        "pid",
+        "time",
+        "msg",
+        "src",
+        //Error fields already serialized with https://github.com/trentm/node-bunyan#standard-serializers
+        "err.name",
+        "err.stack",
+        "err.message",
+        "err.code",
+        "err.signal",
+        //Misc
+        "context",
+      ]);
+
+      let params = [
+        util.format("[%s][%s][%s] %s", raw.time.toISOString()),
+        levels[raw.level],
+        raw.context || "global",
+        message,
+      ];
+      if (!isEmpty(rest)) {
+        params.push(chalk.gray(`\n${util.inspect(rest, { depth: null })}`));
+      }
+      return params;
+    }),
+    writeData((data) => console[outputName === "stdout" ? "log" : "error"](...data))
+  );
 }
 
-function consoleStream(level, output) {
-  const pretty = new PrettyStream();
-  pretty.pipe(output);
-  return {
-    name: "console",
-    level,
-    stream: pretty,
-  };
+function sendLogsToConsole(outputName) {
+  const { level, format } = config.log;
+  return format === "pretty"
+    ? {
+        type: "raw",
+        name: outputName,
+        level,
+        stream: prettyPrintStream(outputName),
+      }
+    : {
+        name: outputName,
+        level,
+        stream: process[outputName],
+      };
 }
 
-function mongoDBStream() {
-  return {
-    name: "mongodb",
-    level: "info",
-    stream: BunyanMongodbStream({ model: Log }),
-  };
-}
-
-function slackStream(envName) {
+function sendLogsToSlack() {
   const stream = new BunyanSlack(
     {
       webhook_url: config.slackWebhookUrl,
@@ -46,7 +84,7 @@ function slackStream(envName) {
           };
         }
         return {
-          text: util.format(`[%s][${envName}] %O`, levelName.toUpperCase(), record),
+          text: util.format(`[%s][${config.env}] %O`, levelName.toUpperCase(), record),
         };
       },
     },
@@ -65,22 +103,34 @@ function slackStream(envName) {
 }
 
 const createStreams = () => {
-  const { destinations, level } = config.log;
-  const envName = config.env;
-
   let availableDestinations = {
-    json: () => jsonStream(level),
-    stdout: () => consoleStream(level, process.stdout),
-    stderr: () => consoleStream(level, process.stderr),
-    mongodb: () => mongoDBStream(),
-    slack: () => slackStream(envName),
+    stdout: () => sendLogsToConsole("stdout"),
+    stderr: () => sendLogsToConsole("stderr"),
+    slack: () => sendLogsToSlack(),
   };
 
-  return destinations.split(",").map((type) => availableDestinations[type]());
+  return config.log.destinations
+    .filter((type) => availableDestinations[type])
+    .map((type) => {
+      let createDestination = availableDestinations[type];
+      return createDestination();
+    });
 };
 
-module.exports = bunyan.createLogger({
-  name: config.appName,
-  serializers: bunyan.stdSerializers,
+export const logger = bunyan.createLogger({
+  name: "trajectoire-pro",
+  serializers: {
+    ...bunyan.stdSerializers,
+    err: function (err) {
+      return {
+        ...bunyan.stdSerializers.err(err),
+        ...(err.errInfo ? { errInfo: err.errInfo } : {}),
+      };
+    },
+  },
   streams: createStreams(),
 });
+
+export function getLoggerWithContext(context) {
+  return logger.child({ context });
+}
