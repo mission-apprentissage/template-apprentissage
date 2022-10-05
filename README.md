@@ -22,7 +22,7 @@ FROM alpine:3.14
 RUN apk add --no-cache rsync bash
 ```
 
-puis lancer les commandes suivantes :
+remplacé <le nom de l'application> par le nom de l'application dans les commandes ci-dessous, puis lancer les :
 
 ```sh
    mkdir build
@@ -30,7 +30,7 @@ puis lancer les commandes suivantes :
    docker run -i -v $(pwd):/template \
    -e PUID="$(id -u)" -e PGID="$(id -g)" \
    mna-template bash -c 'cd /template && bash /template/generate.sh <le nom de l'application>'
-   rm build/.../Dockerfile
+   rm build/<le nom de l'application>/Dockerfile
 ```
 
 Une fois le projet créé vous pouvez utiliser le template d'infrastructure de initiliaser la partie
