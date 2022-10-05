@@ -12,6 +12,7 @@ function build_project(){
     --exclude .git \
     --exclude README.md \
     --exclude generate.sh \
+    --exclude Dockerfile \
     --exclude server/node_modules \
     --exclude ui/node_modules
 }
