@@ -26,13 +26,12 @@ puis lancer les commandes suivantes :
 
 ```sh
    mkdir build
-   docker build . -t mna-template 
+   docker build . -t mna-template
    docker run -i -v $(pwd):/template \
    -e PUID="$(id -u)" -e PGID="$(id -g)" \
    mna-template bash -c 'cd /template && bash /template/generate.sh <le nom de l'application>'
+   rm build/.../Dockerfile
 ```
 
 Une fois le projet créé vous pouvez utiliser le template d'infrastructure de initiliaser la partie
 infrastructure [https://github.com/mission-apprentissage/template-apprentissage](https://github.com/mission-apprentissage/template-apprentissage)
-
-
