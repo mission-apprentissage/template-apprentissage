@@ -12,6 +12,7 @@ function build_project(){
     --exclude .git \
     --exclude README.md \
     --exclude generate.sh \
+    --exclude replace_pattern_in_files \
     --exclude server/node_modules \
     --exclude ui/node_modules
 }
@@ -25,9 +26,9 @@ function replace_pattern_in_files() {
 
 
 build_project
-replace_pattern_in_files mnaprojectname "${PROJECT_NAME}"
-replace_pattern_in_files MNAPROJECTNAME "${PROJECT_NAME^^}"
 mv "${TARGET_DIR}/_README.md" "${TARGET_DIR}/README.md"
+yarn --cwd replace_pattern_in_files install
+node replace_pattern_in_files/index.js "${PROJECT_NAME}"
 
 echo ""
 echo "Projet généré dans ${TARGET_DIR}"
