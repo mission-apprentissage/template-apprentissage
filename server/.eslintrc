@@ -10,8 +10,20 @@
   ],
   "rules": {
     "mocha/no-skipped-tests": "error",
-    "mocha/no-exclusive-tests": "error"
+    "mocha/no-exclusive-tests": "error",
+    "no-nonoctal-decimal-escape": 0,
+    "no-unsafe-optional-chaining": 0
   },
+  "overrides": [
+    {
+      "files": ["**/*test.js", "**/*Tests.js", "tests/**/*.js"],
+      "rules": {
+        "node/no-unpublished-require": 0,
+        "no-nonoctal-decimal-escape": 0,
+        "no-unsafe-optional-chaining": 0
+      }
+    }
+  ],
   "env": {
     "node": true,
     "es6": true,
