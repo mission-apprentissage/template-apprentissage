@@ -1,0 +1,42 @@
+- name: Stoppe tous les conteneurs applicatifs
+  shell: "bash /opt/mnaprojectname/stop-app.sh"
+
+- name: "Clone du repository (branche : {{ git_revision }})"
+  git:
+    repo: "https://github.com/mission-apprentissage/mnaprojectname.git"
+    version: "{{ git_revision }}"
+    force: yes
+    accept_hostkey: yes
+    dest: /opt/mnaprojectname/repository
+
+- name: Création des répertoires 'overrides'
+  file:
+    path: "/opt/mnaprojectname/.overrides/{{ item.path }}/"
+    state: directory
+  with_filetree:
+    - mnaprojectname/.overrides/common/
+    - mnaprojectname/.overrides/{{ env_type }}/
+  when: item.state == 'directory'
+
+- name: Copie des fichiers 'overrides'
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "/opt/mnaprojectname/.overrides/{{ item.path }}"
+  with_filetree:
+    - mnaprojectname/.overrides/common/
+    - mnaprojectname/.overrides/{{ env_type }}/
+  when: item.state == 'file' and ".DS_Store" not in item.path
+
+- name: Root only pour tous les répertoires applicatifs
+  file:
+    path: "{{item}}"
+    state: directory
+    owner: root
+    group: root
+    mode: 770
+  with_items:
+    - "/opt/mnaprojectname/tools"
+    - "/opt/mnaprojectname/repository"
+    - "/opt/mnaprojectname/data"
+    - "/opt/mnaprojectname/backups"
+    - "/opt/mnaprojectname/.overrides"

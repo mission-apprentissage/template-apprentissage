@@ -23,6 +23,7 @@ function replace_pattern_in_files() {
   find "${TARGET_DIR}" -type f -exec sed -i "s#${pattern}#${project_name}#g" {} \;
 }
 
+
 build_project
 replace_pattern_in_files mnaprojectname "${PROJECT_NAME}"
 replace_pattern_in_files MNAPROJECTNAME "${PROJECT_NAME^^}"
