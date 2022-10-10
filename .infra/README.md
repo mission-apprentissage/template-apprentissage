@@ -285,7 +285,7 @@ dans ce fichier en renseignant les informations suivantes :
 [<nom de l'environnemnt>]
 <IP>
 [<nom de l'environnemnt>:vars]
-dns_name=<nom de l'application>.apprentissage.beta.gouv.fr
+dns_name=<nom de l'application>.mnaDNSBASE
 host_name=<nom de la mahcine (ex: mna-catalogue-production)>
 update_sshd_config=true
 git_revision=master
