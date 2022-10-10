@@ -5,14 +5,18 @@ services:
     volumes:
       - mnaprojectname_nginx_data:/data:z
       - ./reverse_proxy/dev/includes:/etc/nginx/templates/includes/env
-    build:
-      args:
-        - ENV=development
 
   ui:
     build:
       context: ui
       dockerfile: Dockerfile.dev
+       args:
+        - NEXT_PUBLIC_ENV=dev
+        - NEXT_PUBLIC_BASE_URL=http://localhost
+        - NEXT_PUBLIC_BASE_HOST=localhost
+        - NEXT_PUBLIC_METABASE_URL=https://mnaprojectname.mnaDNSBASE/
+        - NEXT_PUBLIC_METABASE_SECRET_KEY=
+        - SKIP_PREFLIGHT_CHECK=true
     volumes:
       - ./ui:/app:z
       - /app/node_modules
@@ -31,12 +35,26 @@ services:
     environment:
       - MNAPROJECTNAME_ENV=dev
       - MNAPROJECTNAME_LOG_LEVEL=debug
+      - MNAPROJECTNAME_LOG_DESTINATIONS=stdout,mongodb
+      - MNAPROJECTNAME_SMTP_HOST=smtp
+      - MNAPROJECTNAME_SMTP_PORT=1025
 
   mongodb:
     ports:
       - "127.0.0.1:27017:27017"
     volumes:
       - mnaprojectname_mongodb_data:/data:z
+
+  smtp:
+    image: mailhog/mailhog
+    container_name:  mnaprojectname_smtp
+    mem_limit: 128m
+    ports:
+      - 1025:1025
+    networks:
+      -  mnaprojectname_network
+    environment:
+      - MH_UI_WEB_PATH=smtp
 
 volumes:
   mnaprojectname_mongodb_data:
