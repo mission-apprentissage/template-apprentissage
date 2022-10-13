@@ -6,7 +6,6 @@ const project_name = args[0].toLowerCase();
 const PROJECT_NAME = args[0].toUpperCase();
 
 
-// TODO replace dns repo 
 const run = async ()=>{
     prompt.start();
     const {DNS_BASE, REPO_NAME} = await prompt.get([{
