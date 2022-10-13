@@ -25,9 +25,6 @@
 - import_tasks: install-app.yml
   tags: app
 
-- import_tasks: generate-client-certificate.yml
-  tags: certificate
-
 - import_tasks: generate-ssl-certificate.yml
   tags: ssl
 
