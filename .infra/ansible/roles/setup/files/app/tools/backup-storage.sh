@@ -11,7 +11,7 @@ function backup() {
   echo "Creating backup..."
   mkdir -p "${BACKUP_LOCAL_DIR}"
   # bash /opt/mnaprojectname/server-yarn.sh zipStorage | bash "${SCRIPT_DIR}/gpg/encrypt.sh" >"${BACKUP_FILE}"
-  docker exec mnaprojectname_mongodb bash -c "mongodump --gzip --archive -u backup -p {{ vault.MNAPROJECTNAME_MONGODB_BACKUP_PASSWORD }}" \
+  docker exec mnaprojectname_mongodb bash -c "mongodump --gzip --archive -u backup -p {{ vault[env_type].MNAPROJECTNAME_MONGODB_BACKUP_PASSWORD }}" \
   | bash "${SCRIPT_DIR}/gpg/encrypt.sh" >"${BACKUP_FILE}"
 }
 
