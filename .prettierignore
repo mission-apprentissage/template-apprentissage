@@ -112,4 +112,5 @@ src/**/*.css.map
 
 */**/CHANGELOG.md
 
-*.inc
+
+next.config.js
