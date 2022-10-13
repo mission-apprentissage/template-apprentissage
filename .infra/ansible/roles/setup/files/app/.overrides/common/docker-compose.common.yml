@@ -1,0 +1,43 @@
+#Override containers for azure environments
+version: "2.4"
+services:
+  reverse_proxy:
+    environment:
+      - SERVER_NAME={{dns_name}}
+      - NGINX_ALWAYS_TLS_REDIRECT=true
+      - PROXY_SSL_CERT=/ssl/fullchain.pem
+      - PROXY_SSL_CERT_KEY=/ssl/privkey.pem
+    volumes:
+      - /opt/mnaprojectname/data/nginx:/data
+      - /opt/mnaprojectname/data/ssl:/ssl:ro
+      - /opt/mnaprojectname/.overrides/reverse_proxy/includes:/etc/nginx/templates/includes/env
+
+  server:
+    volumes:
+      - /opt/mnaprojectname/data/server:/data
+
+  mongodb:
+    command: mongod --auth
+    volumes:
+      - /opt/mnaprojectname/data/mongodb/db:/data/db
+      - /opt/mnaprojectname/data/mongodb/configdb:/data/configdb
+      - /opt/mnaprojectname/data/mongodb/backups:/data/backups
+      - /opt/mnaprojectname/.overrides/mongodb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "127.0.0.1:27017:27017"
+
+  metabase:
+    image: metabase/metabase:v0.42.0
+    container_name: mnaprojectname_metabase
+    mem_limit: 2g
+    volumes:
+      - /opt/mnaprojectname/data/metabase:/data/metabase
+      - /opt/mnaprojectname/backups/metabase:/data/backups
+    depends_on:
+      - mongodb
+    environment:
+      MB_DB_FILE: /data/metabase/metabase.db
+      MB_SITE_LOCALE: fr
+    restart: always
+    networks:
+      - mnaprojectname_network

@@ -3,16 +3,16 @@ function inline(value) {
 }
 
 const contentSecurityPolicy = `
-      default-src 'self';
+      default-src 'self' https://plausible.io;
       base-uri 'self';
       block-all-mixed-content;
       font-src 'self' https: data:;
       frame-ancestors 'self';
-      img-src 'self' data:;
-      object-src 'none';
-      script-src 'self' ${
-        process.env.NODE_ENV === "development" ? "'unsafe-eval'" : ""
+      img-src 'self' https://www.notion.so data: ${
+        process.env.NEXT_PUBLIC_ENV !== "production" ? "" : ""
       };
+      object-src 'none';
+      script-src 'self'  https://plausible.io ${process.env.NEXT_PUBLIC_ENV === "dev" ? "'unsafe-eval'" : ""};
       script-src-attr 'none';
       style-src 'self' https: 'unsafe-inline';
       upgrade-insecure-requests;
