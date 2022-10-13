@@ -1,8 +1,1 @@
-habilitations:
-  - username: USERNAME
-    name: FULL NAME
-    gpg_key: 8DIGITSENDKEY
-    authorized_keys:
-      - PUB_KEY
-
-gpg_keys : "{{ habilitations  | map(attribute='gpg_key', default='') | select() | join(',')}}"
+// A récupérer depuis 1password
