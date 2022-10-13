@@ -25,7 +25,7 @@ Vagrant.configure(2) do |config|
       env_type: "recette",
       git_revision: "#{ENV['GIT_REVISION']}",
       dns_name: "localhost",
-      host_name: "mna-mnaprojectname-test",
+      host_name: "ACRONYM_PROJECT-mnaprojectname-test",
       update_sshd_config: "false",
       backup_device: "/dev/sdc"
     }
