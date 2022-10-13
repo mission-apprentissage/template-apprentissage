@@ -39,5 +39,8 @@ else
   update_repository
 fi
 
+echo "****************************"
+echo "[$(date +'%Y-%m-%d_%H%M%S')] Running ${BASH_SOURCE[0]} $*"
+echo "****************************"
 reload_containers "$@"
 clean_docker

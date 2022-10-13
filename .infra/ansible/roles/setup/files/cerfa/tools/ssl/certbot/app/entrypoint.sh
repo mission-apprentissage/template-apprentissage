@@ -10,7 +10,7 @@ fi
 
 function start_http_server_for_acme_challenge() {
   mkdir -p /var/www
-  serve /var/www &
+  serve -l 5000 /var/www &
 }
 
 function generate_certificate() {

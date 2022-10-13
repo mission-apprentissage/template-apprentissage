@@ -23,7 +23,7 @@ function run_playbook() {
   ANSIBLE_PLAYBOOK=${ANSIBLE_PLAYBOOK:-"setup"} \
   GIT_REVISION=${GIT_REVISION:-"main"} \
   vagrant provision
-  echo "You can check instance with command 'vagrant ssh'. Application is available at https://192.168.50.7/"
+  echo "You can check instance with command 'vagrant ssh'. Application is available at https://192.168.56.7/"
 }
 
 cd "${TEST_DIR}"

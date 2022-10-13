@@ -14,8 +14,8 @@
     path: "/opt/mnaprojectname/.overrides/{{ item.path }}/"
     state: directory
   with_filetree:
-    - mnaprojectname/.overrides/common/
-    - mnaprojectname/.overrides/{{ env_type }}/
+    - app/.overrides/common/
+    - app/.overrides/{{ env_type }}/
   when: item.state == 'directory'
 
 - name: Copie des fichiers 'overrides'
@@ -23,8 +23,8 @@
     src: "{{ item.src }}"
     dest: "/opt/mnaprojectname/.overrides/{{ item.path }}"
   with_filetree:
-    - mnaprojectname/.overrides/common/
-    - mnaprojectname/.overrides/{{ env_type }}/
+    - app/.overrides/common/
+    - app/.overrides/{{ env_type }}/
   when: item.state == 'file' and ".DS_Store" not in item.path
 
 - name: Root only pour tous les répertoires applicatifs
@@ -40,3 +40,19 @@
     - "/opt/mnaprojectname/data"
     - "/opt/mnaprojectname/backups"
     - "/opt/mnaprojectname/.overrides"
+
+- name: Add cron to rotate nginx files
+  ansible.builtin.cron:
+    name: "rotate_nginx_log_files"
+    minute: "0"
+    hour: "1"
+    job: "bash /opt/mnaprojectname/tools/rotate-nginx-log-files.sh >> /var/log/cron.log 2>&1"
+
+- name: Add cron to reload app automatically
+  when: env_type == "recette"
+  ansible.builtin.cron:
+    name: "reload-app"
+    minute: "*/1"
+    hour: 8-20
+    weekday: 1-5
+    job: "bash /opt/mnaprojectname/reload-app.sh >> /var/log/cron.log 2>&1"

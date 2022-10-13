@@ -17,4 +17,7 @@ function reload_containers() {
   cd - >/dev/null
 }
 
+echo "****************************"
+echo "[$(date +'%Y-%m-%d_%H%M%S')] Running ${BASH_SOURCE[0]} $*"
+echo "****************************"
 reload_containers

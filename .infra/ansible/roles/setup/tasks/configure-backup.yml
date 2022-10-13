@@ -9,7 +9,8 @@
       apt:
         name: nfs-client
 
-    - name: Mount backup NFS partition
+   - name: Mount backup NFS partition
+      when: backup_cron|bool == true
       ansible.posix.mount:
         src: "10.16.100.163:zpool-128310/{{backup_partition_name}}"
         path: /mnt/backups
@@ -19,10 +20,11 @@
         boot: yes
 
     - name: Add mongodb backup cron
+      when: backup_cron|bool == true
       cron:
         name: "backup"
-        minute: "10"
-        hour: "0"
+        minute: "0"
+        hour: "4"
         job: "bash /opt/mnaprojectname/tools/backup-mongodb.sh>> /var/log/cron.log 2>&1"
 
     - name: Add metabase backup cron"

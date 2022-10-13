@@ -3,7 +3,7 @@
     path: "/opt/mnaprojectname/tools/{{ item.path }}/"
     state: directory
   with_filetree:
-    - mnaprojectname/tools
+    - app/tools
   when: item.state == 'directory'
 
 - name: Copie des fichiers 'overrides'
@@ -12,7 +12,7 @@
     dest: "/opt/mnaprojectname/tools/{{ item.path }}"
     mode: "g+x"
   with_filetree:
-    - mnaprojectname/tools
+    - app/tools
   when: item.state == 'file'
 
 - name: Copie des scripts bash
@@ -21,7 +21,7 @@
     dest: /opt/mnaprojectname/{{ item | basename }}
     mode: "g+x"
   with_fileglob:
-    - "mnaprojectname/*.sh"
+    - "app/*.sh"
 
 - name: Nettoyage des permissions sudo pour le groupe 'mna'
   lineinfile:

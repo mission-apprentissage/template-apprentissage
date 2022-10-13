@@ -1,4 +1,4 @@
-FROM node:12.16.1-stretch
+FROM node:16-bullseye
 
 RUN apt update && apt install -y certbot curl
 RUN yarn global add serve
@@ -9,6 +9,6 @@ COPY app/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 VOLUME /etc/letsencrypt
-EXPOSE 3000
+EXPOSE 5000
 
 ENTRYPOINT ["/entrypoint.sh"]
