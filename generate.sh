@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly PROJECT_NAME="${1:?"Veuillez donner un nom de projet"}"
 readonly PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly TARGET_DIR="build/${PROJECT_NAME}"
+readonly TARGET_DIR="build/"
 
 function build_project(){
   mkdir -p "${TARGET_DIR}"
@@ -28,7 +27,7 @@ function replace_pattern_in_files() {
 build_project
 mv "${TARGET_DIR}/_README.md" "${TARGET_DIR}/README.md"
 yarn --cwd replace_pattern_in_files install
-node replace_pattern_in_files/index.js "${PROJECT_NAME}"
+node replace_pattern_in_files/index.js
 
 echo ""
 echo "Projet généré dans ${TARGET_DIR}"

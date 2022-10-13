@@ -1,16 +1,12 @@
 const replace = require('replace-in-file');
 const prompt = require('prompt');
 
-const args = process.argv.slice(2);
-const project_name = args[0].toLowerCase();
-const PROJECT_NAME = args[0].toUpperCase();
-
 
 const run = async ()=>{
     prompt.start();
-    const {ACRONYM, DNS_BASE, REPO_NAME} = await prompt.get([{
+    const {ACRONYM, DNS_BASE, REPO_NAME, PROJ_NAME} = await prompt.get([{
       name: 'ACRONYM',
-      default: 'mna', 
+      default: 'tjp', 
       message:  'Acronym ? mna ou tjp',
     }, {
         name: 'DNS_BASE',
@@ -19,10 +15,20 @@ const run = async ()=>{
       }, {
         name: 'REPO_NAME',
         required: true,
-        message: 'Repository name ? exemple : catalogue ou matcha',
+        message: 'Repository name ? exemple : tjp-pilotage',
+      },
+      {
+        name: 'PROJ_NAME',
+        required: true,
+        message: 'Project name ? exemple : pilotage',
       }]);
 
-    const files = [`./build/**`, `./build/${project_name}/.infra/**`, `./build/${project_name}/.github/**`, `./build/${project_name}/.infra/ansible/roles/setup/files/app/.overrides/**`];
+
+      const project_name = PROJ_NAME.toLowerCase().trim();
+      const PROJECT_NAME = PROJ_NAME.toUpperCase().trim();
+
+
+    const files = [`./build/**`, `./build/.infra/**`, `./build/.github/**`, `./build/.infra/ansible/roles/setup/files/app/.overrides/**`];
     const ignore = [
         '**/*.lock',
       ];
