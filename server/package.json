@@ -48,7 +48,7 @@
     "sha512crypt-node": "0.1.0"
   },
   "engines": {
-    "node": ">=14.18.0"
+    "node": ">=16.0.0"
   },
   "devDependencies": {
     "axiosist": "0.10.0",
