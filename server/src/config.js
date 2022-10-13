@@ -12,7 +12,6 @@ const config = {
   mongodb: {
     uri: env
       .get("MNAPROJECTNAME_MONGODB_URI")
-      .default("mongodb://127.0.0.1:27017/referentiel?retryWrites=true&w=majority")
       .asString(),
   },
 };
