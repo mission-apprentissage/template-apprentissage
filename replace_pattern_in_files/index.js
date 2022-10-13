@@ -18,7 +18,7 @@ const run = async ()=>{
         message: 'exemple : catalogue ou matcha',
       }]);
 
-    const files = [`./build/**`, `./build/${project_name}/.infra/**`, `./build/${project_name}/.github/**`, `./build/${project_name}/.infra/ansible/roles/setup/files/cerfa/.overrides/**`];
+    const files = [`./build/**`, `./build/${project_name}/.infra/**`, `./build/${project_name}/.github/**`, `./build/${project_name}/.infra/ansible/roles/setup/files/app/.overrides/**`];
     const ignore = [
         '**/*.lock',
       ];
