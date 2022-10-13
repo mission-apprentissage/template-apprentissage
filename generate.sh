@@ -26,6 +26,7 @@ function replace_pattern_in_files() {
 
 build_project
 mv "${TARGET_DIR}/_README.md" "${TARGET_DIR}/README.md"
+mv "${TARGET_DIR}/.infra/README_infra.md" "${TARGET_DIR}/.infra/README.md"
 yarn --cwd replace_pattern_in_files install
 node replace_pattern_in_files/index.js
 
