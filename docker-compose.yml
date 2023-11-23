@@ -1,66 +1,39 @@
-version: "2.4"
+version: "3.8"
+
 services:
-  reverse_proxy:
-    image: mnaprojectname_reverse_proxy
-    container_name: mnaprojectname_reverse_proxy
-    build:
-      context: reverse_proxy
-    mem_limit: 256m
+  mongodb:
+    image: mongo:6.0.2-focal
+    restart: unless-stopped
+    hostname: mongodb
+    ports:
+      - "127.0.0.1:27017:27017"
+    command: ["-f", "/etc/mongod.conf"]
+    volumes:
+      - tpml_mongodb_data:/data
+      - ./.infra/local/mongo_keyfile:/tmp/mongo_keyfile
+      - ./.infra/local/mongod.conf:/etc/mongod.conf
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", '''db.runCommand("ping").ok''', "--quiet"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  smtp:
+    image: axllent/mailpit:v1.5.5
     restart: unless-stopped
     ports:
-      - 80:80
-      - 443:443
-    networks:
-      - mnaprojectname_network
-    depends_on:
-      - server
-      - ui
+      - 1025:1025
+      - 8025:8025
     environment:
-      - PARANOIA=1
-      - ANOMALY_INBOUND=5
-      - ANOMALY_OUTBOUND=4
-      - DNS_SERVER=127.0.0.11
-      - PROXY=1
-      - ACCESSLOG=/data/access.log
-      - ERRORLOG=/data/error.log
-      - LOGLEVEL=warn
-      - NGINX_ALWAYS_TLS_REDIRECT=false
-      - ALLOWED_METHODS=GET HEAD POST OPTIONS PUT DELETE
+      - MP_DATA_FILE=/data/mailpit.db
+    volumes:
+      - tpml_smtp_data:/data
 
-  ui:
-    image: mnaprojectname_ui
-    container_name: mnaprojectname_ui
-    build:
-      context: ui
-    mem_limit: 256m
-    networks:
-      - mnaprojectname_network
-    depends_on:
-      - server
-
-  server:
-    image: mnaprojectname_server
-    container_name: mnaprojectname_server
-    build:
-      context: server
-    mem_limit: 1g
-    restart: unless-stopped
-    networks:
-      - mnaprojectname_network
-    depends_on:
-      - mongodb
-    environment:
-      - MNAPROJECTNAME_MONGODB_URI=mongodb://mongodb:27017/mnaprojectname?retryWrites=true&w=majority
-      - MNAPROJECTNAME_LOG_DESTINATIONS=stdout,mongodb
-
-  mongodb:
-    image: mongo:5.0.6-focal
-    container_name: mnaprojectname_mongodb
-    mem_limit: 2g
-    restart: unless-stopped
-    networks:
-      - mnaprojectname_network
-
-networks:
-  mnaprojectname_network:
-    name: mnaprojectname_network
+volumes:
+  tpml_mongodb_data:
+    driver: local
+    name: tpml_mongodb_data
+  tpml_smtp_data:
+    driver: local
+    name: tpml_smtp_data
