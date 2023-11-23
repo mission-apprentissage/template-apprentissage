@@ -1,7 +1,9 @@
 name: Deploy Preview
 on:
-  issue_comment:
-    types: [created]
+  # __TEMPLATE_UPDATE__: Uncomment issue_comment section and remove empty array
+  []
+  # issue_comment:
+  #   types: [created]
 
 jobs:
   debug:

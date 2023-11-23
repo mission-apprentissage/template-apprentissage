@@ -1,3 +1,6 @@
+fileignoreconfig:
+- filename: .github/workflows/release.yml
+  checksum: 3d0ae5f153aa5f1b1dc1bfc708939728012d6cb558cc8bd715e397013bc9f56b
 scopeconfig:
 - scope: node
 custom_patterns:
