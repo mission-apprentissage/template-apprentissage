@@ -109,6 +109,7 @@ async function authAccessToken<S extends ISecuredRouteSchema>(
   req: FastifyRequest,
   schema: S
 ): Promise<UserWithType<"token", IAccessToken> | null> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const token = parseAccessToken(extractBearerTokenFromHeader(req) ?? (req.query as any).token, schema);
 
   if (token === null) {
