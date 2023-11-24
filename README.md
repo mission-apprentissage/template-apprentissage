@@ -138,7 +138,7 @@ Le serveur Web Node Express utilise le port 5000.
 
 Dans la configuration de nginx, on fait référence au fichier `/reverse_proxy/app/nginx/conf.d/locations/api.inc` qui
 définir la gestion de l'API Node Express. Dans la configuration de nginx, on fait référence au
-fichier `/reverse_proxy/app/nginx/conf.d/locations/ui.inc` qui définir la gestion de l'UI React. 
+fichier `/reverse_proxy/app/nginx/conf.d/locations/ui.inc` qui définir la gestion de l'UI React.
 
 ### Base de données MongoDb
 
@@ -264,9 +264,7 @@ configuration suivante \_a placer dans le fichier `/.vscode/launch.json` :
       "port": 9229,
       "localRoot": "${workspaceFolder}/server/src",
       "remoteRoot": "/app/src",
-      "skipFiles": [
-        "<node_internals>/**"
-      ]
+      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }
