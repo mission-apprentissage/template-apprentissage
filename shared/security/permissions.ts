@@ -1,4 +1,4 @@
-export type Permission = "admin";
+export type Permission = "admin" | "user:manage";
 
 export type RoleNames = "none" | "admin";
 
@@ -14,13 +14,10 @@ export const NoneRole = {
 
 export const AdminRole = {
   name: "admin",
-  permissions: ["admin"],
+  permissions: ["admin", "user:manage"],
 } satisfies Role;
 
-export type AccessPermission =
-  | Permission
-  | { some: ReadonlyArray<AccessPermission> }
-  | { every: ReadonlyArray<AccessPermission> };
+export type AccessPermission = Permission;
 
 export type AccessResourcePath = {
   type: "params" | "query";
@@ -28,7 +25,7 @@ export type AccessResourcePath = {
 };
 
 export type AccessRessouces = {
-  events?: ReadonlyArray<{
+  user?: ReadonlyArray<{
     _id: AccessResourcePath;
   }>;
 };

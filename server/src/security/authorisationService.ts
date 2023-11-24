@@ -1,20 +1,61 @@
 import Boom from "@hapi/boom";
 import { FastifyRequest } from "fastify";
+import { ObjectId } from "mongodb";
+import { PathParam, QueryString } from "shared/helpers/generateUri";
 import { IUser } from "shared/models/user.model";
 import { IRouteSchema, WithSecurityScheme } from "shared/routes/common.routes";
-import { AccessPermission, AdminRole, NoneRole, Role } from "shared/security/permissions";
+import { AccessPermission, AccessResourcePath, AdminRole, NoneRole, Role } from "shared/security/permissions";
+import { assertUnreachable } from "shared/utils/assertUnreachable";
+import { Primitive } from "zod";
+import { zObjectId } from "zod-mongodb-schema";
 
-import { IAccessToken } from "./accessTokenService";
+import { getDbCollection } from "../common/utils/mongodbUtils";
+import { getAccessTokenScope, IAccessToken, SchemaWithSecurity } from "./accessTokenService";
 import { getUserFromRequest } from "./authenticationService";
+
+export type Ressources = {
+  users: Array<IUser>;
+};
 
 // Specify what we need to simplify mocking in tests
 type IRequest = Pick<FastifyRequest, "user" | "params" | "query">;
 
-function assertUnreachable(_x: never): never {
-  throw new Error("Didn't expect to get here");
+function getAccessResourcePathValue(path: AccessResourcePath, req: IRequest) {
+  const obj = req[path.type] as Record<string, Primitive>;
+  return obj[path.key];
 }
 
-export function getUserRole(userOrToken: IAccessToken | IUser): Role {
+async function getUserResource<S extends WithSecurityScheme>(schema: S, req: IRequest): Promise<Ressources["users"]> {
+  if (!schema.securityScheme.ressources.user) {
+    return [];
+  }
+
+  return (
+    await Promise.all(
+      schema.securityScheme.ressources.user.map(async (userDef) => {
+        if ("_id" in userDef) {
+          const userOpt = await getDbCollection("users").findOne({
+            _id: zObjectId.parse(getAccessResourcePathValue(userDef._id, req)),
+          });
+
+          return userOpt ? [userOpt] : [];
+        }
+
+        assertUnreachable(userDef);
+      })
+    )
+  ).flatMap((_) => _);
+}
+
+export async function getResources<S extends WithSecurityScheme>(schema: S, req: IRequest): Promise<Ressources> {
+  const [users] = await Promise.all([getUserResource(schema, req)]);
+
+  return {
+    users,
+  };
+}
+
+function getUserRole(userOrToken: IAccessToken | IUser): Role {
   if ("identity" in userOrToken) {
     return NoneRole;
   }
@@ -22,25 +63,64 @@ export function getUserRole(userOrToken: IAccessToken | IUser): Role {
   return userOrToken.is_admin ? AdminRole : NoneRole;
 }
 
-export function isAuthorized<S extends Pick<IRouteSchema, "method" | "path"> & WithSecurityScheme>(
-  access: AccessPermission,
-  userOrToken: IAccessToken | IUser,
-  role: Role,
-  schema: S
-): boolean {
-  if (typeof access === "object") {
-    if ("some" in access) {
-      return access.some.some((a) => isAuthorized(a, userOrToken, role, schema));
-    }
+function canAccessUser(user: IUser, resource: Ressources["users"][number]): boolean {
+  return user.is_admin || resource._id.toString() === user._id.toString();
+}
 
-    if ("every" in access) {
-      return access.every.every((a) => isAuthorized(a, userOrToken, role, schema));
-    }
-
-    assertUnreachable(access);
+export function isAuthorizedUser(access: AccessPermission, user: IUser, resources: Ressources): boolean {
+  if (!getUserRole(user).permissions.includes(access)) {
+    return false;
   }
 
-  return role.permissions.includes(access);
+  switch (access) {
+    case "user:manage":
+      return resources.users.every((r) => canAccessUser(user, r));
+    case "admin":
+      return user.is_admin;
+    default:
+      assertUnreachable(access);
+  }
+}
+
+function canAccessRessource(
+  allowedIds: ReadonlyArray<string> | undefined,
+  requiredResources: Array<{ _id: ObjectId }>
+) {
+  const set: Set<string> = new Set(allowedIds);
+
+  for (const resource of requiredResources) {
+    if (!set.has(resource._id.toString())) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export function isAuthorizedToken<S extends SchemaWithSecurity>(
+  token: IAccessToken,
+  resources: Ressources,
+  schema: Pick<S, "method" | "path">,
+  params: PathParam | undefined,
+  querystring: QueryString | undefined
+): boolean {
+  const scope = getAccessTokenScope(token, schema, params, querystring);
+
+  const keys = Object.keys(resources) as Array<keyof Ressources>;
+  for (const key of keys) {
+    switch (key) {
+      case "users": {
+        if (!canAccessRessource(scope?.resources.user, resources.users)) {
+          return false;
+        }
+        break;
+      }
+      default:
+        assertUnreachable(key);
+    }
+  }
+
+  return true;
 }
 
 export async function authorizationnMiddleware<S extends Pick<IRouteSchema, "method" | "path"> & WithSecurityScheme>(
@@ -54,15 +134,20 @@ export async function authorizationnMiddleware<S extends Pick<IRouteSchema, "met
     });
   }
 
-  const userWithType = getUserFromRequest(req, schema);
+  const userOrToken = getUserFromRequest(req, schema);
 
   if (schema.securityScheme.access === null) {
     return;
   }
 
-  const role = getUserRole(userWithType);
+  const resources = await getResources(schema, req);
 
-  if (!isAuthorized(schema.securityScheme.access, userWithType, role, schema)) {
+  const isAuthorized =
+    "identity" in userOrToken
+      ? isAuthorizedToken(userOrToken, resources, schema, req.params as PathParam, req.query as QueryString)
+      : isAuthorizedUser(schema.securityScheme.access, userOrToken, resources);
+
+  if (!isAuthorized) {
     throw Boom.forbidden();
   }
 }

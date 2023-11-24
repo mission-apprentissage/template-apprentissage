@@ -5,7 +5,7 @@ import { IUser } from "shared/models/user.model";
 
 import config from "@/config";
 
-import { generateAccessToken } from "../../security/accessTokenService";
+import { generateAccessToken, generateScope } from "../../security/accessTokenService";
 
 interface ICreateTokenOptions {
   secret?: string;
@@ -33,10 +33,11 @@ const createToken = (type: TokenType, subject: string | null = null, options: IC
 
 export function createResetPasswordToken(user: IUser) {
   return generateAccessToken(user, [
-    {
-      route: zRoutes.post["/auth/reset-password"],
+    generateScope({
+      schema: zRoutes.post["/auth/reset-password"],
+      options: "all",
       resources: {},
-    },
+    }),
   ]);
 }
 

@@ -28,9 +28,7 @@ export const zEmailRoutes = {
       securityScheme: {
         auth: "access-token",
         access: null,
-        ressources: {
-          events: [{ _id: { type: "params", key: "id" } }],
-        },
+        ressources: {},
       },
     },
     "/emails/unsubscribe": {

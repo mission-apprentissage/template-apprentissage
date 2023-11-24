@@ -3,9 +3,11 @@ import { captureException } from "@sentry/node";
 import { FastifyRequest } from "fastify";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { ObjectId } from "mongodb";
+import { PathParam, QueryString } from "shared/helpers/generateUri";
 import { IUser } from "shared/models/user.model";
 import { ISecuredRouteSchema, WithSecurityScheme } from "shared/routes/common.routes";
 import { UserWithType } from "shared/security/permissions";
+import { assertUnreachable } from "shared/utils/assertUnreachable";
 
 import config from "@/config";
 
@@ -109,18 +111,18 @@ async function authAccessToken<S extends ISecuredRouteSchema>(
   req: FastifyRequest,
   schema: S
 ): Promise<UserWithType<"token", IAccessToken> | null> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const token = parseAccessToken(extractBearerTokenFromHeader(req) ?? (req.query as any).token, schema);
+  const token = parseAccessToken(
+    extractBearerTokenFromHeader(req),
+    schema,
+    req.params as PathParam,
+    req.query as QueryString
+  );
 
   if (token === null) {
     return null;
   }
 
   return token ? { type: "token", value: token } : null;
-}
-
-function assertUnreachable(_x: never): never {
-  throw new Error("Didn't expect to get here");
 }
 
 export async function authenticationMiddleware<S extends ISecuredRouteSchema>(schema: S, req: FastifyRequest) {

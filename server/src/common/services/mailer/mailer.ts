@@ -9,6 +9,7 @@ import { htmlToText } from "nodemailer-html-to-text";
 import { zRoutes } from "shared";
 import { IEmailEvent } from "shared/models/email_event.model";
 import { ITemplate } from "shared/models/email_event/email_templates";
+import { assertUnreachable } from "shared/utils/assertUnreachable";
 
 import config from "@/config";
 
@@ -18,7 +19,7 @@ import {
   isUnsubscribed,
   setEmailMessageId,
 } from "../../../modules/actions/emails.actions";
-import { generateAccessToken } from "../../../security/accessTokenService";
+import { generateAccessToken, generateScope } from "../../../security/accessTokenService";
 import logger from "../../logger";
 import { getStaticFilePath } from "../../utils/getStaticFilePath";
 import { serializeEmailTemplate } from "../../utils/jwtUtils";
@@ -58,10 +59,6 @@ async function sendEmailMessage(template: ITemplate, emailEvent: IEmailEvent | n
   });
 
   return messageId;
-}
-
-function assertUnreachable(_x: never): never {
-  throw internal("Didn't expect to get here");
 }
 
 export async function sendEmail<T extends ITemplate>(template: T): Promise<void> {
@@ -109,12 +106,11 @@ function getMarkAsOpenedActionLink(emailEvent: IEmailEvent | null) {
   }
 
   const token = generateAccessToken({ email: emailEvent.template.to }, [
-    {
-      route: zRoutes.get["/emails/:id/markAsOpened"],
-      resources: {
-        events: [emailEvent._id.toString()],
-      },
-    },
+    generateScope({
+      schema: zRoutes.get["/emails/:id/markAsOpened"],
+      options: "all",
+      resources: {},
+    }),
   ]);
 
   return getPublicUrl(`/api/emails/${emailEvent._id.toString()}/markAsOpened?token=${token}`);
