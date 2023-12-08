@@ -1,8 +1,12 @@
 fileignoreconfig:
 - filename: .github/workflows/release.yml
   checksum: 3d0ae5f153aa5f1b1dc1bfc708939728012d6cb558cc8bd715e397013bc9f56b
+- filename: .infra/env.ini
+  checksum: f5a4f8f8b22a8d4b05345a03ce37899d1e6fdaa9a7908d5a19d408438a8191d3
+- filename: .infra/files/scripts/seed.sh
+  checksum: a673a8f706cb90f2f5c9f98981b06ce95c566e67e2bb4a6323d6b1bdb8ef0233
 - filename: .infra/vault/vault.yml
-  checksum: d96d43188368fd30a2085e374fd1e0e7e0c1acd8d0943d99713f59fec422687c
+  checksum: 9fc0f15a0c7294e019b2390a3c29993d1b39705275d66304338dd8e09cd6d835
 - filename: server/tests/utils/security/accessTokenService.test.ts
   checksum: 017acd9d128165e6edcfd2c33a0f218c53b0ba2b4a77f3da3fe7b58f11d6fa90
 - filename: server/tests/utils/security/authorisationService.test.ts
