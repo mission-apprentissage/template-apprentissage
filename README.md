@@ -1,291 +1,164 @@
 ![](https://avatars1.githubusercontent.com/u/63645182?s=200&v=4)
 
-# mnaprojectname
+# Mission Apprentissage Template Repository
+
+- [Mission Apprentissage Template Repository](#mission-apprentissage-template-repository)
+  - [Pré-requis](#pré-requis)
+  - [Démarrage](#démarrage)
+  - [Création du projet](#création-du-projet)
+    - [Sentry](#sentry)
+    - [MongoDB](#mongodb)
+    - [Postgres](#postgres)
+    - [Env Ini](#env-ini)
+    - [Mna Binary config](#mna-binary-config)
+    - [Secrets](#secrets)
+    - [UI Config](#ui-config)
+    - [Other Files](#other-files)
+    - [Legal](#legal)
+    - [Remplacement du README.md](#remplacement-du-readmemd)
+    - [Seed](#seed)
+  - [Infrastructure](#infrastructure)
 
 ## Pré-requis
 
-- NodeJs 12.11
-- Yarn
-- Docker & Docker-compose
+[Suivre la documentation dédiée](./docs/developpement/pre-requesites.md)
 
-## Présentation
+## Démarrage
 
-Ce template permet de créer la structure d'une application exemple selon 4 modèles différents :
+[Créez un nouveau repository en utilisant ce template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
 
-- `express` pour un modèle d'application de type API Node Express
-- `express-mongo` pour un modèle d'application de type API Node Express avec une base de données MongoDb
-- `express-mongo-ui` pour un modèle d'application de type API Node Express avec une base de données MongoDb et une UI en
-  React
+Clonez le nouveau repository locallement.
 
-Chacun de ces modèles est accessible via une branche dédiée du repository.
-
-## Infrastructure & Déploiement
-
-Ce template fonctionne de manière autonome en local avec des conteneurs docker.
-
-Pour déployer et faire fonctionner l'application sur un server dédié il faut récupérer le contenu du repository infra
-pour le modèle choisi.
-
-Le repository infra est lui, privé car il est utilisé pour contenir l'ensemble des données
-sensibles (Clés SSH, mots de passes ...) nécessaires à la mise en place de votre application, merci de suivre sa
-documentation dédiée pour déployer votre application.
-
-## Organisation des dossiers
-
-_TODO UPDATE_
-Ce projet est organisé de la manière suivante :
-
-```
-    |-- .github
-    |-- reverse_proxy
-        |-- app
-            |-- logrotate.d
-                |-- logrotate.conf
-            |-- nginx
-                |-- conf.d
-                  |-- locations
-                    |-- api.inc
-                  |-- default.conf
-                |-- nginx.conf
-            |-- start.sh
-        |-- Dockerfile
-    |-- server
-        |-- assets
-        |-- config
-          |-- custom-environment-variables.json
-          |-- default.json
-        |-- data
-        |-- src
-        |-- tests
-          |-- integration
-            |-- ...
-          |-- unit
-            |-- ...
-          |-- utils
-            |-- ...
-    |-- .gitattributes
-    |-- .gitignore
-    |-- docker-compose.yml
-    |-- docker-compose.override.yml
-
-```
-
-- Le dossier `/.github` va contenir l'ensemble des Github Actions.
-- Le dossier `/reverse_proxy` va contenir le serveur Nginx et sa configuration en tant que reverse_proxy.
-- Le dossier `/server` va contenir l'ensemble de l'application coté serveur, à savoir l'API Node Express.
-- Le fichier `/docker-compose.yml` va définir la configuration des conteneurs de l'application, _pour plus
-  d'informations sur Docker cf: https://docs.docker.com/_
-- Le fichier `/docker-compose.override.yml` va définir la configuration Docker spécifique à l'environnement local de
-  développement.
-
-## Gestion de la configuration
-
-La gestion de configuration et de variables d'environnement est mise en place avec la librairie
-node-config : https://www.npmjs.com/package/config
-
-La configuration est définie dans le dossier `/server/config` et on y trouve :
-
-- Un fichier `/server/config/custom-environment-variables.json` qui va définir la liste des variables d'environnements
-  pour l'application
-- Un fichier `/server/config/default.json` qui va définir la valeur par défaut de ces variables d'environnement.
-
-Ensuite dans la définition des conteneurs Docker ces variables d'environnements seront écrasées au besoin.
-
-## Personnalisation du template
-
-### Nom de l'application
-
-Avant de démarrer il convient de modifier le nom de l'application dans l'ensemble des fichiers concernés. Lancer la
-commande suivante :
-
-```shell
-bash init.sh <le nom de l'application>
-```
-
-N'oubliez pas de commiter les changements
-
-```shell
-git commit --no-verify -a -m "Set project name to <nom>"
-```
-
-Une fois le nom du projet défini, le script `init.sh` peut être supprimé.
-
-### Tests unitaires
-
-Dans la partie tests unitaires de l'application il est aussi nécessaire de modifier le nom de la base de données de
-tests, dans `/server/tests/utils/testUtils.js` :
-
-```javascript
-const uri = config.mongodb.uri.split("mnaprojectname").join("mnaprojectname_test");
-```
-
-## Conteneurs Docker
-
-### Présentation de la configuration Docker
-
-Pour fonctionner ce projet a besoin des éléments dockérisés suivants :
-
-- Un serveur Web Nginx jouant le role de reverse proxy, _défini dans le service `reverse_proxy` du docker-compose_.
-- Un serveur Node Express, _défini dans le service `server` du docker-compose_.
-- Un réseau _défini dans `mnaprojectname_network` du docker-compose_.
-- Une base de donnée mongoDb _défini dans le service `mongodb` du docker-compose_.
-
-### Serveur Nodes & Nginx - Reverse Proxy
-
-Le serveur nginx joue le role de reverse proxy sur le port 80.
-
-Le serveur Web Node Express utilise le port 5000.
-
-Dans la configuration de nginx, on fait référence au fichier `/reverse_proxy/app/nginx/conf.d/locations/api.inc` qui
-définir la gestion de l'API Node Express. Dans la configuration de nginx, on fait référence au
-fichier `/reverse_proxy/app/nginx/conf.d/locations/ui.inc` qui définir la gestion de l'UI React.
-
-### Base de données MongoDb
-
-Le base de données est une MongoDb et utilise le port par défaut 27017.
-
-### Démarrage de la stack
-
-Pour créer la stack et monter l'environnement il suffit de lancer la commande suivante :
+Récupérez manuellement les fichiers de git-lfs depuis le template
 
 ```bash
-make start
+git lfs fetch https://github.com/mission-apprentissage/template-apprentissage.git
+git lfs pull
 ```
 
-### Arret de la stack
-
-Il est possible de stopper les conteneur en lancant la commande suivante :
+Récupérez le vault depuis 1password (assurez vous d'etre connecter via `op account get`)
 
 ```bash
-make stop
+.bin/mna vault:init
 ```
 
-### Suppression de la stack
+Vérifiez que vous pouvez déchiffrer le vault via `gpg --list-packets .infra/vault/.vault-password.gpg`
 
-Pour supprimer l'ensemble de la stack et tuer tous les conteneurs il suffit de lancer la commande suivante :
+> Si vous n'etes pas autorisé à déchiffrer le vault, il faudra se rapprocher des personnes habilitées afin d'avoir vos accès ajoutés.
 
-```bash
-make clean
-```
+Initialisation de l'envrionnement `yarn setup`
 
-### Vérification du montage de la stack
+Vous pouvez lancer le projet locallement via `yarn dev`
 
-Aprés avoir créé la stack pour vérifier que les conteneurs sont bien présents vous pouvez lancer la commande suivante
-depuis le répertoire `/server` :
+Le setup va intialiser la base de donnée, il faut maintenant mettre à jour.
 
-```bash
-docker exec -t -i mnaprojectname_server /bin/bash
-```
+Vous pouvez maintenant lancer l'application locallement en [suivant la documentation dédiée](./docs/developpement/developpement.md).
 
-De même pour consulter la liste des fichiers dans le docker :
+- TODO: GitGuardian, Shodan, Slack Webhook, Uptime
 
-```bash
-docker exec mnaprojectname_server bash -c 'ls'
-```
+## Création du projet
 
-## Linter
+**Pour une simplification de la procedure, nous allons supposer que vous souhaitez créer le produit nommé `api`**
 
-Un linter (via ESLint) est mis en place dans le projet, pour le lancer :
+### Sentry
 
-```bash
-make lint
-```
+Il faut créer 1 projet pour l'UI et un pour le Server sur https://sentry.apprentissage.beta.gouv.fr/organizations/sentry/projects/new/
 
-## Tests
+### MongoDB
 
-Des tests sont mis en place en utilisant le framework Mocha.
+Créer 2 instances de MongoDB sur OVH pour recette & production.
 
-_Pour en savoir plus sur Mocha : https://mochajs.org/_
+Pour chaque instance créer 2 utilisateurs:
 
-Les tests sont en règle général découpés en 3 dossiers :
+- `app` avec le role `dbOwner` sur `api`
+- `metabase` avec le role `read` sur `api`
 
-- Le dossier `/server/tests/unit` contient la liste des tests unitaires.
-- Le dossier `/server/tests/integration` contient la liste des tests d'intégration
-- Le dossier `/server/tests/utils` contient la liste des utilitaires communs de test.
+Ajouter l'IP de votre server dans les IPs autorisées
 
-## Server Node Express
+### Postgres
 
-### Http
+Créer 2 instances de Postgres sur OVH pour recette et production.
 
-La structure principale du serveur Node Express est définie dans `/server/src/http` et contient :
+Ajouter l'IP de votre server dans les IPs autorisées
 
-- La liste des middlewares express à appliquer
-- La liste des routes d'API
-- Le point d'entrée principal du serveur : `/server/src/http/server.js`
+### Env Ini
 
-Il est possible de tester en local le server express via `http://localhost/api`
+Mettre à jour le fichier `.infra/env.ini`
 
-### Logger
+- `product_name`: le nom du produit `api`
+- `repo_name`: le nom du repository `api-apprentissage`
+- `database_name`: le nom de la BDD `api`
+- `domain_name`: le nom du domaine `api`
 
-Pour la gestion des logs nous utilisons la librairie bunyan _cf : https://www.npmjs.com/package/bunyan_
+### Mna Binary config
 
-Par défaut 3 stream sont configurés :
+Mettre à jour le fichier `.bin/product-meta.sh` avec les memes valeurs que le fichier `.infra/env.ini`
 
-- Dans la console.
-- Dans un fichier JSON.
-- Dans une chaine Slack.
-- TODO Mongo
+Mettre à jour le fichier `.bin/zsh-completion`, remplacer `mna-tmpl` par `mna-api`
 
-Pour mettre en place les notifications Slack il est nécessaire d'utiliser les Webhooks et de créer une chaine dédiée
-dans votre espace de travail Slack.
+### Secrets
 
-Il vous faudra créer une application dans Slack et récupérer le lien de la Webhook, pour en savoir
-plus : https://api.slack.com/messaging/webhooks.
+Mise à jour du vault `yarn vault:edit`
 
-### Utilitaires
+Mettre à jour les secrets suivants:
 
-Certains modules utilitaires sont présents dans `/server/src/common/utils`
+- `SERVER_SENTRY_DSN`: le DSN du sentry serveur
+- `EMAIL`: addresse email utilisée pour envoyer des emails (créer un alias sur https://admin.alwaysdata.com/mailbox/). Utiliser une addresse de type `nepasrepondre-api@apprentissage.beta.gouv.fr`
+- `METABASE_EMAIL_FROM_ADDRESS`: Utiliser la meme que `EMAIL`
+- `METABASE_EMAIL_FROM_NAME`: Mettre à jour
+- `SEED_GPG_PASSPHRASE`: Générer un nouveau secret `pwgen -s 120 1`
+- `MONGODB_KEYFILE`: Générer un nouveau secret `pwgen -s 120 1`
 
-### Composants injectables
+Pour chaque environnement:
 
-Un module permettant de contenir des composants "communs" et injectable dans les routes est proposé dans le
-fichier `/server/src/common/components/components.js`
+- `PUBLIC_URL`: Le nom de domaine public. Pour la preview utiliser le format prédéfini
+- `MONGODB_URI`: L'url de connexion de l'utilisateur `app`. Pour `preview` remplacer simplement la string `TODO_REPLACE_BY_MONGOKEYFILE` par la valeur `MONGODB_KEYFILE`
+- `MONGODB_METABASE_URI`: L'url de connexion de l'utilisateur `metabase`. Pour `preview` laisser vide car il n'y a pas de preview
+- `AUTH_USER_JWT_SECRET`: Générer un nouveau secret `pwgen -s 120 1`
+- `AUTH_PASSWORD_JWT_SECRET`: Générer un nouveau secret `pwgen -s 120 1`
+- `SESSION_SECRET`: Générer un nouveau secret `pwgen -s 120 1`
+- `SMTP_WEBHOOK_KEY`: Générer un nouveau secret `pwgen -s 64 1`
+- `METABASE_ADMIN_EMAIL`: L'addresse email du compte admin. Pour `preview` laisser vide car il n'y a pas de preview
+- `METABASE_ADMIN_PASS`: Générer un nouveau secret `pwgen -s 64 1`. Pour `preview` laisser vide car il n'y a pas de preview
+- `METABASE_DB_URI`: L'url de connexion à la Postgres.. Pour `preview` laisser vide car il n'y a pas de preview
+- `METABASE_ENCRYPTION_SECRET_KEY`: Générer un nouveau secret `pwgen -s 120 1`. Pour `preview` laisser vide car il n'y a pas de preview
 
-Vous pouvez ajouter dans ce fichier des élements communs à réexploiter dans l'API.
+### UI Config
 
-## Mongoose & Mongoostatic
+Mettre à jour le fichier `ui/config.public.ts`
 
-_TODO SBS UPDATE_
+- `sentry.dsn`: le DSN du sentry ui
+- `host`: Pour chaque environnement mettre le domaine associé
 
-## Debugger sous VSCode
+### Other Files
 
-Il est possible de débugger facilement le serveur Express contenu dans le Docker local **sous VSCode** en utilisant la
-configuration suivante \_a placer dans le fichier `/.vscode/launch.json` :
+- `server/src/config.ts`: La valeur de `cookieName`
+- `server/.env.test`
+- `server/tests/globalSetup.ts`
+- `server/tests/routes/users.route.test.ts`
+- `shared/helpers/openapi/generateOpenapi.test.ts`
+- `shared/routes/core.routes.ts`
+- `ui/.env.test`
 
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "node",
-      "request": "attach",
-      "name": "Debug Express in docker",
-      "address": "127.0.0.1",
-      "port": 9229,
-      "localRoot": "${workspaceFolder}/server/src",
-      "remoteRoot": "/app/src",
-      "skipFiles": ["<node_internals>/**"]
-    }
-  ]
-}
-```
+### Legal
 
-Cette configuration va utiliser la commande `debug` définie dans le fichier `/server/package.json` :
+Revoir les pages:
 
-```json
-{
-  "scripts": {
-    "debug": "nodemon --inspect=0.0.0.0 --signal SIGINT --ignore tests/ src/index.js"
-  }
-}
-```
+- `/`
+- `/accessibilite`
+- `/cgu`
+- `/donnees-personnelles`
+- `/mentions-legales`
+- `/politique-confidentialite`
 
-## Workflows & CI / CD
+### Remplacement du README.md
 
-Dans le repertoire `/.github/workflows` sont définie les Github actions à mettre en place sur le repository.
+Remplacer le fichier `README.md` par `PROJECT_README.md`
 
-Le workflow principal est définie dans `/.github/workflows/yarn-ci.yml` et se charge à chaque push sur une branche de :
+### Seed
 
-- Vérifier l'installation des dépendances
-- Lancer le linter
-- Exécuter les tests unitaires.
+Le seed doit etre regénéré avec votre nouvelle passphrase. Pour cela faire `yarn seed:update`
+
+## Infrastructure
+
+Demander à l'équipe transverse de provisionner les environnements https://github.com/mission-apprentissage/infra/blob/main/docs/provisionning.md
