@@ -14,10 +14,19 @@
     - [Secrets](#secrets)
     - [UI Config](#ui-config)
     - [Other Files](#other-files)
+    - [Mailpit](#mailpit)
     - [Legal](#legal)
     - [Remplacement du README.md](#remplacement-du-readmemd)
     - [Seed](#seed)
-  - [Infrastructure](#infrastructure)
+    - [Github Actions](#github-actions)
+    - [Organisation Secrets](#organisation-secrets)
+    - [Mettre à jour les snapshots](#mettre-à-jour-les-snapshots)
+    - [Infrastructure](#infrastructure)
+    - [Initial Version](#initial-version)
+    - [Monitoring](#monitoring)
+    - [GitGuardian](#gitguardian)
+    - [Github Settings](#github-settings)
+    - [Shodan](#shodan)
 
 ## Pré-requis
 
@@ -123,6 +132,11 @@ Pour chaque environnement:
 - `METABASE_DB_URI`: L'url de connexion à la Postgres.. Pour `preview` laisser vide car il n'y a pas de preview
 - `METABASE_ENCRYPTION_SECRET_KEY`: Générer un nouveau secret `pwgen -s 120 1`. Pour `preview` laisser vide car il n'y a pas de preview
 
+Pour recette & preview uniquement:
+
+- `SMTP_USER`: `user`
+- `SMTP_AUTH_PASS`: Générer un nouveau secret `pwgen -s 120 1`, utilisez le **MÊME** password pour les deux environnements.
+
 ### UI Config
 
 Mettre à jour le fichier `ui/config.public.ts`
@@ -139,6 +153,16 @@ Mettre à jour le fichier `ui/config.public.ts`
 - `shared/helpers/openapi/generateOpenapi.test.ts`
 - `shared/routes/core.routes.ts`
 - `ui/.env.test`
+
+### Mailpit
+
+Les environnements de recette & preview utilisent Mailpit. Il est nécessaire de créer le fichier d'authentification via la commande:
+
+```bash
+htpasswd -B .infra/files/configs/mailpit/auth user
+```
+
+Entrez le mot passe correpsondant à `SMTP_AUTH_PASS`.
 
 ### Legal
 
@@ -159,6 +183,80 @@ Remplacer le fichier `README.md` par `PROJECT_README.md`
 
 Le seed doit etre regénéré avec votre nouvelle passphrase. Pour cela faire `yarn seed:update`
 
-## Infrastructure
+### Github Actions
+
+1. Décommenter les github actions `.github/workflows`
+2. Changer le nom des images docker dans `.github/workflows/release.yml` (`mna_tmpl_server` & `mna_tmpl_server`)
+3. Créer le Github Repository Secret `SLACK_WEBHOOK` (https://api.slack.com/apps/A01JENR8874)
+
+### Organisation Secrets
+
+Autorisez votre repository à accéder aux secrets d'organisation depuis https://github.com/organizations/mission-apprentissage/settings/secrets/actions
+
+- DEPLOY_PASS
+- DEPLOY_SSH_PRIVATE_KEY
+
+### Mettre à jour les snapshots
+
+`yarn test`
+
+### Infrastructure
 
 Demander à l'équipe transverse de provisionner les environnements https://github.com/mission-apprentissage/infra/blob/main/docs/provisionning.md
+
+> Une fois les environnements provisionnés et les accès défini veuillez mettre à jour le vault via `yarn vault:edit` puis refermer directement.
+
+Mettez à jour le fichier `.infra/env.ini` avec les IPs des différents serveurs.
+
+### Initial Version
+
+Une fois que les modification ci-dessus ont été réalisé, faites votre première PR et mergez la dans main.
+
+La version `1.0.0` de votre projet sera créé par la Github Action Release.
+
+### Monitoring
+
+Ajoutez votre projet dans le monitoring, pour cela vous référez à https://github.com/mission-apprentissage/monitoring/blob/main/README.md
+
+### GitGuardian
+
+Ajoutez votre projet sur Gitguardian https://dashboard.gitguardian.com/workspace/220324/settings/workspace/integrations/github
+
+### Github Settings
+
+- General:
+  - Features: `Issues` only
+  - Always suggest updating pull request branches: `on`
+  - Allow auto-merge: `on`
+  - Automatically delete head branches : `on`
+- Branches:
+  - `main` branch protection
+    - Require a pull request before merging:
+      - Require approvals: `on`
+    - Require status checks to pass before merging
+      - `tests / Tests`
+    - Require merge queue:
+      - Merge method: `Squash & merge`
+- Code security and analysis
+  - Private vulnerability reporting: `on`
+  - Dependency graph: `on`
+  - Dependabot:
+    - Dependabot alerts: `on`
+    - Dependabot security updates: `on`
+    - Grouped security updates: `on`
+  - Code scanning:
+    - CodeQL analysis: Setup Default
+  - Secret scanning: `on`
+    - Push protection: `on`
+
+### Shodan
+
+Créez un compte [Shodan](https://shodan.io) en tant que `Member`.
+
+Ajoutez la config Slack Webhook pour recevoir les alertes.
+
+Ajoutez vos urls à monitorer avec notification Slack:
+
+- <product_name>.apprentissage.beta.gouv.fr
+- <product_name>-recette.apprentissage.beta.gouv.fr
+- <product_name>-preview.apprentissage.beta.gouv.fr

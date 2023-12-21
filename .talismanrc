@@ -1,4 +1,6 @@
 fileignoreconfig:
+- filename: .bin/scripts/setup-local-env.sh
+  checksum: c9d412b132f3a7b8b6bde35f5acac94d1fffb87ce5ac718b6abc54b214899be2
 - filename: .github/workflows/release.yml
   checksum: 3d0ae5f153aa5f1b1dc1bfc708939728012d6cb558cc8bd715e397013bc9f56b
 - filename: .infra/env.ini
@@ -8,11 +10,13 @@ fileignoreconfig:
 - filename: .infra/vault/vault.yml
   checksum: 9fc0f15a0c7294e019b2390a3c29993d1b39705275d66304338dd8e09cd6d835
 - filename: README.md
-  checksum: 7dbf743553ab8cebccc235ca650c026381889aee5662a1dea8ac3aecee54f18f
+  checksum: 00ac991f0b2746c5a5ffa14e2b3c5427b739c0d952aa3730efe1f234ac1fc3ca
 - filename: docs/developpement/1password.md
   checksum: f4eb70beab8d37ca9a1867b7d57d01f541b99372bbcccfb04301b81ad6331bcd
 - filename: docs/developpement/gpg.md
   checksum: 137f146297aedce399926c6ddebe9bbfb22b0e924bbdbd30be2b4654f6b248ad
+- filename: server/.env.test
+  checksum: 3ad3e8bb56439e623bf6693e0a76c719e2c0236e468e8e5d1299388de06af8bb
 - filename: server/tests/utils/security/accessTokenService.test.ts
   checksum: 017acd9d128165e6edcfd2c33a0f218c53b0ba2b4a77f3da3fe7b58f11d6fa90
 - filename: server/tests/utils/security/authorisationService.test.ts
