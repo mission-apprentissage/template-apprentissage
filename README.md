@@ -121,7 +121,9 @@ Mettre à jour les secrets suivants:
 Pour chaque environnement:
 
 - `PUBLIC_URL`: Le nom de domaine public. Pour la preview utiliser le format prédéfini
-- `MONGODB_URI`: L'url de connexion de l'utilisateur `app`. Pour `preview` remplacer simplement la string `TODO_REPLACE_BY_MONGOKEYFILE` par la valeur `MONGODB_KEYFILE`
+- `MONGODB_URI`: L'url de connexion de l'utilisateur `app`.
+  - Pour `recette` & `production` bien faire attention à la DB à utiliser dans la connection string et d'avoir `authSource=admin`
+  - Pour `preview` remplacer simplement la string `TODO_REPLACE_BY_MONGOKEYFILE` par la valeur `MONGODB_KEYFILE`
 - `MONGODB_METABASE_URI`: L'url de connexion de l'utilisateur `metabase`. Pour `preview` laisser vide car il n'y a pas de preview
 - `AUTH_USER_JWT_SECRET`: Générer un nouveau secret `pwgen -s 120 1`
 - `AUTH_PASSWORD_JWT_SECRET`: Générer un nouveau secret `pwgen -s 120 1`
