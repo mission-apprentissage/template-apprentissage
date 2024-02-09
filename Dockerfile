@@ -37,6 +37,10 @@ RUN --mount=type=cache,target=/var/cache/apk apk add --update \
   && rm -rf /var/cache/apk/*
 
 ENV NODE_ENV production
+
+ARG PUBLIC_PRODUCT_NAME
+ENV PUBLIC_PRODUCT_NAME=$PUBLIC_PRODUCT_NAME
+
 ARG PUBLIC_VERSION
 ENV PUBLIC_VERSION=$PUBLIC_VERSION
 
@@ -76,11 +80,6 @@ ENV NEXT_PUBLIC_VERSION=$PUBLIC_VERSION
 
 ARG PUBLIC_ENV
 ENV NEXT_PUBLIC_ENV=$PUBLIC_ENV
-
-RUN echo $NEXT_PUBLIC_PRODUCT_REPO 
-RUN echo $NEXT_PUBLIC_PRODUCT_NAME 
-RUN echo $NEXT_PUBLIC_VERSION 
-RUN echo $NEXT_PUBLIC_ENV 
 
 RUN yarn --cwd ui build
 # RUN --mount=type=cache,target=/app/ui/.next/cache yarn --cwd ui build

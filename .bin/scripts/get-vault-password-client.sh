@@ -12,6 +12,7 @@ readonly BIN_DIR="$(dirname "${SCRIPT_DIR}")"
 readonly ROOT_DIR="$(dirname "${BIN_DIR}")"
 readonly VAULT_DIR="${ROOT_DIR}/.infra/vault"
 readonly VAULT_FILE="${VAULT_DIR}/vault.yml"
+readonly PRODUCT_NAME="tmpl"
 
 DOCUMENT_CONTENT=$(op document get ".vault-password-${PRODUCT_NAME}" --vault "mna-vault-passwords-common" || echo "")
 vault_password_file="${VAULT_DIR}/.vault-password.gpg"
@@ -35,7 +36,7 @@ elif [ ! -z "$DOCUMENT_CONTENT" ] && [ "$DOCUMENT_CONTENT" != "$(cat "${vault_pa
     vault_password_file_clear_text="${VAULT_DIR}/new_clear_text"
 
     delete_cleartext() {
-      rm -f "$previous_vault_password_file_clear_text" "$vault_password_file_clear_text" "${previous_vault_password_file}"
+      rm -f "$previous_vault_password_file_clear_text" "$vault_password_file_clear_text"
     }
     trap delete_cleartext EXIT
 

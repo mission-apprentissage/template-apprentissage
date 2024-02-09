@@ -2,7 +2,7 @@ import { MainNavigationProps } from "@codegouvfr/react-dsfr/MainNavigation";
 import { useMemo } from "react";
 import { IUserPublic } from "shared/models/user.model";
 
-import { PAGES } from "../breadcrumb/Breadcrumb";
+import { NOTION_PAGES, PAGES } from "../breadcrumb/Breadcrumb";
 
 interface GetNavigationItemsProps {
   user?: IUserPublic;
@@ -12,10 +12,10 @@ interface GetNavigationItemsProps {
 const getNavigationItems = ({ user, pathname }: GetNavigationItemsProps): MainNavigationProps.Item[] => {
   let navigation: MainNavigationProps.Item[] = [
     {
-      isActive: pathname === PAGES.homepage().path,
-      text: "Accueil",
+      isActive: pathname === NOTION_PAGES.homepage.path,
+      text: NOTION_PAGES.homepage.title,
       linkProps: {
-        href: PAGES.homepage().path,
+        href: NOTION_PAGES.homepage.path,
       },
     },
   ];
@@ -43,7 +43,7 @@ const getNavigationItems = ({ user, pathname }: GetNavigationItemsProps): MainNa
     const { menuLinks } = item;
 
     const menuLinkWithActive = menuLinks?.map((link) => ({ ...link, isActive: link.linkProps.href === pathname }));
-    const isActive = pathname === item.linkProps?.href || menuLinkWithActive?.some((link) => link.isActive);
+    const isActive = item.isActive || menuLinkWithActive?.some((link) => link.isActive);
 
     return { ...item, isActive, menuLinks };
   }) as MainNavigationProps.Item[];

@@ -1,11 +1,16 @@
 import { Breadcrumb as DSFRBreadcrumb } from "@codegouvfr/react-dsfr/Breadcrumb";
 import React, { FC } from "react";
 
-export const PAGES = {
-  homepage: (): Page => ({
+export const NOTION_PAGES = {
+  homepage: {
     title: "Accueil",
     path: "/",
-  }),
+    notionId: "4b61748235d642f58cd73111f1f0423d",
+  },
+} as const satisfies Record<string, NotionPage>;
+
+export const PAGES = {
+  homepage: (): Page => NOTION_PAGES.homepage,
   mentionsLegales: (): Page => ({
     title: "Mentions Légales",
     path: "/mentions-legales",
@@ -50,11 +55,15 @@ export const PAGES = {
     title: "Fiche utilisateur",
     path: `/admin/utilisateurs/${id}`,
   }),
-};
+} as const;
 
 export interface Page {
   title: string;
   path: string;
+}
+
+export interface NotionPage extends Page {
+  notionId: string;
 }
 
 interface Props {
