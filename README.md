@@ -130,7 +130,7 @@ Pour chaque environnement:
 - `SESSION_SECRET`: Générer un nouveau secret `pwgen -s 120 1`
 - `SMTP_WEBHOOK_KEY`: Générer un nouveau secret `pwgen -s 64 1`
 - `METABASE_ADMIN_EMAIL`: L'addresse email du compte admin. Pour `preview` laisser vide car il n'y a pas de preview
-- `METABASE_ADMIN_PASS`: Générer un nouveau secret `pwgen -s 64 1`. Pour `preview` laisser vide car il n'y a pas de preview
+- `METABASE_ADMIN_PASS`: Générer un nouveau secret `pwgen -s -y 64 1`. Pour `preview` laisser vide car il n'y a pas de preview
 - `METABASE_DB_URI`: L'url de connexion à la Postgres.. Pour `preview` laisser vide car il n'y a pas de preview
 - `METABASE_ENCRYPTION_SECRET_KEY`: Générer un nouveau secret `pwgen -s 120 1`. Pour `preview` laisser vide car il n'y a pas de preview
 
