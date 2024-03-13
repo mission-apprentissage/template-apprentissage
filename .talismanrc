@@ -8,7 +8,7 @@ fileignoreconfig:
 - filename: .infra/files/scripts/seed.sh
   checksum: a673a8f706cb90f2f5c9f98981b06ce95c566e67e2bb4a6323d6b1bdb8ef0233
 - filename: .infra/vault/vault.yml
-  checksum: 9fc0f15a0c7294e019b2390a3c29993d1b39705275d66304338dd8e09cd6d835
+  checksum: 6bece27782e2906329cc18e8ffcd69602b1e90470a49f9e7e66a7f448798e44a
 - filename: README.md
   checksum: 00ac991f0b2746c5a5ffa14e2b3c5427b739c0d952aa3730efe1f234ac1fc3ca
 - filename: docs/developpement/1password.md
