@@ -136,7 +136,7 @@ Pour chaque environnement:
 
 Pour recette & preview uniquement:
 
-- `SMTP_USER`: `user`
+- `SMTP_AUTH_USER`: `user`
 - `SMTP_AUTH_PASS`: Générer un nouveau secret `pwgen -s 120 1`, utilisez le **MÊME** password pour les deux environnements.
 
 ### UI Config
@@ -148,6 +148,7 @@ Mettre à jour le fichier `ui/config.public.ts`
 
 ### Other Files
 
+- `.infra/files/configs/metabase/setup-metabase.sh`
 - `server/src/config.ts`: La valeur de `cookieName`
 - `server/.env.test`
 - `server/tests/globalSetup.ts`
