@@ -1,10 +1,8 @@
-import type { CreateIndexesOptions, IndexSpecification } from "mongodb";
+import { CreateIndexesOptions, IndexSpecification } from "mongodb";
 import { ZodType } from "zod";
 
-export type CollectionName = "email_denied" | "email_events" | "sessions" | "users";
-
-export interface IModelDescriptor {
-  zod: ZodType;
+export interface IModelDescriptor<CollectionName = string, LocalZodType = ZodType> {
+  zod: LocalZodType;
   indexes: [IndexSpecification, CreateIndexesOptions][];
   collectionName: CollectionName;
 }

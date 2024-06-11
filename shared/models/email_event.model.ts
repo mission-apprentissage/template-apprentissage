@@ -38,4 +38,4 @@ export default {
   zod: ZEmailEvent,
   indexes,
   collectionName,
-};
+} as const satisfies IModelDescriptor;

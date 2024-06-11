@@ -22,4 +22,4 @@ export default {
   zod: ZEmailDenied,
   indexes,
   collectionName,
-};
+} as const satisfies IModelDescriptor;
