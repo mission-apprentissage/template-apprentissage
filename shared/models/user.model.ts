@@ -86,4 +86,4 @@ export default {
   zod: zUser,
   indexes,
   collectionName,
-};
+} as const satisfies IModelDescriptor;

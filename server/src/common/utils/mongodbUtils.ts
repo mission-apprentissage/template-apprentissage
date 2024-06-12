@@ -1,7 +1,7 @@
 import { captureException } from "@sentry/node";
 import { Collection, CollectionInfo, MongoClient, MongoServerError } from "mongodb";
-import { CollectionName, IModelDescriptor } from "shared/models/common";
-import { IDocumentMap, modelDescriptors } from "shared/models/models";
+import { IModelDescriptor } from "shared/models/common";
+import { CollectionName, IDocument, modelDescriptors } from "shared/models/models";
 import { zodToMongoSchema } from "zod-mongodb-schema";
 
 import logger from "@/common/logger";
@@ -57,7 +57,7 @@ export const getDatabase = () => {
   return ensureInitialization().db();
 };
 
-export const getDbCollection = <K extends CollectionName>(name: K): Collection<IDocumentMap[K]> => {
+export const getDbCollection = <K extends CollectionName>(name: K): Collection<IDocument<K>> => {
   return ensureInitialization().db().collection(name);
 };
 
@@ -73,7 +73,7 @@ export const getDbCollectionIndexes = async (name: CollectionName) => {
  * Création d'une collection si elle n'existe pas
  * @param {string} collectionName
  */
-const createCollectionIfDoesNotExist = async (collectionName: CollectionName) => {
+const createCollectionIfDoesNotExist = async (collectionName: string) => {
   const db = getDatabase();
   const collectionsInDb = await db.listCollections().toArray();
   const collectionExistsInDb = collectionsInDb.map(({ name }) => name).includes(collectionName);
