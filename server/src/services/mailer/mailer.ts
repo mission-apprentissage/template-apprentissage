@@ -9,8 +9,8 @@ import type Mail from "nodemailer/lib/mailer";
 import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import { htmlToText } from "nodemailer-html-to-text";
 import { zRoutes } from "shared";
-import type { IEmailEvent } from "shared/src/models/email_event.model";
-import type { ITemplate } from "shared/src/models/email_event/email_templates";
+import type { IEmailEvent } from "shared/models/email_event.model";
+import type { ITemplate } from "shared/models/email_event/email_templates";
 import { assertUnreachable } from "shared/utils/assertUnreachable";
 
 import { addEmailError, createEmailEvent, isUnsubscribed, setEmailMessageId } from "@/actions/emails.actions";

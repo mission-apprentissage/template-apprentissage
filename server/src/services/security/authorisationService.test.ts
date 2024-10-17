@@ -1,36 +1,23 @@
-import { ObjectId } from "mongodb";
-import type { IUser } from "shared/src/models/user.model";
+import { generateOrganisationFixture, generateUserFixture } from "shared/models/fixtures/index";
+import type { SchemaWithSecurity } from "shared/routes/common.routes";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 import { zObjectId } from "zod-mongodb-schema";
 
-import type { SchemaWithSecurity } from "./accessTokenService";
-import { generateAccessToken, generateScope, parseAccessToken } from "./accessTokenService";
-import type { Ressources } from "./authorisationService";
-import { isAuthorizedToken, isAuthorizedUser } from "./authorisationService";
-
-const mockUser = (email: string, data: Partial<IUser> = {}): IUser => {
-  return {
-    _id: new ObjectId(),
-    email,
-    // @ts-expect-error
-    password: "",
-    is_admin: false,
-    api_key: null,
-    api_key_used_at: null,
-    updated_at: new Date(),
-    created_at: new Date(),
-    ...data,
-  };
-};
+import { generateAccessToken, generateScope, parseAccessToken } from "./accessTokenService.js";
+import type { Ressources } from "./authorisationService.js";
+import { isAuthorizedToken, isAuthorizedUser } from "./authorisationService.js";
 
 describe("isAuthorizedToken", () => {
   const requiredUsers = [
-    mockUser("required_1@mail.com"),
-    mockUser("required_2@mail.com"),
-    mockUser("required_3@mail.com"),
+    generateUserFixture({ email: "required_1@mail.com" }),
+    generateUserFixture({ email: "required_2@mail.com" }),
+    generateUserFixture({ email: "required_3@mail.com" }),
   ];
-  const otherUsers = [mockUser("extra_1@mail.com"), mockUser("extra_2@mail.com")];
+  const otherUsers = [
+    generateUserFixture({ email: "extra_1@mail.com" }),
+    generateUserFixture({ email: "extra_2@mail.com" }),
+  ];
 
   const resources: Ressources = {
     users: requiredUsers,
@@ -135,20 +122,54 @@ describe("isAuthorizedToken", () => {
 });
 
 describe("isAuthorizedUser", () => {
-  const user1 = mockUser("user1@mail.com");
-  const user2 = mockUser("user2@mail.com");
-  const admin1 = mockUser("admin@mail.com", { is_admin: true });
-  const admin2 = mockUser("admin@mail.com", { is_admin: true });
+  const user1 = generateUserFixture({ email: "user1@mail.com" });
+  const user2 = generateUserFixture({ email: "user2@mail.com" });
+  const userOrgWrite = generateUserFixture({ email: "userOrg@mail.com", organisation: "Write Organisation" });
+  const userOrgRo = generateUserFixture({ email: "userOrg@mail.com", organisation: "ReadOnly Organisation" });
+  const admin1 = generateUserFixture({ email: "admin@mail.com", is_admin: true });
+  const admin2 = generateUserFixture({ email: "admin@mail.com", is_admin: true });
+  const orgWrite = generateOrganisationFixture({
+    nom: "Write Organisation",
+    slug: "write-org",
+    habilitations: ["jobs:write"],
+  });
+  const orgRo = generateOrganisationFixture({ nom: "ReadOnly Organisation", slug: "ro-org", habilitations: [] });
 
-  describe("admin permission", () => {
+  describe("user:manage", () => {
     it("admin user should be allowed for any user", () => {
-      expect(isAuthorizedUser("user:manage", admin1, { users: [user1, user2, admin2] })).toBe(true);
+      expect(isAuthorizedUser("user:manage", admin1, { users: [user1, user2, admin2] }, null)).toBe(true);
+    });
+
+    it("basic user should be denied for any user (missing permission)", () => {
+      expect(isAuthorizedUser("user:manage", user1, { users: [user1] }, null)).toBe(false);
     });
   });
 
-  describe("user permission", () => {
-    it("basic user should be denied for any user (missing permission)", () => {
-      expect(isAuthorizedUser("user:manage", user1, { users: [user1] })).toBe(false);
+  describe("admin", () => {
+    it("admin user should be allowed", () => {
+      expect(isAuthorizedUser("admin", admin1, { users: [] }, null)).toBe(true);
+    });
+
+    it("basic user should be denied", () => {
+      expect(isAuthorizedUser("admin", user1, { users: [] }, null)).toBe(false);
+    });
+  });
+
+  describe("jobs:write", () => {
+    it("admin user should be allowed", () => {
+      expect(isAuthorizedUser("jobs:write", admin1, { users: [] }, null)).toBe(true);
+    });
+
+    it("no org user should be denied", () => {
+      expect(isAuthorizedUser("jobs:write", user1, { users: [] }, null)).toBe(false);
+    });
+
+    it("ReadOnly org user should be denied", () => {
+      expect(isAuthorizedUser("jobs:write", userOrgRo, { users: [] }, orgRo)).toBe(false);
+    });
+
+    it("Write orf user should be allowed", () => {
+      expect(isAuthorizedUser("jobs:write", userOrgWrite, { users: [] }, orgWrite)).toBe(true);
     });
   });
 });

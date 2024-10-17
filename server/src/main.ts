@@ -1,5 +1,5 @@
 import { captureException } from "@sentry/node";
-import { modelDescriptors } from "shared/src/models/models";
+import { modelDescriptors } from "shared/models/models";
 
 import { startCLI } from "./commands";
 import config from "./config";

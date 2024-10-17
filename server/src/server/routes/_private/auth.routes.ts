@@ -1,6 +1,6 @@
 import { internal } from "@hapi/boom";
 import { zRoutes } from "shared";
-import { toPublicUser } from "shared/src/models/user.model";
+import { toPublicUser } from "shared/models/user.model";
 
 import { registerUser, sendRegisterFeedbackEmail, sendRequestLoginEmail } from "@/actions/auth.actions";
 import { startSession, stopSession } from "@/actions/sessions.actions";

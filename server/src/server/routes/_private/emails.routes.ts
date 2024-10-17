@@ -1,6 +1,6 @@
 import { forbidden } from "@hapi/boom";
 import { zRoutes } from "shared";
-import type { IEmailError } from "shared/src/models/email_event.model";
+import type { IEmailError } from "shared/models/email_event.model";
 
 import { markEmailAsDelivered, markEmailAsFailed, markEmailAsOpened, unsubscribe } from "@/actions/emails.actions";
 import config from "@/config";

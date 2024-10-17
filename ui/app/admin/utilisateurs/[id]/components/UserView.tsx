@@ -1,10 +1,10 @@
 import { Typography } from "@mui/material";
-import { FC } from "react";
-import { IUserPublic } from "shared/models/user.model";
+import type { FC } from "react";
+import type { IUserPublic } from "shared/models/user.model";
 
-import InfoDetails from "../../../../../components/infoDetails/InfoDetails";
-import { formatDate } from "../../../../../utils/date.utils";
-import Breadcrumb, { PAGES } from "../../../../components/breadcrumb/Breadcrumb";
+import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+import InfoDetails from "@/components/infoDetails/InfoDetails";
+import { formatDate } from "@/utils/date.utils";
 
 interface Props {
   user: IUserPublic;

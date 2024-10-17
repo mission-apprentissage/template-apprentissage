@@ -18,7 +18,7 @@ export default defineConfig((options) => {
 
   return {
     entry,
-    watch: isWatched ? ["./src", "../shared"] : false,
+    watch: isWatched ? ["./src", "../shared/src"] : false,
     onSuccess: isWatched ? "yarn cli start --withProcessor" : "",
     ignoreWatch: ["../shared/node_modules/**"],
     // In watch mode doesn't exit cleanly as it causes EADDRINUSE error

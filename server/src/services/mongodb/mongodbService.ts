@@ -2,8 +2,8 @@ import { captureException } from "@sentry/node";
 import { isEqual } from "lodash-es";
 import type { Collection, CollectionInfo, MongoServerError } from "mongodb";
 import { MongoClient } from "mongodb";
-import type { CollectionName, IDocument, IModelDescriptor } from "shared/src/models/models";
-import { modelDescriptors } from "shared/src/models/models";
+import type { CollectionName, IDocument, IModelDescriptor } from "shared/models/models";
+import { modelDescriptors } from "shared/models/models";
 import { zodToMongoSchema } from "zod-mongodb-schema";
 
 import config from "@/config";

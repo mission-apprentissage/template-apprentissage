@@ -37,5 +37,9 @@
   "vitest.commandLine": "yarn test --single-thread",
   "ansible.python.interpreterPath": "/opt/homebrew/bin/python3",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "vitest.workspaceConfig": "vitest.workspace.ts"
+  "vitest.workspaceConfig": "vitest.workspace.ts",
+  "compareFolders.ignoreAllWhiteSpaces": true,
+  "compareFolders.ignoreEmptyLines": true,
+  "compareFolders.ignoreWhiteSpaces": true,
+  "compareFolders.respectGitIgnore": true
 }

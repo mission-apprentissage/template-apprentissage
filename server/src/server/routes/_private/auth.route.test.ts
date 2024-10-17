@@ -1,6 +1,6 @@
 import { useMongo } from "@tests/mongo.test.utils";
 import { ObjectId } from "mongodb";
-import { generateUserFixture } from "shared/src/models/fixtures/index";
+import { generateUserFixture } from "shared/models/fixtures/index";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import { generateMagicLinkToken, generateRegisterToken } from "@/actions/auth.actions";

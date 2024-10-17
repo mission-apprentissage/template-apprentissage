@@ -2,7 +2,7 @@ import { badRequest, Boom, internal, isBoom } from "@hapi/boom";
 import { captureException } from "@sentry/node";
 import type { FastifyError } from "fastify";
 import { ResponseValidationError } from "fastify-type-provider-zod";
-import type { IResError } from "shared/src/models/errors";
+import type { IResError } from "shared/models/errors";
 import { ZodError } from "zod";
 
 import config from "@/config";

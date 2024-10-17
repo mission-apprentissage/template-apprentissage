@@ -1,30 +1,30 @@
-import Boom from "@hapi/boom";
+import { internal, unauthorized } from "@hapi/boom";
 import { captureException } from "@sentry/node";
 import type { FastifyRequest } from "fastify";
 import type { JwtPayload } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
-import type { PathParam, QueryString } from "shared/src/helpers/generateUri";
-import type { IUser } from "shared/src/models/user.model";
-import type { ISecuredRouteSchema, WithSecurityScheme } from "shared/src/routes/common.routes";
-import type { UserWithType } from "shared/src/security/permissions";
+import type { PathParam, QueryString } from "shared/helpers/generateUri.js";
+import type { IOrganisation } from "shared/models/organisation.model";
+import type { IApiKey, IUser } from "shared/models/user.model";
+import type { IAccessToken, ISecuredRouteSchema, WithSecurityScheme } from "shared/routes/common.routes";
+import type { UserWithType } from "shared/security/permissions";
 import { assertUnreachable } from "shared/utils/assertUnreachable";
 
-import { getSession } from "@/actions/sessions.actions";
-import { updateUser } from "@/actions/users.actions";
-import config from "@/config";
-import { getDbCollection } from "@/services/mongodb/mongodbService";
-import { compareKeys } from "@/utils/cryptoUtils";
-import { decodeToken } from "@/utils/jwtUtils";
+import { authCookieSession } from "@/actions/sessions.actions.js";
+import { getDbCollection } from "@/services/mongodb/mongodbService.js";
+import { compareKeys } from "@/utils/cryptoUtils.js";
+import { decodeToken } from "@/utils/jwtUtils.js";
 
-import type { IAccessToken } from "./accessTokenService";
-import { parseAccessToken } from "./accessTokenService";
+import { parseAccessToken } from "./accessTokenService.js";
 
 export type IUserWithType = UserWithType<"token", IAccessToken> | UserWithType<"user", IUser>;
 
 declare module "fastify" {
   interface FastifyRequest {
     user?: null | IUserWithType;
+    organisation?: null | IOrganisation;
+    api_key?: IApiKey | null;
   }
 }
 
@@ -40,59 +40,51 @@ export const getUserFromRequest = <S extends WithSecurityScheme>(
   _schema: S
 ): AuthenticatedUser<S["securityScheme"]["auth"]>["value"] => {
   if (!req.user) {
-    throw Boom.internal("User should be authenticated");
+    throw internal("User should be authenticated");
   }
 
   return req.user.value as AuthenticatedUser<S["securityScheme"]["auth"]>["value"];
 };
 
-async function authCookieSession(req: FastifyRequest): Promise<UserWithType<"user", IUser> | null> {
-  const token = req.cookies?.[config.session.cookieName];
-
-  if (!token) {
-    throw Boom.forbidden("Session invalide");
-  }
-
-  try {
-    const session = await getSession({ token });
-
-    if (!session) {
-      return null;
-    }
-
-    const { email } = jwt.verify(token, config.auth.user.jwtSecret) as JwtPayload;
-
-    const user = await getDbCollection("users").findOne({ email: email.toLowerCase() });
-
-    return user ? { type: "user", value: user } : user;
-  } catch (error) {
-    captureException(error);
-    return null;
-  }
-}
-
 async function authApiKey(req: FastifyRequest): Promise<UserWithType<"user", IUser> | null> {
   const token = extractBearerTokenFromHeader(req);
 
   if (!token) {
-    throw Boom.forbidden("Jeton manquant");
+    return null;
   }
 
   try {
     const { _id, api_key } = decodeToken(token) as JwtPayload;
 
-    const user = await getDbCollection("users").findOne({ _id: new ObjectId(_id) });
+    const user = await getDbCollection("users").findOne({ _id: new ObjectId(`${_id}`) });
 
-    if (!user || !user?.api_key || !compareKeys(user.api_key, api_key)) {
-      throw Boom.forbidden("Jeton invalide");
+    const savedKey = user?.api_keys.find((key) => compareKeys(key.key, api_key));
+
+    if (!savedKey) {
+      return null;
     }
 
-    const api_key_used_at = new Date();
+    const now = new Date();
+    const updatedUser = await getDbCollection("users").findOneAndUpdate(
+      { "api_keys._id": savedKey._id },
+      {
+        $set: {
+          "api_keys.$.last_used_at": now,
+          updated_at: now,
+        },
+      },
+      { returnDocument: "after" }
+    );
 
-    await updateUser(user.email, { api_key_used_at });
-    return user ? { type: "user", value: { ...user, api_key_used_at } } : null;
+    req.api_key = updatedUser?.api_keys.find((key) => key._id.equals(savedKey._id)) ?? null;
+
+    return updatedUser === null ? null : { type: "user", value: updatedUser };
   } catch (error) {
-    throw Boom.forbidden("Jeton invalide");
+    if (error instanceof jwt.JsonWebTokenError) {
+      return null;
+    }
+    captureException(error);
+    return null;
   }
 }
 
@@ -109,12 +101,17 @@ function extractBearerTokenFromHeader(req: FastifyRequest): null | string {
   return matches === null ? null : matches[1];
 }
 
+function extractTokenFromQuery(req: FastifyRequest): null | string {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (req.query as any)?.token ?? null;
+}
+
 async function authAccessToken<S extends ISecuredRouteSchema>(
   req: FastifyRequest,
   schema: S
 ): Promise<UserWithType<"token", IAccessToken> | null> {
   const token = parseAccessToken(
-    extractBearerTokenFromHeader(req),
+    extractBearerTokenFromHeader(req) ?? extractTokenFromQuery(req),
     schema,
     req.params as PathParam,
     req.query as QueryString
@@ -127,9 +124,17 @@ async function authAccessToken<S extends ISecuredRouteSchema>(
   return token ? { type: "token", value: token } : null;
 }
 
+async function getOrganisation(user: IUserWithType | null | undefined): Promise<IOrganisation | null> {
+  if (user == null) return null;
+  const organisationName = user.type === "token" ? user.value.identity.organisation : user.value.organisation;
+  if (organisationName === null) return null;
+
+  return getDbCollection("organisations").findOne({ nom: organisationName });
+}
+
 export async function authenticationMiddleware<S extends ISecuredRouteSchema>(schema: S, req: FastifyRequest) {
   if (!schema.securityScheme) {
-    throw Boom.internal("Missing securityScheme");
+    throw internal("Missing securityScheme");
   }
 
   const securityScheme = schema.securityScheme;
@@ -137,18 +142,29 @@ export async function authenticationMiddleware<S extends ISecuredRouteSchema>(sc
   switch (securityScheme.auth) {
     case "cookie-session":
       req.user = await authCookieSession(req);
+      if (!req.user) {
+        throw unauthorized("Vous devez être connecté pour accéder à cette ressource");
+      }
       break;
     case "api-key":
       req.user = await authApiKey(req);
+      if (!req.user) {
+        throw unauthorized("Vous devez fournir une clé d'API valide pour accéder à cette ressource");
+      }
       break;
     case "access-token":
       req.user = await authAccessToken(req, schema);
+      if (!req.user) {
+        throw unauthorized("Le lien de connexion pour accéder à cette ressource est invalide");
+      }
       break;
     default:
       assertUnreachable(securityScheme.auth);
   }
 
   if (!req.user) {
-    throw Boom.unauthorized();
+    throw unauthorized("Vous devez être connecté pour accéder à cette ressource");
   }
+
+  req.organisation = await getOrganisation(req.user);
 }

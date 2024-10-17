@@ -2,7 +2,7 @@ import { conflict } from "@hapi/boom";
 import { ObjectId } from "mongodb";
 import type { IBody, IPostRoutes } from "shared";
 import { zRoutes } from "shared";
-import type { IUser } from "shared/src/models/user.model";
+import type { IUser } from "shared/models/user.model";
 
 import { sendEmail } from "@/services/mailer/mailer";
 import { getDbCollection } from "@/services/mongodb/mongodbService";

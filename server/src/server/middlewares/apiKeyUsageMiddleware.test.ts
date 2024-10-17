@@ -2,9 +2,9 @@ import { useMongo } from "@tests/mongo.test.utils";
 import { fastify } from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
-import { generateUserFixture } from "shared/src/models/fixtures/index";
-import type { IUser } from "shared/src/models/user.model";
-import type { IRouteSchema, ISecuredRouteSchema, WithSecurityScheme } from "shared/src/routes/common.routes";
+import { generateUserFixture } from "shared/models/fixtures/index";
+import type { IUser } from "shared/models/user.model";
+import type { IRouteSchema, ISecuredRouteSchema, WithSecurityScheme } from "shared/routes/common.routes";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { z } from "zod";
 

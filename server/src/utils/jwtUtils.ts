@@ -1,7 +1,7 @@
 import type { SignOptions } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
-import type { ITemplate } from "shared/src/models/email_event/email_templates";
-import { zTemplate } from "shared/src/models/email_event/email_templates";
+import type { ITemplate } from "shared/models/email_event/email_templates";
+import { zTemplate } from "shared/models/email_event/email_templates";
 
 import config from "@/config";
 

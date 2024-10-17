@@ -1,4 +1,4 @@
-import { modelDescriptors } from "shared/src/models/models";
+import { modelDescriptors } from "shared/models/models";
 import { beforeAll, beforeEach } from "vitest";
 
 import config from "@/config.js";

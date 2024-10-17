@@ -4,9 +4,9 @@ import type { JwtPayload } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import type { Filter, FindOptions } from "mongodb";
 import { ObjectId } from "mongodb";
-import type { ISession } from "shared/src/models/session.model";
-import type { IUser } from "shared/src/models/user.model";
-import type { UserWithType } from "shared/src/security/permissions";
+import type { ISession } from "shared/models/session.model";
+import type { IUser } from "shared/models/user.model";
+import type { UserWithType } from "shared/security/permissions";
 
 import config from "@/config";
 import { withCause } from "@/services/errors/withCause";

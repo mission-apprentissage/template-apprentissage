@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import type { IApiKeyPrivate, IUser } from "shared/src/models/user.model";
+import type { IApiKeyPrivate, IUser } from "shared/models/user.model";
 import { adjectives, animals, colors, uniqueNamesGenerator } from "unique-names-generator";
 
 import config from "@/config";

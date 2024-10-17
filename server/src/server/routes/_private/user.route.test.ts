@@ -1,7 +1,7 @@
 import { useMongo } from "@tests/mongo.test.utils";
 import jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
-import { generateUserFixture } from "shared/src/models/fixtures/index";
+import { generateUserFixture } from "shared/models/fixtures/index";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createSession, createSessionToken } from "@/actions/sessions.actions";

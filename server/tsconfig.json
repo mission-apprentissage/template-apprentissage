@@ -16,7 +16,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@tests/*": ["./tests/*"],
-      "shared/*": ["../shared/*"]
+      "shared/*": ["../shared/src/*"]
     },
     "resolveJsonModule": true,
     "typeRoots": ["./types", "./node_modules/@types/", "../node_modules/@types/"],

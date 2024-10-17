@@ -11,7 +11,7 @@ import type {
   RawServerDefault,
   RouteGenericInterface,
 } from "fastify";
-import type { IRouteSchema, SecurityScheme, WithSecurityScheme } from "shared/src/routes/common.routes";
+import type { IRouteSchema, SecurityScheme, WithSecurityScheme } from "shared/routes/common.routes";
 
 import { authenticationMiddleware } from "@/services/security/authenticationService";
 import { authorizationnMiddleware } from "@/services/security/authorisationService";
