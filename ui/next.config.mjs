@@ -7,7 +7,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const nextConfig = {
-  transpilePackages: ["shared", "api-alternance-sdk"],
+  transpilePackages: ["shared"],
   poweredByHeader: false,
   productionBrowserSourceMaps: true,
   swcMinify: true,

@@ -20,7 +20,7 @@
     "n/no-extraneous-import": [
       "error",
       {
-        "allowModules": ["shared", "api-alternance-sdk"]
+        "allowModules": ["shared"]
       }
     ]
   },

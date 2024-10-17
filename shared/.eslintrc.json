@@ -13,11 +13,6 @@
   "rules": {
     "zod/prefer-enum": "error",
     "n/no-missing-import": 0,
-    "n/no-extraneous-import": [
-      "error",
-      {
-        "allowModules": ["api-alternance-sdk"]
-      }
-    ]
+    "n/no-extraneous-import": ["error"]
   }
 }

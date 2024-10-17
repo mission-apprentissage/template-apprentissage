@@ -35,7 +35,6 @@
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "accept-language": "^3.0.20",
-    "api-alternance-sdk": "workspace:^",
     "autosuggest-highlight": "^3.3.4",
     "core-js": "^3.38.1",
     "date-fns": "^4.1.0",

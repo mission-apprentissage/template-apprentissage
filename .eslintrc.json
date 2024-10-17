@@ -11,12 +11,7 @@
     },
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": [
-      "tsconfig.json",
-      "server/tsconfig.json",
-      "shared/tsconfig.json",
-      "ui/tsconfig.json"
-    ]
+    "project": ["tsconfig.json", "server/tsconfig.json", "shared/tsconfig.json", "ui/tsconfig.json"]
   },
   "plugins": ["react", "@typescript-eslint", "simple-import-sort", "import", "@dword-design/import-alias"],
   "rules": {
@@ -60,7 +55,7 @@
   "settings": {
     "import/resolver": {
       "typescript": {
-        "project": ["sdk/tsconfig.json", "server/tsconfig.json", "shared/tsconfig.json", "ui/tsconfig.json"]
+        "project": ["server/tsconfig.json", "shared/tsconfig.json", "ui/tsconfig.json"]
       }
     },
     "react": {

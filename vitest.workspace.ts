@@ -1,4 +1,5 @@
-import path from "path";
+import { resolve } from "node:path";
+
 import tsconfigPaths from "vite-tsconfig-paths";
 import { defineWorkspace } from "vitest/config";
 
@@ -15,7 +16,7 @@ export default defineWorkspace([
     },
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "./server/src"),
+        "@": resolve(__dirname, "./server/src"),
       },
     },
   },

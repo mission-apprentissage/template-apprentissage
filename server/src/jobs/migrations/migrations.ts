@@ -1,10 +1,10 @@
 import { readFile, writeFile } from "node:fs/promises";
 
-import { __dirname } from "api-alternance-sdk/internal";
 import { config, create as mcreate, status as mstatus, up as mup } from "migrate-mongo";
 import path from "path";
 
 import { getMongodbClient } from "@/services/mongodb/mongodbService.js";
+import { __dirname } from "@/utils/esmUtils.js";
 
 const myConfig = {
   mongodb: {
