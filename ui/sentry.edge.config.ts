@@ -3,12 +3,11 @@
 // Note that this config is unrelated to the Vercel Edge Runtime and is also required when running locally.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-import { ExtraErrorData, HttpClient } from "@sentry/integrations";
-import * as Sentry from "@sentry/nextjs";
+import { captureConsoleIntegration, extraErrorDataIntegration, init } from "@sentry/nextjs";
 
 import { publicConfig } from "./config.public";
 
-Sentry.init({
+init({
   dsn: publicConfig.sentry.dsn,
   tracesSampleRate: publicConfig.env === "production" ? 0.1 : 1.0,
   tracePropagationTargets: [
@@ -20,11 +19,5 @@ Sentry.init({
   enabled: publicConfig.env !== "local",
   release: publicConfig.version,
   normalizeDepth: 8,
-  integrations: [
-    new Sentry.Integrations.Http({ tracing: true }),
-    // @ts-ignore
-    new ExtraErrorData({ depth: 8 }),
-    // @ts-ignore
-    new HttpClient({}),
-  ],
+  integrations: [captureConsoleIntegration({ levels: ["error"] }), extraErrorDataIntegration({ depth: 8 })],
 });

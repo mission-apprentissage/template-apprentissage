@@ -4,7 +4,7 @@ Afin de lancer le projet, il est nécessaire de s'assurer que tous les pré-requ
 
 ## GPG
 
-[Suivre la documentation dédié](./gpg.md)
+[Suivre la documentation dédié sur le repo infra](https://github.com/mission-apprentissage/infra/blob/main/docs/gpg.md)
 
 ## Docker
 
@@ -20,7 +20,7 @@ Installez [Node Js20+](https://nodejs.org/en/download)
 
 Installez [Ansible 2.7+](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 
-> Sur macOS vous pouvez utiliser `brew install ansible`
+> Sur OS X vous pouvez utiliser `brew install ansible`
 
 ## 1Password CLI
 
@@ -34,13 +34,13 @@ Installez [Ansible 2.7+](https://docs.ansible.com/ansible/latest/installation_gu
 
 [Installez yq](https://github.com/mikefarah/yq)
 
-> Sur macOS vous pouvez utiliser `brew install yq`
+> Sur OS X vous pouvez utiliser `brew install yq`
 
 ## sshpass
 
 [Installez sshpass](https://www.linuxtricks.fr/wiki/ssh-sshpass-la-connexion-ssh-par-mot-de-passe-non-interactive)
 
-> Sur macOS vous pouvez utiliser
+> Sur OS X vous pouvez utiliser
 
 ```bash
 brew tap esolitos/ipa
@@ -49,8 +49,8 @@ brew install esolitos/ipa/sshpass
 
 ## pwgen
 
-> Sur macOS vous pouvez utiliser `brew install pwgen`
+> Sur OS X vous pouvez utiliser `brew install pwgen`
 
 ## bash 5+
 
-> Sur macOS vous pouvez utiliser `brew install bash`
+> Sur OS X vous pouvez utiliser `brew install bash`

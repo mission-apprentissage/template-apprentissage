@@ -2,12 +2,17 @@
 // The config you add here will be used whenever the server handles a request.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-import { ExtraErrorData, HttpClient } from "@sentry/integrations";
-import * as Sentry from "@sentry/nextjs";
+import {
+  captureConsoleIntegration,
+  extraErrorDataIntegration,
+  httpClientIntegration,
+  httpIntegration,
+  init,
+} from "@sentry/nextjs";
 
 import { publicConfig } from "./config.public";
 
-Sentry.init({
+init({
   dsn: publicConfig.sentry.dsn,
   tracesSampleRate: publicConfig.env === "production" ? 0.1 : 1.0,
   tracePropagationTargets: [
@@ -20,10 +25,8 @@ Sentry.init({
   release: publicConfig.version,
   normalizeDepth: 8,
   integrations: [
-    new Sentry.Integrations.Http({ tracing: true }),
-    // @ts-ignore
-    new ExtraErrorData({ depth: 8 }),
-    // @ts-ignore
-    new HttpClient({}),
+    httpIntegration({}),
+    captureConsoleIntegration({ levels: ["error"] }),
+    extraErrorDataIntegration({ depth: 8 }),
   ],
 });
