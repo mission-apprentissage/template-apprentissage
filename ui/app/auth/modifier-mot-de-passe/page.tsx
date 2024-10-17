@@ -6,13 +6,14 @@ import { Button } from "@codegouvfr/react-dsfr/Button";
 import { Box, Typography } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { IPostRoutes } from "shared";
-import { IStatus } from "shared/routes/auth.routes";
+import type { SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import type { IPostRoutes } from "shared";
+import type { IStatus } from "shared/src/routes/_private/auth.routes";
 
-import { apiPost } from "../../../utils/api.utils";
-import Breadcrumb, { PAGES } from "../../components/breadcrumb/Breadcrumb";
-import FormContainer from "../components/FormContainer";
+import FormContainer from "@/app/auth/components/FormContainer";
+import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+import { apiPost } from "@/utils/api.utils";
 // import { NavLink } from "../../components/NavLink";
 
 interface IFormValues extends Zod.input<IPostRoutes["/auth/reset-password"]["body"]> {

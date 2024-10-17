@@ -1,4 +1,5 @@
 {
+  "extends": ["plugin:n/recommended-module", "plugin:import/recommended", "plugin:import/typescript"],
   "env": {
     "es2022": true,
     "node": true
@@ -6,16 +7,7 @@
   "plugins": ["zod"],
   "rules": {
     "zod/prefer-enum": "error",
-    "zod/require-strict": "error"
-  },
-  "parserOptions": {
-    "project": "shared/tsconfig.json"
-  },
-  "settings": {
-    "import/resolver": {
-      "typescript": {
-        "project": "shared/tsconfig.json"
-      }
-    }
+    "n/no-missing-import": 0,
+    "n/no-extraneous-import": ["error"]
   }
 }

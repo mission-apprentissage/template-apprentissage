@@ -8,16 +8,18 @@
     "lib": [
       "ES2023"
     ] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
+
     /* Modules */
     "module": "ESNext",
     "moduleResolution": "node",
+
     "paths": {
       "@/*": ["./src/*"],
       "@tests/*": ["./tests/*"],
       "shared/*": ["../shared/*"]
     },
     "resolveJsonModule": true,
-    "typeRoots": ["./types", "./node_modules/@types/"],
+    "typeRoots": ["./types", "./node_modules/@types/", "../node_modules/@types/"],
     /* JavaScript Support */
     "allowJs": false,
     /* Emit */
@@ -30,15 +32,21 @@
     "strict": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": false,
     "noImplicitReturns": true,
     "useUnknownInCatchVariables": false,
     "noUncheckedIndexedAccess": false,
     /* Completeness */
     "skipLibCheck": true,
     /* Output Formatting */
-    "pretty": true
+    "pretty": true,
+    "noErrorTruncation": true,
+    "noUncheckedSideEffectImports": true
   },
   "include": ["./**/*.ts", "./**/*.js"],
-  "exclude": ["**/node_modules", "coverage", "dist"]
+  "exclude": ["**/node_modules", "coverage", "dist"],
+  "typeAcquisition": {
+    "enable": true,
+    "include": ["@types/node"]
+  }
 }
