@@ -24,7 +24,7 @@ Cette clé devra etre ajoutée sur [votre profile Github](https://github.com/set
 
 ### GPG
 
-[Suivre la documentation dédiée](../developpement/gpg.md)
+[Suivre la documentation dédié sur le repo infra](https://github.com/mission-apprentissage/infra/blob/main/docs/gpg.md)
 
 ### Provision du server
 

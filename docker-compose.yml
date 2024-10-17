@@ -1,8 +1,6 @@
-version: "3.8"
-
 services:
   mongodb:
-    image: mongo:6.0.2-focal
+    image: mongo:7
     restart: unless-stopped
     hostname: mongodb
     ports:
@@ -11,7 +9,7 @@ services:
     volumes:
       - tpml_mongodb_data:/data
       - ./.infra/local/mongo_keyfile:/tmp/mongo_keyfile
-      - ./.infra/local/mongod.conf:/etc/mongod.conf
+      - ./.infra/local/mongod.conf:/etc/mongod.conf:ro
     healthcheck:
       test: ["CMD", "mongosh", "--eval", '''db.runCommand("ping").ok''', "--quiet"]
       interval: 10s
@@ -20,7 +18,7 @@ services:
       start_period: 10s
 
   smtp:
-    image: axllent/mailpit:v1.5.5
+    image: axllent/mailpit:latest
     restart: unless-stopped
     ports:
       - 1025:1025
