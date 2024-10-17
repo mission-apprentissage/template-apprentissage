@@ -1,10 +1,13 @@
-import { IDeleteRoutes, IGetRoutes, IPostRoutes, IPutRoutes, IRequest, IResponse } from "shared";
-import { generateUri, PathParam, QueryString, WithQueryStringAndPathParam } from "shared/helpers/generateUri";
-import { IResErrorJson, IRouteSchema, IRouteSchemaWrite } from "shared/routes/common.routes";
-import { EmptyObject } from "type-fest";
-import z, { ZodType } from "zod";
+import type { IDeleteRoutes, IGetRoutes, IPostRoutes, IPutRoutes, IRequest, IResponse } from "shared";
+import type { PathParam, QueryString, WithQueryStringAndPathParam } from "shared/src//helpers/generateUri";
+import { generateUri } from "shared/src/helpers/generateUri";
+import type { IResErrorJson } from "shared/src/models/errors/errors.model";
+import type { IRouteSchema, IRouteSchemaWrite } from "shared/src/routes/common.routes";
+import type { EmptyObject } from "type-fest";
+import type { ZodType } from "zod";
+import type z from "zod";
 
-import { publicConfig } from "../config.public";
+import { publicConfig } from "@/config.public";
 
 type OptionsGet = {
   [Prop in keyof Pick<IRouteSchema, "params" | "querystring" | "headers">]: IRouteSchema[Prop] extends ZodType
