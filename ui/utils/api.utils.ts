@@ -1,5 +1,5 @@
 import type { IDeleteRoutes, IGetRoutes, IPostRoutes, IPutRoutes, IRequest, IResponse } from "shared";
-import type { PathParam, QueryString, WithQueryStringAndPathParam } from "shared//helpers/generateUri";
+import type { PathParam, QueryString, WithQueryStringAndPathParam } from "shared/helpers/generateUri";
 import { generateUri } from "shared/helpers/generateUri";
 import type { IResErrorJson } from "shared/models/errors/errors.model";
 import type { IRouteSchema, IRouteSchemaWrite } from "shared/routes/common.routes";

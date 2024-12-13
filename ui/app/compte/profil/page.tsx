@@ -6,12 +6,12 @@ import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 
-import InfoDetails from "../../../components/infoDetails/InfoDetails";
-import Toast, { useToast } from "../../../components/toast/Toast";
-import { useAuth } from "../../../context/AuthContext";
-import { apiGet } from "../../../utils/api.utils";
-import { formatDate } from "../../../utils/date.utils";
-import Breadcrumb, { PAGES } from "../../components/breadcrumb/Breadcrumb";
+import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+import InfoDetails from "@/components/infoDetails/InfoDetails";
+import Toast, { useToast } from "@/components/toast/Toast";
+import { useAuth } from "@/context/AuthContext";
+import { apiGet } from "@/utils/api.utils";
+import { formatDate } from "@/utils/date.utils";
 
 const modal = createModal({
   id: "generate-api-key",
@@ -121,7 +121,7 @@ const ProfilPage = () => {
       </modal.Component>
 
       <Box my={2}>
-        <Button onClick={() => (user.has_api_key ? modal.open() : generateApiKey())}>
+        <Button onClick={async () => (user.has_api_key ? modal.open() : generateApiKey())}>
           Générer un nouveau jeton API
         </Button>
       </Box>

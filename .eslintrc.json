@@ -35,7 +35,7 @@
       }
     ],
     "@typescript-eslint/consistent-type-imports": ["error", { "prefer": "type-imports" }],
-    "@typescript-eslint/ban-ts-comment": ["off"],
+    "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-import-type-side-effects": "error",
     "@typescript-eslint/promise-function-async": "error",
     "@typescript-eslint/switch-exhaustiveness-check": "error",
