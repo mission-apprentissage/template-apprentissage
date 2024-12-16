@@ -14,7 +14,7 @@ readonly VAULT_DIR="${ROOT_DIR}/.infra/vault"
 readonly VAULT_FILE="${VAULT_DIR}/vault.yml"
 readonly PRODUCT_NAME="tmpl"
 
-DOCUMENT_CONTENT=$(op --account mission-apprentissage document get ".vault-password-${PRODUCT_NAME}" --vault "mna-vault-passwords-common" || echo "")
+DOCUMENT_CONTENT=$(op --account mission-apprentissage document get ".vault-password-${PRODUCT_NAME}" --vault "${OP_VAULT_NAME}" || echo "")
 vault_password_file="${VAULT_DIR}/.vault-password.gpg"
 previous_vault_password_file="${VAULT_DIR}/.vault-password-previous.gpg"
 

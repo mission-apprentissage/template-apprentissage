@@ -7,6 +7,9 @@
   "license": "MIT",
   "private": true,
   "type": "module",
+  "sideEffects": [
+    "./src/helpers/zodWithOpenApi.ts"
+  ],
   "engines": {
     "node": ">=22",
     "npm": "please-use-yarn"

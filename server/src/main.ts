@@ -1,3 +1,5 @@
+import "shared/helpers/zodWithOpenApi";
+
 import { captureException } from "@sentry/node";
 import { modelDescriptors } from "shared/models/models";
 

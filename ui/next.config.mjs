@@ -6,6 +6,30 @@ import { withPlausibleProxy } from "next-plausible";
 import path from "path";
 import { fileURLToPath } from "url";
 
+function inline(value) {
+  return value.replace(/\s{2,}/g, " ").trim();
+}
+
+const contentSecurityPolicy = `
+      default-src 'self' https://plausible.io;
+      base-uri 'self';
+      block-all-mixed-content;
+      font-src 'self' https: data:;
+      frame-ancestors 'self';
+      frame-src 'self' https://plausible.io;
+      img-src 'self' https://www.notion.so data: ;
+      object-src 'none';
+      script-src 'self' https://plausible.io 'unsafe-inline' ${
+        process.env.NEXT_PUBLIC_ENV === "local" ? "'unsafe-eval'" : ""
+      };
+      script-src-attr 'none';
+      style-src 'self' https:  https: *.plausible.io 'unsafe-inline';
+      connect-src 'self' https://geo.api.gouv.fr/ https://plausible.io  https://sentry.apprentissage.beta.gouv.fr ${
+        process.env.NEXT_PUBLIC_ENV === "local" ? "http://localhost:5001/" : ""
+      };
+      upgrade-insecure-requests;
+`;
+
 const nextConfig = {
   transpilePackages: ["shared"],
   poweredByHeader: false,
@@ -17,18 +41,25 @@ const nextConfig = {
     instrumentationHook: true,
   },
 
-  async redirects() {
-    return [
-      {
-        source: "/catalogue-des-donnees/:slug*",
-        destination: "/explorer/:slug*", // Matched parameters can be used in the destination
-        permanent: true,
-      },
-    ];
-  },
   output: "standalone",
   sentry: {
+    // disableServerWebpackPlugin: true,
+    // disableClientWebpackPlugin: true,
     hideSourceMaps: false,
+    // widenClientFileUpload: true,
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: inline(contentSecurityPolicy),
+          },
+        ],
+      },
+    ];
   },
   webpack: (config) => {
     config.module.rules.push({

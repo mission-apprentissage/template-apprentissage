@@ -1,8 +1,8 @@
 import type { IDeleteRoutes, IGetRoutes, IPostRoutes, IPutRoutes, IRequest, IResponse } from "shared";
-import type { PathParam, QueryString, WithQueryStringAndPathParam } from "shared/helpers/generateUri";
-import { generateUri } from "shared/helpers/generateUri";
-import type { IResErrorJson } from "shared/models/errors/errors.model";
-import type { IRouteSchema, IRouteSchemaWrite } from "shared/routes/common.routes";
+import type { PathParam, QueryString, WithQueryStringAndPathParam } from "shared/src/helpers/generateUri";
+import { generateUri } from "shared/src/helpers/generateUri";
+import type { IResErrorJson } from "shared/src/models/errors/errors.model";
+import type { IRouteSchema, IRouteSchemaWrite } from "shared/src/routes/common.routes";
 import type { EmptyObject } from "type-fest";
 import type { ZodType } from "zod";
 import type z from "zod";
