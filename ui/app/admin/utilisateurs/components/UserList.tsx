@@ -1,14 +1,14 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
-import { IUserPublic } from "shared/models/user.model";
+import type { IUserPublic } from "shared/src/models/user.model";
 
-import SearchBar from "../../../../components/SearchBar";
-import Table from "../../../../components/table/Table";
-import { apiGet } from "../../../../utils/api.utils";
-import { formatDate } from "../../../../utils/date.utils";
-import { formatUrlWithNewParams, getSearchParamsForQuery } from "../../../../utils/query.utils";
-import { PAGES } from "../../../components/breadcrumb/Breadcrumb";
+import { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+import SearchBar from "@/components/SearchBar";
+import Table from "@/components/table/Table";
+import { apiGet } from "@/utils/api.utils";
+import { formatDate } from "@/utils/date.utils";
+import { formatUrlWithNewParams, getSearchParamsForQuery } from "@/utils/query.utils";
 
 const UserList = () => {
   const searchParams = useSearchParams();

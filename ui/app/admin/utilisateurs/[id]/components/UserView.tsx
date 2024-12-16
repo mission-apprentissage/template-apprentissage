@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import type { FC } from "react";
-import type { IUserPublic } from "shared/models/user.model";
+import type { IUserPublic } from "shared/src/models/user.model";
 
 import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
 import InfoDetails from "@/components/infoDetails/InfoDetails";

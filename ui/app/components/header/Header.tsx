@@ -1,11 +1,13 @@
-import { Header as DSFRHeader, HeaderProps } from "@codegouvfr/react-dsfr/Header";
+import type { HeaderProps } from "@codegouvfr/react-dsfr/Header";
+import { Header as DSFRHeader } from "@codegouvfr/react-dsfr/Header";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
-import { publicConfig } from "../../../config.public";
-import { useAuth } from "../../../context/AuthContext";
-import { apiGet } from "../../../utils/api.utils";
-import { PAGES } from "../breadcrumb/Breadcrumb";
+import { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+import { publicConfig } from "@/config.public";
+import { useAuth } from "@/context/AuthContext";
+import { apiGet } from "@/utils/api.utils";
+
 import { useNavigationItems } from "./header.utils";
 
 export const Header = () => {
