@@ -1,3 +1,5 @@
+import "../zodWithOpenApi";
+
 import { describe, expect, it } from "vitest";
 
 import { generateOpenApiSchema } from "./generateOpenapi";

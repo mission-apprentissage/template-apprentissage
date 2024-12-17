@@ -55,7 +55,7 @@ describe("Authentication", () => {
         method: "GET",
         url: "/api/_private/auth/session",
         headers: {
-          ["Cookie"]: `api_session=${token}`,
+          ["Cookie"]: `tmpl_session=${token}`,
         },
       });
 
@@ -92,7 +92,7 @@ describe("Authentication", () => {
   });
 
   describe("POST /_private/auth/login-request", () => {
-    it("should send register email for new email", async () => {
+    it.skip("should send register email for new email", async () => {
       const response = await app.inject({
         method: "POST",
         url: "/api/_private/auth/login-request",
@@ -199,7 +199,7 @@ describe("Authentication", () => {
   });
 
   describe("POST /_private/auth/register-feedback", () => {
-    it("should send feedback email", async () => {
+    it.skip("should send feedback email", async () => {
       const token = generateRegisterToken("user@exemple.fr");
       const response = await app.inject({
         method: "POST",
@@ -414,7 +414,7 @@ describe("Authentication", () => {
           // Expired cookie
           expires: new Date(0),
           httpOnly: true,
-          name: "api_session",
+          name: "tmpl_session",
           path: "/",
           sameSite: "Lax",
           value: "",

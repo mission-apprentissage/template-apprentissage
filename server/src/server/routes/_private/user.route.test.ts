@@ -73,7 +73,7 @@ describe("User Routes", () => {
         method: "POST",
         url: "/api/_private/user/api-key",
         headers: {
-          ["Cookie"]: `api_session=${sessionToken}`,
+          ["Cookie"]: `tmpl_session=${sessionToken}`,
         },
         body: {
           name: "My key",
@@ -110,7 +110,7 @@ describe("User Routes", () => {
         api_key: expect.any(String),
         exp: in180Days.getTime() / 1000,
         iat: now.getTime() / 1000,
-        iss: "api",
+        iss: "tmpl",
       });
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -125,7 +125,7 @@ describe("User Routes", () => {
         method: "POST",
         url: "/api/_private/user/api-key",
         headers: {
-          ["Cookie"]: `api_session=${sessionToken}`,
+          ["Cookie"]: `tmpl_session=${sessionToken}`,
         },
         body: {
           name: "",
@@ -135,7 +135,7 @@ describe("User Routes", () => {
         method: "POST",
         url: "/api/_private/user/api-key",
         headers: {
-          ["Cookie"]: `api_session=${sessionToken}`,
+          ["Cookie"]: `tmpl_session=${sessionToken}`,
         },
         body: {
           name: "",
@@ -145,7 +145,7 @@ describe("User Routes", () => {
         method: "POST",
         url: "/api/_private/user/api-key",
         headers: {
-          ["Cookie"]: `api_session=${sessionToken}`,
+          ["Cookie"]: `tmpl_session=${sessionToken}`,
         },
         body: {
           name: "",
@@ -182,7 +182,7 @@ describe("User Routes", () => {
         method: "POST",
         url: "/api/_private/user/api-key",
         headers: {
-          ["Cookie"]: `api_session=invalid`,
+          ["Cookie"]: `tmpl_session=invalid`,
         },
         body: {
           name: "My key",
@@ -210,7 +210,7 @@ describe("User Routes", () => {
         method: "GET",
         url: "/api/_private/user/api-keys",
         headers: {
-          ["Cookie"]: `api_session=${sessionToken}`,
+          ["Cookie"]: `tmpl_session=${sessionToken}`,
         },
       });
 
@@ -250,7 +250,7 @@ describe("User Routes", () => {
         method: "GET",
         url: "/api/_private/user/api-keys",
         headers: {
-          ["Cookie"]: `api_session=invalid`,
+          ["Cookie"]: `tmpl_session=invalid`,
         },
       });
 
@@ -275,7 +275,7 @@ describe("User Routes", () => {
         method: "DELETE",
         url: `/api/_private/user/api-key/${key2._id.toString()}`,
         headers: {
-          ["Cookie"]: `api_session=${sessionToken}`,
+          ["Cookie"]: `tmpl_session=${sessionToken}`,
         },
       });
 
@@ -314,7 +314,7 @@ describe("User Routes", () => {
         method: "DELETE",
         url: `/api/_private/user/api-key/${key._id.toString()}`,
         headers: {
-          ["Cookie"]: `api_session=invalid`,
+          ["Cookie"]: `tmpl_session=invalid`,
         },
       });
 

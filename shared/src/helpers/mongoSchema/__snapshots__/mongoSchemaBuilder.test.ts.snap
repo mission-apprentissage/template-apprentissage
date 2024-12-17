@@ -110,7 +110,50 @@ exports[`zodToMongoSchema > should convert email_events schema 1`] = `
             "name": {
               "bsonType": "string",
             },
-            "resetPasswordToken": {
+            "to": {
+              "bsonType": "string",
+            },
+            "token": {
+              "bsonType": "string",
+            },
+          },
+          "required": [
+            "name",
+            "to",
+            "token",
+          ],
+        },
+        {
+          "additionalProperties": false,
+          "bsonType": "object",
+          "properties": {
+            "name": {
+              "bsonType": "string",
+            },
+            "to": {
+              "bsonType": "string",
+            },
+            "token": {
+              "bsonType": "string",
+            },
+          },
+          "required": [
+            "name",
+            "to",
+            "token",
+          ],
+        },
+        {
+          "additionalProperties": false,
+          "bsonType": "object",
+          "properties": {
+            "comment": {
+              "bsonType": "string",
+            },
+            "from": {
+              "bsonType": "string",
+            },
+            "name": {
               "bsonType": "string",
             },
             "to": {
@@ -120,7 +163,8 @@ exports[`zodToMongoSchema > should convert email_events schema 1`] = `
           "required": [
             "name",
             "to",
-            "resetPasswordToken",
+            "from",
+            "comment",
           ],
         },
       ],
@@ -143,6 +187,55 @@ exports[`zodToMongoSchema > should convert email_events schema 1`] = `
 }
 `;
 
+exports[`zodToMongoSchema > should convert organisations schema 1`] = `
+{
+  "additionalProperties": false,
+  "bsonType": "object",
+  "properties": {
+    "_id": {
+      "bsonType": "objectId",
+    },
+    "created_at": {
+      "bsonType": "date",
+      "description": "Date d'ajout en base de données",
+    },
+    "habilitations": {
+      "bsonType": "array",
+      "items": {
+        "bsonType": "string",
+        "enum": [
+          "jobs:write",
+        ],
+      },
+    },
+    "nom": {
+      "bsonType": "string",
+      "description": "Nom de l'organisation",
+      "maxLength": 100,
+      "minLength": 2,
+    },
+    "slug": {
+      "bsonType": "string",
+      "description": "Slug de l'organisation",
+      "maxLength": 100,
+      "minLength": 2,
+    },
+    "updated_at": {
+      "bsonType": "date",
+      "description": "Date de mise à jour en base de données",
+    },
+  },
+  "required": [
+    "_id",
+    "nom",
+    "slug",
+    "habilitations",
+    "updated_at",
+    "created_at",
+  ],
+}
+`;
+
 exports[`zodToMongoSchema > should convert sessions schema 1`] = `
 {
   "additionalProperties": false,
@@ -155,13 +248,12 @@ exports[`zodToMongoSchema > should convert sessions schema 1`] = `
       "bsonType": "date",
       "description": "Date d'ajout en base de données",
     },
+    "email": {
+      "bsonType": "string",
+    },
     "expires_at": {
       "bsonType": "date",
       "description": "Date d'expiration",
-    },
-    "token": {
-      "bsonType": "string",
-      "description": "Token de la session",
     },
     "updated_at": {
       "bsonType": "date",
@@ -170,7 +262,7 @@ exports[`zodToMongoSchema > should convert sessions schema 1`] = `
   },
   "required": [
     "_id",
-    "token",
+    "email",
     "updated_at",
     "created_at",
     "expires_at",
@@ -186,23 +278,73 @@ exports[`zodToMongoSchema > should convert users schema 1`] = `
     "_id": {
       "bsonType": "objectId",
     },
-    "api_key": {
-      "bsonType": [
-        "string",
-        "null",
-      ],
-      "description": "Clé API",
-    },
-    "api_key_used_at": {
+    "activite": {
       "anyOf": [
         {
-          "bsonType": "date",
+          "bsonType": "string",
         },
         {
           "bsonType": "null",
         },
       ],
-      "description": "Date de dernière utilisation de la clé API",
+    },
+    "api_keys": {
+      "bsonType": "array",
+      "items": {
+        "additionalProperties": false,
+        "bsonType": "object",
+        "properties": {
+          "_id": {
+            "bsonType": "objectId",
+          },
+          "created_at": {
+            "bsonType": "date",
+          },
+          "expires_at": {
+            "bsonType": "date",
+          },
+          "key": {
+            "bsonType": "string",
+          },
+          "last_used_at": {
+            "anyOf": [
+              {
+                "bsonType": "date",
+              },
+              {
+                "bsonType": "null",
+              },
+            ],
+          },
+          "name": {
+            "bsonType": [
+              "string",
+              "null",
+            ],
+          },
+        },
+        "required": [
+          "_id",
+          "name",
+          "key",
+          "last_used_at",
+          "expires_at",
+          "created_at",
+        ],
+      },
+    },
+    "cas_usage": {
+      "anyOf": [
+        {
+          "bsonType": "string",
+        },
+        {
+          "bsonType": "null",
+        },
+      ],
+    },
+    "cgu_accepted_at": {
+      "bsonType": "date",
     },
     "created_at": {
       "bsonType": "date",
@@ -215,9 +357,38 @@ exports[`zodToMongoSchema > should convert users schema 1`] = `
     "is_admin": {
       "bsonType": "bool",
     },
-    "password": {
+    "objectif": {
+      "anyOf": [
+        {
+          "bsonType": "string",
+          "enum": [
+            "fiabiliser",
+            "concevoir",
+          ],
+        },
+        {
+          "bsonType": "null",
+        },
+      ],
+    },
+    "organisation": {
+      "bsonType": [
+        "string",
+        "null",
+      ],
+    },
+    "type": {
       "bsonType": "string",
-      "description": "Mot de passe de l'utilisateur",
+      "enum": [
+        "operateur_public",
+        "organisme_formation",
+        "entreprise",
+        "editeur_logiciel",
+        "organisme_financeur",
+        "apprenant",
+        "mission_apprentissage",
+        "autre",
+      ],
     },
     "updated_at": {
       "bsonType": "date",
@@ -226,11 +397,15 @@ exports[`zodToMongoSchema > should convert users schema 1`] = `
   },
   "required": [
     "_id",
+    "organisation",
     "email",
-    "password",
+    "type",
+    "activite",
+    "objectif",
+    "cas_usage",
+    "cgu_accepted_at",
     "is_admin",
-    "api_key",
-    "api_key_used_at",
+    "api_keys",
     "updated_at",
     "created_at",
   ],

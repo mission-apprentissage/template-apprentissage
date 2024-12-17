@@ -86,41 +86,14 @@ exports[`generateOpenApiSchema > should generate proper schema 1`] = `
               "null",
             ],
           },
-          "data": {
-            "description": "Données contextuelles liées à l'erreur",
-            "example": {
-              "validationError": {
-                "code": "FST_ERR_VALIDATION",
-                "issues": [
-                  {
-                    "code": "invalid_type",
-                    "expected": "number",
-                    "message": "Number attendu",
-                    "path": [
-                      "longitude",
-                    ],
-                    "received": "nan",
-                  },
-                ],
-                "name": "ZodError",
-                "statusCode": 400,
-                "validationContext": "querystring",
-              },
-            },
-          },
+          "data": {},
           "message": {
-            "description": "Un message explicatif de l'erreur",
-            "example": "querystring.longitude: Number attendu",
             "type": "string",
           },
           "name": {
-            "description": "Le type générique de l'erreur",
-            "example": "Bad Request",
             "type": "string",
           },
           "statusCode": {
-            "description": "Le status code retourné",
-            "example": 400,
             "type": "number",
           },
         },
@@ -157,7 +130,7 @@ exports[`generateOpenApiSchema > should generate proper schema 1`] = `
               "application/json": {
                 "schema": {
                   "additionalProperties": false,
-                  "description": "API Health",
+                  "description": "Statut de l'application",
                   "properties": {
                     "env": {
                       "enum": [
@@ -170,11 +143,9 @@ exports[`generateOpenApiSchema > should generate proper schema 1`] = `
                       "type": "string",
                     },
                     "name": {
-                      "example": "tmpl",
                       "type": "string",
                     },
                     "version": {
-                      "example": "1.0.0",
                       "type": "string",
                     },
                   },
@@ -187,7 +158,7 @@ exports[`generateOpenApiSchema > should generate proper schema 1`] = `
                 },
               },
             },
-            "description": "API Health",
+            "description": "Statut de l'application",
           },
           "400": {
             "$ref": "#/components/responses/BadRequest",
@@ -213,7 +184,7 @@ exports[`generateOpenApiSchema > should generate proper schema 1`] = `
         },
         "security": [],
         "tags": [
-          "système",
+          "Système",
         ],
       },
     },
