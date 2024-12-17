@@ -5,7 +5,7 @@ import { PasswordInput } from "@codegouvfr/react-dsfr/blocks/PasswordInput";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { Box, Typography } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { IPostRoutes } from "shared";
@@ -75,7 +75,7 @@ const ModifierMotDePassePage = () => {
   };
 
   return (
-    <>
+    <Suspense>
       <Breadcrumb pages={[PAGES.modifierMotDePasse()]} />
       <FormContainer>
         <Typography variant="h2" gutterBottom>
@@ -135,7 +135,7 @@ const ModifierMotDePassePage = () => {
           </Box>
         </form>
       </FormContainer>
-    </>
+    </Suspense>
   );
 };
 export default ModifierMotDePassePage;

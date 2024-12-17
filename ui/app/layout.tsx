@@ -5,9 +5,10 @@ import { DsfrHead } from "@codegouvfr/react-dsfr/next-appdir/DsfrHead";
 import { DsfrProvider } from "@codegouvfr/react-dsfr/next-appdir/DsfrProvider";
 import { getHtmlAttributes } from "@codegouvfr/react-dsfr/next-appdir/getHtmlAttributes";
 import { captureException } from "@sentry/nextjs";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import type { PropsWithChildren } from "react";
+import { Suspense } from "react";
 import type { IUserPublic } from "shared/src/models/user.model";
 
 import { publicConfig } from "@/config.public";
@@ -36,13 +37,17 @@ async function getSession(): Promise<IUserPublic | undefined> {
 }
 
 export const metadata: Metadata = {
-  viewport: "width=device-width, initial-scale=1",
   icons: {
     icon: [{ url: "/favicon.ico" }, { url: "/favicon.svg" }],
     apple: [{ url: "/apple-touch-icon.png" }],
   },
   title: publicConfig.productMeta.productName,
   description: "Un service de la Mission Apprentissage",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default async function RootLayout({ children }: PropsWithChildren) {
@@ -70,7 +75,9 @@ export default async function RootLayout({ children }: PropsWithChildren) {
       </head>
       <body>
         <AuthContextProvider initialUser={session ?? null}>
-          <DsfrProvider lang={lang}>{children}</DsfrProvider>
+          <Suspense>
+            <DsfrProvider lang={lang}>{children}</DsfrProvider>
+          </Suspense>
         </AuthContextProvider>
       </body>
     </html>

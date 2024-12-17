@@ -4,7 +4,7 @@ import { Button } from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
 import InfoDetails from "@/components/infoDetails/InfoDetails";
@@ -52,7 +52,7 @@ const ProfilPage = () => {
   if (!user) return null;
 
   return (
-    <>
+    <Suspense>
       <Breadcrumb pages={[PAGES.compteProfil()]} />
       <Typography variant="h2" gutterBottom>
         Mon compte
@@ -127,7 +127,7 @@ const ProfilPage = () => {
       </Box>
 
       <Toast severity={toast?.severity} message={toast?.message} onClose={handleClose} />
-    </>
+    </Suspense>
   );
 };
 

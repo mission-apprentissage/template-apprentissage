@@ -6,7 +6,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import PlausibleProvider from "next-plausible";
 import type { FC } from "react";
-import { useRef } from "react";
+import { Suspense, useRef } from "react";
 
 import { publicConfig } from "@/config.public";
 import { queryClient } from "@/utils/query.utils";
@@ -23,17 +23,19 @@ const RootTemplate: FC<Props> = ({ children }) => {
   const tracking = useRef(searchParams?.get("notracking") !== "true");
 
   return (
-    <PlausibleProvider trackLocalhost={false} enabled={tracking.current} domain={publicConfig.host}>
-      <QueryClientProvider client={queryClient}>
-        <MuiDsfrThemeProvider>
-          <Header />
-          <Container maxWidth="xl">
-            <Box minHeight="60vh">{children}</Box>
-          </Container>
-          <Footer />
-        </MuiDsfrThemeProvider>
-      </QueryClientProvider>
-    </PlausibleProvider>
+    <Suspense>
+      <PlausibleProvider trackLocalhost={false} enabled={tracking.current} domain={publicConfig.host}>
+        <QueryClientProvider client={queryClient}>
+          <MuiDsfrThemeProvider>
+            <Header />
+            <Container maxWidth="xl">
+              <Box minHeight="60vh">{children}</Box>
+            </Container>
+            <Footer />
+          </MuiDsfrThemeProvider>
+        </QueryClientProvider>
+      </PlausibleProvider>
+    </Suspense>
   );
 };
 

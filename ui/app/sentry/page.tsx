@@ -2,10 +2,11 @@
 
 import * as Sentry from "@sentry/nextjs";
 import Head from "next/head";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
-    <div>
+    <Suspense>
       <Head>
         <title>Sentry Onboarding</title>
         <meta name="description" content="Test Sentry for your Next.js app!" />
@@ -74,6 +75,6 @@ export default function Home() {
           </a>
         </p>
       </main>
-    </div>
+    </Suspense>
   );
 }

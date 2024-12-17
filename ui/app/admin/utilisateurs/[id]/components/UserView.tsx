@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import type { FC } from "react";
+import { Suspense } from "react";
 import type { IUserPublic } from "shared/src/models/user.model";
 
 import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
@@ -12,7 +13,7 @@ interface Props {
 
 const UserView: FC<Props> = ({ user }) => {
   return (
-    <>
+    <Suspense>
       <Breadcrumb pages={[PAGES.adminUsers(), PAGES.adminUserView(user._id)]} />
       <Typography variant="h2" gutterBottom>
         Fiche utilisateur
@@ -43,7 +44,7 @@ const UserView: FC<Props> = ({ user }) => {
           },
         }}
       />
-    </>
+    </Suspense>
   );
 };
 

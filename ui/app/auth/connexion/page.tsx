@@ -7,7 +7,7 @@ import { Input } from "@codegouvfr/react-dsfr/Input";
 import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { IBody, IPostRoutes } from "shared";
@@ -53,7 +53,7 @@ const ConnexionPage = () => {
   }
 
   return (
-    <>
+    <Suspense>
       <Breadcrumb pages={[PAGES.connexion()]} />
       <FormContainer>
         <Typography variant="h2" gutterBottom>
@@ -109,7 +109,7 @@ const ConnexionPage = () => {
           </Box>
         </form>
       </FormContainer>
-    </>
+    </Suspense>
   );
 };
 export default ConnexionPage;

@@ -4,7 +4,7 @@ import { Alert } from "@codegouvfr/react-dsfr/Alert";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { IGetRoutes, IQuery } from "shared";
@@ -53,7 +53,7 @@ const MotDePasseOubliePage = () => {
   };
 
   return (
-    <>
+    <Suspense>
       <Breadcrumb pages={[PAGES.connexion(), PAGES.motDePasseOublie()]} />
       <FormContainer>
         <Typography variant="h2" gutterBottom>
@@ -84,7 +84,7 @@ const MotDePasseOubliePage = () => {
           </Box>
         </form>
       </FormContainer>
-    </>
+    </Suspense>
   );
 };
 export default MotDePasseOubliePage;
