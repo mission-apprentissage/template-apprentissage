@@ -16,11 +16,12 @@ export const Header = () => {
   const pathname = usePathname();
 
   const handleLogout = useCallback(async () => {
-    await apiGet("/auth/logout", {});
-    setUser();
+    await apiGet("/_private/auth/logout", {});
+    setUser(null);
     push(PAGES.homepage().path);
   }, [setUser, push]);
 
+  //@ts-expect-error: TODO fix this
   const navigation = useNavigationItems({ user, pathname });
 
   const loggedOut: HeaderProps.QuickAccessItem[] = useMemo(

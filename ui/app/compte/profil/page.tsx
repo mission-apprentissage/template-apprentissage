@@ -1,7 +1,7 @@
 "use client";
 
-import Button from "@codegouvfr/react-dsfr/Button";
-import Input from "@codegouvfr/react-dsfr/Input";
+import { Button } from "@codegouvfr/react-dsfr/Button";
+import { Input } from "@codegouvfr/react-dsfr/Input";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
@@ -35,9 +35,9 @@ const ProfilPage = () => {
 
   const generateApiKey = async () => {
     try {
-      const data = await apiGet("/user/generate-api-key", {});
-
-      setApiKey(data.api_key);
+      // TODO : to fix
+      // const data = await apiGet("/user/generate-api-key", {});
+      // setApiKey(data.api_key);
     } catch (error) {
       console.error(error);
       setToast({

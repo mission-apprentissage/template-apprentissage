@@ -1,11 +1,12 @@
-import Button from "@codegouvfr/react-dsfr/Button";
+import { Button } from "@codegouvfr/react-dsfr/Button";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
-import type { IUserPublic } from "shared/src/models/user.model";
+import type { IUserAdminView } from "shared/src/models/user.model";
+import type { Jsonify } from "type-fest";
 
 import { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
 import SearchBar from "@/components/SearchBar";
-import Table from "@/components/table/Table";
+import { Table } from "@/components/table/Table";
 import { apiGet } from "@/utils/api.utils";
 import { formatDate } from "@/utils/date.utils";
 import { formatUrlWithNewParams, getSearchParamsForQuery } from "@/utils/query.utils";
@@ -16,10 +17,10 @@ const UserList = () => {
 
   const { page: page, limit: limit, q: searchValue } = getSearchParamsForQuery(searchParams);
 
-  const { data: users } = useQuery<IUserPublic[]>({
-    queryKey: ["users", { searchValue, page, limit }],
+  const { data: users } = useQuery<Jsonify<IUserAdminView>[]>({
+    queryKey: ["/_private/admin/users", { searchValue, page, limit }],
     queryFn: async () => {
-      const data = await apiGet("/admin/users", {
+      const data = await apiGet("/_private/admin/users", {
         querystring: { q: searchValue, page, limit },
       });
 

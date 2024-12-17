@@ -1,6 +1,6 @@
 import { getLink } from "@codegouvfr/react-dsfr/link";
-import Summary from "@codegouvfr/react-dsfr/Summary";
-import Table from "@codegouvfr/react-dsfr/Table";
+import { Summary } from "@codegouvfr/react-dsfr/Summary";
+import { Table } from "@codegouvfr/react-dsfr/Table";
 import { Grid, Typography } from "@mui/material";
 import React from "react";
 

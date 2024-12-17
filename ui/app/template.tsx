@@ -1,6 +1,6 @@
 "use client";
 
-import MuiDsfrThemeProvider from "@codegouvfr/react-dsfr/mui";
+import { MuiDsfrThemeProvider } from "@codegouvfr/react-dsfr/mui";
 import { Box, Container } from "@mui/material";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";

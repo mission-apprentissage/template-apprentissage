@@ -4,8 +4,7 @@ import { generateUri } from "shared/src/helpers/generateUri";
 import type { IResErrorJson } from "shared/src/models/errors/errors.model";
 import type { IRouteSchema, IRouteSchemaWrite } from "shared/src/routes/common.routes";
 import type { EmptyObject } from "type-fest";
-import type { ZodType } from "zod";
-import type z from "zod";
+import type { z, ZodType } from "zod";
 
 import { publicConfig } from "@/config.public";
 

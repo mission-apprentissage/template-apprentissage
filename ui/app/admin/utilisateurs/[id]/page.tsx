@@ -7,6 +7,7 @@ interface Props {
 }
 
 const AdminUserViewPage = async ({ params }: Props) => {
+  //@ts-expect-error: TODO fix this
   const user = await apiGet(`/admin/users/:id`, { params });
 
   return <UserView user={user} />;

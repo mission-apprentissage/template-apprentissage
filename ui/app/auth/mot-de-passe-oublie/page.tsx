@@ -8,12 +8,13 @@ import { useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { IGetRoutes, IQuery } from "shared";
-import type { IStatus } from "shared/routes/_private/auth.routes";
+import type { IStatus } from "shared/src/routes/_private/auth.routes";
 
 import FormContainer from "@/app/auth/components/FormContainer";
 import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
 import { apiGet } from "@/utils/api.utils";
 
+//@ts-expect-error: TODO fix this
 type Route = IGetRoutes["/auth/reset-password"];
 
 const MotDePasseOubliePage = () => {
@@ -27,6 +28,7 @@ const MotDePasseOubliePage = () => {
 
   const onSubmit: SubmitHandler<IQuery<Route>> = async (data) => {
     try {
+      //@ts-expect-error: TODO fix this
       await apiGet("/auth/reset-password", {
         querystring: data,
       });

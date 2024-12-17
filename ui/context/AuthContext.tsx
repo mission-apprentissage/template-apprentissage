@@ -1,7 +1,7 @@
 "use client";
 import type { FC, PropsWithChildren } from "react";
 import { createContext, useContext, useMemo, useState } from "react";
-import type { IUserPublic } from "shared/models/user.model";
+import type { IUserPublic } from "shared/src/models/user.model";
 
 type IAuthContext = Readonly<{
   user: IUserPublic | null;
