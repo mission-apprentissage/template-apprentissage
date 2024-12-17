@@ -1,3 +1,5 @@
+import { resolve } from "node:path";
+
 import tsconfigPaths from "vite-tsconfig-paths";
 import { defineWorkspace } from "vitest/config";
 
@@ -10,7 +12,12 @@ export default defineWorkspace([
       include: ["./tests/**/*.test.ts", "./src/**/*.test.ts"],
       setupFiles: ["./tests/setup.ts"],
       globalSetup: ["./server/tests/globalSetup.ts"],
-      threads: true,
+      clearMocks: true,
+    },
+    resolve: {
+      alias: {
+        "@": resolve(__dirname, "./server/src"),
+      },
     },
   },
   {
@@ -20,13 +27,16 @@ export default defineWorkspace([
       root: "./ui",
       include: ["./**/*.test.ts"],
       setupFiles: ["./tests/setup.ts"],
+      clearMocks: true,
     },
   },
   {
+    plugins: [tsconfigPaths()],
     test: {
       name: "shared",
       root: "./shared",
       include: ["**/*.test.ts"],
+      clearMocks: true,
     },
   },
 ]);

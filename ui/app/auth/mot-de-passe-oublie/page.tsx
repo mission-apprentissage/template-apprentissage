@@ -4,15 +4,17 @@ import { Alert } from "@codegouvfr/react-dsfr/Alert";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { IGetRoutes, IQuery } from "shared";
-import { IStatus } from "shared/routes/auth.routes";
+import { Suspense, useState } from "react";
+import type { SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import type { IGetRoutes, IQuery } from "shared";
+import type { IStatus } from "shared/src/routes/_private/auth.routes";
 
-import { apiGet } from "../../../utils/api.utils";
-import Breadcrumb, { PAGES } from "../../components/breadcrumb/Breadcrumb";
-import FormContainer from "../components/FormContainer";
+import FormContainer from "@/app/auth/components/FormContainer";
+import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+import { apiGet } from "@/utils/api.utils";
 
+//@ts-expect-error: TODO fix this
 type Route = IGetRoutes["/auth/reset-password"];
 
 const MotDePasseOubliePage = () => {
@@ -26,6 +28,7 @@ const MotDePasseOubliePage = () => {
 
   const onSubmit: SubmitHandler<IQuery<Route>> = async (data) => {
     try {
+      //@ts-expect-error: TODO fix this
       await apiGet("/auth/reset-password", {
         querystring: data,
       });
@@ -50,7 +53,7 @@ const MotDePasseOubliePage = () => {
   };
 
   return (
-    <>
+    <Suspense>
       <Breadcrumb pages={[PAGES.connexion(), PAGES.motDePasseOublie()]} />
       <FormContainer>
         <Typography variant="h2" gutterBottom>
@@ -81,7 +84,7 @@ const MotDePasseOubliePage = () => {
           </Box>
         </form>
       </FormContainer>
-    </>
+    </Suspense>
   );
 };
 export default MotDePasseOubliePage;

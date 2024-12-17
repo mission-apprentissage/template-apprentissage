@@ -4,15 +4,19 @@ import "react-notion-x/src/styles.css";
 import { DsfrHead } from "@codegouvfr/react-dsfr/next-appdir/DsfrHead";
 import { DsfrProvider } from "@codegouvfr/react-dsfr/next-appdir/DsfrProvider";
 import { getHtmlAttributes } from "@codegouvfr/react-dsfr/next-appdir/getHtmlAttributes";
-import { Metadata } from "next";
+import { captureException } from "@sentry/nextjs";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import { PropsWithChildren } from "react";
-import { IUserPublic } from "shared/models/user.model";
+import type { PropsWithChildren } from "react";
+import { Suspense } from "react";
+import type { IUserPublic } from "shared/src/models/user.model";
 
-import { publicConfig } from "../config.public";
-import { AuthContextProvider } from "../context/AuthContext";
-import { defaultColorScheme } from "../theme/defaultColorScheme";
-import { apiGet } from "../utils/api.utils";
+import { publicConfig } from "@/config.public";
+import { AuthContextProvider } from "@/context/AuthContext";
+import { defaultColorScheme } from "@/theme/defaultColorScheme";
+import type { ApiError } from "@/utils/api.utils";
+import { apiGet } from "@/utils/api.utils";
+
 import { StartDsfr } from "./StartDsfr";
 
 async function getSession(): Promise<IUserPublic | undefined> {
@@ -21,22 +25,29 @@ async function getSession(): Promise<IUserPublic | undefined> {
   }
 
   try {
-    const session: IUserPublic = await apiGet(`/auth/session`, {});
+    const session: IUserPublic = await apiGet(`/_private/auth/session`, {}, { cache: "no-store" });
     return session;
   } catch (error) {
-    console.log(error);
+    if ((error as ApiError).context?.statusCode !== 401) {
+      captureException(error);
+    }
+
     return;
   }
 }
 
 export const metadata: Metadata = {
-  viewport: "width=device-width, initial-scale=1",
   icons: {
     icon: [{ url: "/favicon.ico" }, { url: "/favicon.svg" }],
     apple: [{ url: "/apple-touch-icon.png" }],
   },
   title: publicConfig.productMeta.productName,
   description: "Un service de la Mission Apprentissage",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default async function RootLayout({ children }: PropsWithChildren) {
@@ -63,8 +74,10 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         />
       </head>
       <body>
-        <AuthContextProvider initialUser={session}>
-          <DsfrProvider lang={lang}>{children}</DsfrProvider>
+        <AuthContextProvider initialUser={session ?? null}>
+          <Suspense>
+            <DsfrProvider lang={lang}>{children}</DsfrProvider>
+          </Suspense>
         </AuthContextProvider>
       </body>
     </html>

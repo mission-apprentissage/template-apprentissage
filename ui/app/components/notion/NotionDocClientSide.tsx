@@ -3,16 +3,19 @@ import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import NextLink from "next/link";
-import { ExtendedRecordMap } from "notion-types";
-import { ReactNode, Suspense } from "react";
+import type { ExtendedRecordMap } from "notion-types";
+import type { ReactNode } from "react";
+import { Suspense } from "react";
 import { NotionRenderer } from "react-notion-x";
 
-import { NOTION_PAGES } from "../breadcrumb/Breadcrumb";
+import { NOTION_PAGES } from "@/app/components/breadcrumb/Breadcrumb";
 
-const Code = dynamic(() => import("react-notion-x/build/third-party/code").then((m) => m.Code));
-const Collection = dynamic(() => import("react-notion-x/build/third-party/collection").then((m) => m.Collection));
-const Equation = dynamic(() => import("react-notion-x/build/third-party/equation").then((m) => m.Equation));
-const Modal = dynamic(() => import("react-notion-x/build/third-party/modal").then((m) => m.Modal), { ssr: false });
+const Code = dynamic(async () => import("react-notion-x/build/third-party/code").then((m) => m.Code));
+const Collection = dynamic(async () => import("react-notion-x/build/third-party/collection").then((m) => m.Collection));
+const Equation = dynamic(async () => import("react-notion-x/build/third-party/equation").then((m) => m.Equation));
+const Modal = dynamic(async () => import("react-notion-x/build/third-party/modal").then((m) => m.Modal), {
+  ssr: false,
+});
 
 function resolveNotionLink(id: string) {
   const normalisedId = id.replaceAll("-", "");

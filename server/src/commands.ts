@@ -5,15 +5,14 @@ import { program } from "commander";
 import { addJob, startJobProcessor } from "job-processor";
 import HttpTerminator from "lil-http-terminator";
 
-import logger from "@/common/logger";
-import { closeMongodbConnection } from "@/common/utils/mongodbUtils";
-import createServer from "@/modules/server/server";
-
-import { closeMemoryCache } from "./common/apis/client";
-import { closeMailer } from "./common/services/mailer/mailer";
-import { closeSentry, initSentryProcessor } from "./common/services/sentry/sentry";
-import { sleep } from "./common/utils/asyncUtils";
 import config from "./config";
+import createServer from "./server/server";
+import { closeMemoryCache } from "./services/apis/client";
+import logger from "./services/logger";
+import { closeMailer } from "./services/mailer/mailer";
+import { closeMongodbConnection } from "./services/mongodb/mongodbService";
+import { closeSentry } from "./services/sentry/sentry";
+import { sleep } from "./utils/asyncUtils";
 
 program
   .configureHelp({
@@ -23,9 +22,7 @@ program
     const command = actionCommand.name();
     // on définit le module du logger en global pour distinguer les logs des jobs
     if (command !== "start") {
-      logger.fields.module = `cli:${command}`;
-      // Pas besoin d'init Sentry dans le cas du server car il est start automatiquement
-      initSentryProcessor();
+      logger.setBindings({ module: `cli:${command}` });
     }
   })
   .hook("postAction", async () => {
@@ -136,7 +133,13 @@ program
       return;
     }
 
-    await startProcessor(signal);
+    try {
+      await startProcessor(signal);
+    } catch (error) {
+      captureException(error);
+      logger.error(error);
+      program.error("Command failed", { exitCode: 1 });
+    }
   });
 
 function createJobAction(name: string) {
@@ -200,13 +203,14 @@ program
   .option("-q, --queued", "Run job asynchronously", false)
   .action(createJobAction("indexes:recreate"));
 
-program.hook("preAction", (_, actionCommand) => {
-  const command = actionCommand.name();
-  // on définit le module du logger en global pour distinguer les logs des jobs
-  if (command !== "start") {
-    logger.fields.module = `job:${command}`;
-  }
-});
+program
+  .command("job:run")
+  .description("Run a job")
+  .requiredOption("-n, --name <string>", "Job name")
+  .option("-q, --queued", "Run job asynchronously", false)
+  .action(async ({ name, ...options }) => {
+    return createJobAction(name)(options);
+  });
 
 export async function startCLI() {
   await program.parseAsync(process.argv);

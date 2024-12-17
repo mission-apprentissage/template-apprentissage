@@ -1,4 +1,4 @@
-import NotionPage from "../../components/notion/NotionPage";
+import NotionPage from "@/app/components/notion/NotionPage";
 
 export const revalidate = 300;
 

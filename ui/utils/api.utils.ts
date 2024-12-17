@@ -1,10 +1,12 @@
-import { IDeleteRoutes, IGetRoutes, IPostRoutes, IPutRoutes, IRequest, IResponse } from "shared";
-import { generateUri, PathParam, QueryString, WithQueryStringAndPathParam } from "shared/helpers/generateUri";
-import { IResErrorJson, IRouteSchema, IRouteSchemaWrite } from "shared/routes/common.routes";
-import { EmptyObject } from "type-fest";
-import z, { ZodType } from "zod";
+import type { IDeleteRoutes, IGetRoutes, IPostRoutes, IPutRoutes, IRequest, IResponse } from "shared";
+import type { PathParam, QueryString, WithQueryStringAndPathParam } from "shared/src/helpers/generateUri";
+import { generateUri } from "shared/src/helpers/generateUri";
+import type { IResErrorJson } from "shared/src/models/errors/errors.model";
+import type { IRouteSchema, IRouteSchemaWrite } from "shared/src/routes/common.routes";
+import type { EmptyObject } from "type-fest";
+import type { z, ZodType } from "zod";
 
-import { publicConfig } from "../config.public";
+import { publicConfig } from "@/config.public";
 
 type OptionsGet = {
   [Prop in keyof Pick<IRouteSchema, "params" | "querystring" | "headers">]: IRouteSchema[Prop] extends ZodType
@@ -21,7 +23,11 @@ type OptionsWrite = {
 
 type IRequestOptions = OptionsGet | OptionsWrite | EmptyObject;
 
-async function optionsToFetchParams(method: RequestInit["method"], options: IRequestOptions) {
+async function optionsToFetchParams(
+  method: RequestInit["method"],
+  options: IRequestOptions,
+  rawOptions?: Pick<RequestInit, "cache">
+) {
   const headers = await getHeaders(options);
 
   let body: BodyInit | undefined = undefined;
@@ -42,6 +48,11 @@ async function optionsToFetchParams(method: RequestInit["method"], options: IReq
     method,
     headers,
   };
+
+  if (rawOptions) {
+    Object.assign(requestInit, rawOptions);
+  }
+
   return { requestInit, headers };
 }
 
@@ -99,8 +110,8 @@ export class ApiError extends Error {
   constructor(context: ApiErrorContext) {
     super();
     this.context = context;
-    this.name = context.name;
-    this.message = context.message;
+    this.name = context.name ?? "ApiError";
+    this.message = context.message ?? `code ${context.statusCode}`;
   }
 
   toJSON(): ApiErrorContext {
@@ -161,9 +172,10 @@ export async function apiPost<P extends keyof IPostRoutes, S extends IPostRoutes
 
 export async function apiGet<P extends keyof IGetRoutes, S extends IGetRoutes[P] = IGetRoutes[P]>(
   path: P,
-  options: IRequest<S>
+  options: IRequest<S>,
+  rawOptions?: Pick<RequestInit, "cache">
 ): Promise<IResponse<S>> {
-  const { requestInit, headers } = await optionsToFetchParams("GET", options);
+  const { requestInit, headers } = await optionsToFetchParams("GET", options, rawOptions);
 
   const res = await fetch(generateUrl(path, options), requestInit);
 

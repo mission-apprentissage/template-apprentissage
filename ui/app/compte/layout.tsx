@@ -1,8 +1,9 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { FC, PropsWithChildren } from "react";
+import type { FC, PropsWithChildren } from "react";
+import { Suspense } from "react";
 
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 const ProfilLayout: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAuth();
@@ -13,7 +14,7 @@ const ProfilLayout: FC<PropsWithChildren> = ({ children }) => {
     return null;
   }
 
-  return <>{children}</>;
+  return <Suspense>{children}</Suspense>;
 };
 
 export default ProfilLayout;

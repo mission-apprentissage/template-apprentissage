@@ -1,6 +1,6 @@
-import { NOTION_PAGES } from "../../components/breadcrumb/Breadcrumb";
-import NotionPage from "../../components/notion/NotionPage";
-import NotFoundPage from "../../not-found";
+import { NOTION_PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+import NotionPage from "@/app/components/notion/NotionPage";
+import NotFoundPage from "@/app/not-found";
 
 export const revalidate = 3_600;
 

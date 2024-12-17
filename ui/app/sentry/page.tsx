@@ -2,10 +2,11 @@
 
 import * as Sentry from "@sentry/nextjs";
 import Head from "next/head";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
-    <div>
+    <Suspense>
       <Head>
         <title>Sentry Onboarding</title>
         <meta name="description" content="Test Sentry for your Next.js app!" />
@@ -49,21 +50,14 @@ export default function Home() {
             margin: "18px",
           }}
           onClick={async () => {
-            const transaction = Sentry.startTransaction({
-              name: "Example Frontend Transaction",
-            });
-
-            Sentry.configureScope((scope) => {
-              scope.setSpan(transaction);
-            });
-
             try {
+              throw new Error("Sentry Frontend Error");
               const res = await fetch("/sentry/sentry-example-api");
               if (!res.ok) {
                 throw new Error("Sentry Example Frontend Error");
               }
             } finally {
-              transaction.finish();
+              //
             }
           }}
         >
@@ -81,6 +75,6 @@ export default function Home() {
           </a>
         </p>
       </main>
-    </div>
+    </Suspense>
   );
 }

@@ -5,7 +5,11 @@ export default async () => {
   return async () => {
     config({ path: "./server/.env.test" });
 
-    const client = new MongoClient(process.env.MONGODB_URI?.replace("VITEST_POOL_ID", "") ?? "");
+    const client = new MongoClient(process.env.MONGODB_URI?.replace("VITEST_POOL_ID", "") ?? "", {
+      connectTimeoutMS: 1_000,
+      socketTimeoutMS: 1_000,
+      serverSelectionTimeoutMS: 1_000,
+    });
     try {
       if (process.env.CI) {
         return;
@@ -14,8 +18,8 @@ export default async () => {
       await client.connect();
       const dbs = await client.db().admin().listDatabases();
       await Promise.all(
-        dbs.databases.map((db) => {
-          if (db.name.startsWith("tmpl-test-")) {
+        dbs.databases.map(async (db) => {
+          if (db.name.startsWith("api-test-")) {
             return client.db(db.name).dropDatabase();
           }
 
