@@ -55,7 +55,7 @@
     "react-notion-x": "^6.16.0",
     "redoc": "^2.1.5",
     "remark-gfm": "^4.0.0",
-    "sass": "^1.79.5",
+    "sass": "^1.83.0",
     "shared": "workspace:^",
     "sharp": "^0.33.5",
     "styled-components": "^6.1.13",

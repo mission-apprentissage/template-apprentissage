@@ -1,6 +1,6 @@
 # Temporary solution freeze NodeJs version https://github.com/vercel/next.js/discussions/69326
 # https://github.com/vercel/next.js/issues/69150
-FROM node:22.6-slim AS builder_root
+FROM node:22.12 AS builder_root
 WORKDIR /app
 RUN yarn set version 3.3.1
 COPY .yarn /app/.yarn
@@ -34,7 +34,7 @@ RUN --mount=type=cache,target=/app/.yarn/cache yarn workspaces focus --all --pro
 RUN mkdir -p /app/shared/node_modules && mkdir -p /app/server/node_modules
 
 # Production image, copy all the files and run next
-FROM node:22-slim AS server
+FROM node:22.12 AS server
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y ca-certificates curl && update-ca-certificates && apt-get clean
@@ -91,7 +91,7 @@ RUN yarn workspace ui build
 # RUN --mount=type=cache,target=/app/ui/.next/cache yarn --cwd ui build
 
 # Production image, copy all the files and run next
-FROM node:22-slim AS ui
+FROM node:22.12 AS ui
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y ca-certificates curl && update-ca-certificates && apt-get clean
