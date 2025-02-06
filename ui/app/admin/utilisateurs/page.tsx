@@ -1,22 +1,18 @@
-"use client";
-
 import { Typography } from "@mui/material";
-import { Suspense } from "react";
 
-import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
+import { PAGES } from "@/utils/routes.utils";
 
 import UserList from "./components/UserList";
 
-const AdminUsersPage = () => {
+export default async function AdminUsersPage() {
   return (
-    <Suspense>
-      <Breadcrumb pages={[PAGES.adminUsers()]} />
+    <>
+      <Breadcrumb pages={[PAGES.static.adminUsers]} />
       <Typography variant="h2" gutterBottom>
-        Gestion des utilisateurs
+        {PAGES.static.adminUsers.getTitle()}
       </Typography>
       <UserList />
-    </Suspense>
+    </>
   );
-};
-
-export default AdminUsersPage;
+}

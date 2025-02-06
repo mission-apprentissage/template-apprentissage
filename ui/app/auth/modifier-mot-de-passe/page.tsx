@@ -12,7 +12,7 @@ import type { IPostRoutes } from "shared";
 import type { IStatus } from "shared/src/routes/_private/auth.routes";
 
 import FormContainer from "@/app/auth/components/FormContainer";
-import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+import Breadcrumb, { PAGES } from "@/components/breadcrumb/Breadcrumb";
 import { apiPost } from "@/utils/api.utils";
 // import { NavLink } from "../../components/NavLink";
 

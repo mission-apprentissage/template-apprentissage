@@ -47,5 +47,6 @@
   "compareFolders.ignoreAllWhiteSpaces": true,
   "compareFolders.ignoreEmptyLines": true,
   "compareFolders.ignoreWhiteSpaces": true,
-  "compareFolders.respectGitIgnore": true
+  "compareFolders.respectGitIgnore": true,
+  "eslint.useFlatConfig": true
 }

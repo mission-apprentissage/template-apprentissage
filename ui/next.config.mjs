@@ -1,5 +1,6 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/** @type {import('next').NextConfig} */
+/**
+ * @type {import('next').NextConfig}
+ */
 
 import { withSentryConfig } from "@sentry/nextjs";
 import { withPlausibleProxy } from "next-plausible";
@@ -31,14 +32,19 @@ const contentSecurityPolicy = `
 `;
 
 const nextConfig = {
-  transpilePackages: ["shared"],
+  transpilePackages: [
+    "shared",
+    // "@codegouvfr/react-dsfr",
+    "tss-react", // This is for MUI or if you use htts://tss-react.dev
+  ],
   poweredByHeader: false,
   productionBrowserSourceMaps: true,
-  swcMinify: true,
+  outputFileTracingRoot: path.join(path.dirname(fileURLToPath(import.meta.url)), "../"),
   experimental: {
-    outputFileTracingRoot: path.join(path.dirname(fileURLToPath(import.meta.url)), "../"),
     typedRoutes: true,
-    instrumentationHook: true,
+  },
+  devIndicators: {
+    appIsrStatus: true,
   },
 
   output: "standalone",

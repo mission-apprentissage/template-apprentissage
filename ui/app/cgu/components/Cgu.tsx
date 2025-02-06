@@ -4,7 +4,7 @@ import { Grid, Typography } from "@mui/material";
 import type { FC } from "react";
 import React, { useEffect } from "react";
 
-import Section from "@/app/components/section/Section";
+import Section from "@/components/section/Section";
 
 export const cguVersion = "v0.1";
 

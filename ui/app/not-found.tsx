@@ -1,16 +1,11 @@
 "use client";
 import { Box, Typography } from "@mui/material";
-import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 
 import { NotFound } from "@/icons/NotFound";
 
-import { PAGES } from "./components/breadcrumb/Breadcrumb";
-
-export const metadata: Metadata = {
-  title: "404",
-};
+import { PAGES } from "../utils/routes.utils";
 
 export default function NotFoundPage() {
   return (
@@ -35,7 +30,7 @@ export default function NotFoundPage() {
             <Typography>La page que vous recherchez n'existe pas ou a été déplacée</Typography>
 
             <Box mt={2}>
-              <Link href={PAGES.homepage().path}>Retourner à la page d'accueil</Link>
+              <Link href={PAGES.static.home.getPath()}>Retourner à la page d'accueil</Link>
             </Box>
           </Box>
         </Box>

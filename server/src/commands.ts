@@ -33,7 +33,6 @@ program
 
     setTimeout(() => {
       // Make sure to exit, even if we didn't close all ressources cleanly
-      // eslint-disable-next-line n/no-process-exit
       process.exit(1);
     }, 60_000).unref();
   });
@@ -54,7 +53,6 @@ function createProcessExitSignal() {
         if (shutdownInProgress) {
           const message = `Server shut down (FORCED) (signal=${signal})`;
           logger.warn(message);
-          // eslint-disable-next-line n/no-process-exit
           process.exit(1);
         }
 
@@ -143,7 +141,6 @@ program
   });
 
 function createJobAction(name: string) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return async (options: any) => {
     try {
       const { queued = false, ...payload } = options;
