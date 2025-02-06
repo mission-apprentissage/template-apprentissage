@@ -13,7 +13,7 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   },
 }));
 
-export const WrappeDataGridAction = async ({
+export const WrappeDataGridAction = ({
   children,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   touchRippleRef,
@@ -21,7 +21,7 @@ export const WrappeDataGridAction = async ({
   children: ReactNode | undefined;
   touchRippleRef?: RefObject<unknown>;
 }) => {
-  return children;
+  return <>{children}</>;
 };
 
 export const Table = <R extends GridValidRowModel>(props: DataGridProps<R>) => {

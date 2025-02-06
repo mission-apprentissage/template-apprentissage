@@ -8,7 +8,8 @@ import type { ReactNode } from "react";
 import { Suspense } from "react";
 import { NotionRenderer } from "react-notion-x";
 
-import { NOTION_PAGES } from "@/components/breadcrumb/Breadcrumb";
+import type { IPages } from "@/utils/routes.utils";
+import { PAGES } from "@/utils/routes.utils";
 
 const Code = dynamic(async () => import("react-notion-x/build/third-party/code").then((m) => m.Code));
 const Collection = dynamic(async () => import("react-notion-x/build/third-party/collection").then((m) => m.Collection));
@@ -19,10 +20,10 @@ const Modal = dynamic(async () => import("react-notion-x/build/third-party/modal
 
 function resolveNotionLink(id: string) {
   const normalisedId = id.replaceAll("-", "");
-  const page = Object.values(NOTION_PAGES).find(({ notionId }) => notionId === normalisedId);
+  const page = Object.values((PAGES as IPages).notion).find(({ notionId }) => notionId === normalisedId);
 
   if (page) {
-    return page.path;
+    return page.getPath();
   }
 
   return `/notion/${normalisedId}`;

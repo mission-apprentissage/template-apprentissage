@@ -34,7 +34,7 @@ const InfoDetails = <TData,>({ title, rows, data }: Props<TData>) => {
                 {header?.() ?? key}
               </Grid>
               <Grid item xs={6} md={9} display="flex" alignItems="center">
-                {/* @ts-ignore */}
+                {/* @ts-expect-error: . */}
                 {cell?.(data) ?? value}
               </Grid>
             </Fragment>
