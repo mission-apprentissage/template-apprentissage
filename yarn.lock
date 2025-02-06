@@ -11342,9 +11342,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"job-processor@npm:^1.9.0":
-  version: 1.9.0
-  resolution: "job-processor@npm:1.9.0"
+"job-processor@npm:^1.9.1":
+  version: 1.9.1
+  resolution: "job-processor@npm:1.9.1"
   dependencies:
     cron-parser: ^4.9.0
     date-fns: ^2.30.0
@@ -11367,7 +11367,7 @@ __metadata:
       optional: true
     react:
       optional: true
-  checksum: 1978d7157f9e21b62d06c5ab06f28d1b6dc59e3f76f4bc34ee54b8c24e6a7273c4159f5c634321687219d68e775a3c6645f254fb3376ddead473ffacb551ee06
+  checksum: b85a9cb83dd4e0360087d74da4ef3f3e7c8c0c3b2a7b9cf413459e0affc62a1b3f282ab23610cde7051f179296ed3c391fdb6b24107f5c6f3432b55c7be92bcc
   languageName: node
   linkType: hard
 
@@ -17815,7 +17815,7 @@ __metadata:
     env-var: ^7.5.0
     fastify: ^5.2.1
     fastify-type-provider-zod: ^4.0.2
-    job-processor: ^1.9.0
+    job-processor: ^1.9.1
     jsonwebtoken: ^9.0.2
     lil-http-terminator: ^1.2.3
     lodash-es: ^4.17.21
@@ -17918,7 +17918,7 @@ __metadata:
     "@types/luxon": ^3.4.2
     "@types/node": ^22.13.0
     bson: ^6.10.2
-    job-processor: ^1.9.0
+    job-processor: ^1.9.1
     lodash-es: ^4.17.21
     luhn: ^2.4.1
     luxon: ^3.5.0
@@ -19795,7 +19795,7 @@ __metadata:
     dotenv: ^16.4.7
     i18next: ^24.2.2
     i18next-resources-to-backend: ^1.2.1
-    job-processor: ^1.9.0
+    job-processor: ^1.9.1
     jwt-decode: ^4.0.0
     match-sorter: ^8.0.0
     mobx: ^6.13.6

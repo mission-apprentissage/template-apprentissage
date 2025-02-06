@@ -13,7 +13,10 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   },
 }));
 
-export const FixDataGridButton: FC<{ children: ReactNode | undefined; touchRippleRef?: RefObject<unknown> }> = async ({
+export const WrappeDataGridAction: FC<{
+  children: ReactNode | undefined;
+  touchRippleRef?: RefObject<unknown>;
+}> = async ({
   children,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   touchRippleRef,

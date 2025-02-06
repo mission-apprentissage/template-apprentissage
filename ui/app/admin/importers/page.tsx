@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 import { useImporterStatus } from "@/app/admin/hooks/useImporterStatus";
 import Loading from "@/app/loading";
 import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
-import { FixDataGridButton, Table } from "@/components/table/Table";
+import { Table, WrappeDataGridAction } from "@/components/table/Table";
 import { formatNullableDate } from "@/utils/date.utils";
 import { PAGES } from "@/utils/routes.utils";
 
@@ -63,7 +63,7 @@ export default function AdminImportersPage() {
                 return [];
               }
               return [
-                <FixDataGridButton key="view">
+                <WrappeDataGridAction key="view">
                   <Button
                     iconId="fr-icon-arrow-right-line"
                     linkProps={{
@@ -72,7 +72,7 @@ export default function AdminImportersPage() {
                     priority="tertiary no outline"
                     title="Voir l'importer"
                   />{" "}
-                </FixDataGridButton>,
+                </WrappeDataGridAction>,
               ];
             },
           },

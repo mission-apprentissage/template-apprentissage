@@ -7,7 +7,7 @@ import type { IUserAdminView } from "shared/src/models/user.model";
 import type { Jsonify } from "type-fest";
 
 import SearchBar from "@/components/SearchBar";
-import { FixDataGridButton, Table } from "@/components/table/Table";
+import { Table, WrappeDataGridAction } from "@/components/table/Table";
 import { apiGet } from "@/utils/api.utils";
 import { formatNullableDate } from "@/utils/date.utils";
 import { formatUrlWithNewParams, getSearchParamsForQuery } from "@/utils/query.utils";
@@ -93,7 +93,7 @@ const UserList = () => {
             type: "actions",
             headerName: "Actions",
             getActions: ({ row: { _id } }) => [
-              <FixDataGridButton key="view">
+              <WrappeDataGridAction key="view">
                 <Button
                   iconId="fr-icon-arrow-right-line"
                   linkProps={{
@@ -102,7 +102,7 @@ const UserList = () => {
                   priority="tertiary no outline"
                   title="Voir l'utilisateur"
                 />
-              </FixDataGridButton>,
+              </WrappeDataGridAction>,
             ],
           },
         ]}
