@@ -5,7 +5,7 @@ x-default: &default
         memory: 1g
   restart: always
   networks:
-    - mna_network
+    - product_network
 
 name: "{{product_name}}_preview_system"
 
@@ -141,6 +141,6 @@ volumes:
   acme:
 
 networks:
-  mna_network:
-    name: mna_network
+  product_network:
+    name: product_network
     external: true

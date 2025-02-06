@@ -25,7 +25,7 @@ function Help() {
 }
 
 function bin:setup() {
-  sudo ln -fs "${ROOT_DIR}/.bin/mna" "/usr/local/bin/mna-${PRODUCT_NAME}"
+  sudo ln -fs "${ROOT_DIR}/.bin/product" "/usr/local/bin/product-${PRODUCT_NAME}"
 
   sudo mkdir -p /usr/local/share/zsh/site-functions
   sudo ln -fs "${ROOT_DIR}/.bin/zsh-completion" "/usr/local/share/zsh/site-functions/_${PRODUCT_NAME}"

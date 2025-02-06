@@ -1,8 +1,8 @@
 {
   "name": "server",
   "version": "0.0.0",
-  "description": "[MNA] Template apprentissage server",
-  "author": "Mission apprentissage",
+  "description": "[ORG] Template apprentissage server",
+  "author": "ORG",
   "license": "MIT",
   "type": "module",
   "private": true,

@@ -10,7 +10,7 @@
     - [MongoDB](#mongodb)
     - [Postgres](#postgres)
     - [Env Ini](#env-ini)
-    - [Mna Binary config](#mna-binary-config)
+    - [Binary config](#binary-config)
     - [Secrets](#secrets)
     - [UI Config](#ui-config)
     - [Other Files](#other-files)
@@ -48,7 +48,7 @@ git lfs pull
 Récupérez le vault depuis 1password (assurez vous d'etre connecter via `op account get`)
 
 ```bash
-.bin/mna vault:init
+.bin/product vault:init
 ```
 
 Vérifiez que vous pouvez déchiffrer le vault via `gpg --list-packets .infra/vault/.vault-password.gpg`
@@ -99,11 +99,9 @@ Mettre à jour le fichier `.infra/env.ini`
 - `database_name`: le nom de la BDD `api`
 - `domain_name`: le nom du domaine `api`
 
-### Mna Binary config
+### Binary config
 
 Mettre à jour le fichier `.bin/product-meta.sh` avec les memes valeurs que le fichier `.infra/env.ini`
-
-Mettre à jour le fichier `.bin/zsh-completion`, remplacer `mna-tmpl` par `mna-api`
 
 ### Secrets
 
@@ -189,7 +187,7 @@ Le seed doit etre regénéré avec votre nouvelle passphrase. Pour cela faire `y
 ### Github Actions
 
 1. Décommenter les github actions `.github/workflows`
-2. Changer le nom des images docker dans `.github/workflows/release.yml` (`mna_tmpl_server` & `mna_tmpl_server`)
+2. Changer le nom des images docker dans `.github/workflows/release.yml` (`tmpl_xx`)
 3. Créer le Github Repository Secret `SLACK_WEBHOOK` (https://api.slack.com/apps/A01JENR8874)
 
 ### Organisation Secrets

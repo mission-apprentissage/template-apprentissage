@@ -17,12 +17,12 @@ x-deploy-default: &deploy-default
 
 x-default: &default
   networks:
-    - mna_network
+    - product_network
 
 services:
   server:
     <<: *default
-    image: ghcr.io/mission-apprentissage/mna_{{product_name}}_server:{{app_version}}
+    image: ghcr.io/mission-apprentissage/product_{{product_name}}_server:{{app_version}}
     deploy:
       <<: *deploy-default
       resources:
@@ -48,7 +48,7 @@ services:
 
   jobs_processor:
     <<: *default
-    image: ghcr.io/mission-apprentissage/mna_{{product_name}}_server:{{app_version}}
+    image: ghcr.io/mission-apprentissage/product_{{product_name}}_server:{{app_version}}
     deploy:
       <<: *deploy-default
       resources:
@@ -69,7 +69,7 @@ services:
 
   ui:
     <<: *default
-    image: ghcr.io/mission-apprentissage/mna_{{product_name}}_ui:{{app_version}}-{{env_type}}
+    image: ghcr.io/mission-apprentissage/product_{{product_name}}_ui:{{app_version}}-{{env_type}}
     deploy:
       <<: *deploy-default
       resources:

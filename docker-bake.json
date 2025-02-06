@@ -39,8 +39,8 @@
     "server": {
       "inherits": ["common"],
       "tags": [
-        "ghcr.io/mission-apprentissage/mna_${PRODUCT_NAME}_server:${VERSION}",
-        "ghcr.io/mission-apprentissage/mna_${PRODUCT_NAME}_server:${CHANNEL}"
+        "ghcr.io/mission-apprentissage/product_${PRODUCT_NAME}_server:${VERSION}",
+        "ghcr.io/mission-apprentissage/product_${PRODUCT_NAME}_server:${CHANNEL}"
       ],
       "labels": {
         "org.opencontainers.image.description": "Server"
@@ -57,8 +57,8 @@
         "PUBLIC_ENV": "${ENV}"
       },
       "tags": [
-        "ghcr.io/mission-apprentissage/mna_${PRODUCT_NAME}_ui:${VERSION}-${ENV}",
-        "ghcr.io/mission-apprentissage/mna_${PRODUCT_NAME}_ui:${CHANNEL}-${ENV}"
+        "ghcr.io/mission-apprentissage/product_${PRODUCT_NAME}_ui:${VERSION}-${ENV}",
+        "ghcr.io/mission-apprentissage/product_${PRODUCT_NAME}_ui:${CHANNEL}-${ENV}"
       ],
       "labels": {
         "org.opencontainers.image.description": "Ui"
