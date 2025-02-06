@@ -2,11 +2,12 @@
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Fragment } from "react";
 import type { IUserAdminView } from "shared/src/models/user.model";
 import type { Jsonify } from "type-fest";
 
 import SearchBar from "@/components/SearchBar";
-import { Table } from "@/components/table/Table";
+import { FixDataGridButton, Table } from "@/components/table/Table";
 import { apiGet } from "@/utils/api.utils";
 import { formatNullableDate } from "@/utils/date.utils";
 import { formatUrlWithNewParams, getSearchParamsForQuery } from "@/utils/query.utils";
@@ -92,9 +93,8 @@ const UserList = () => {
             type: "actions",
             headerName: "Actions",
             getActions: ({ row: { _id } }) => [
-              <>
+              <FixDataGridButton key="view">
                 <Button
-                  key="view"
                   iconId="fr-icon-arrow-right-line"
                   linkProps={{
                     href: PAGES.dynamic.adminUserView(_id).getPath(),
@@ -102,7 +102,7 @@ const UserList = () => {
                   priority="tertiary no outline"
                   title="Voir l'utilisateur"
                 />
-              </>,
+              </FixDataGridButton>,
             ],
           },
         ]}

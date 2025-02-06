@@ -1,5 +1,6 @@
 import type { Server } from "@/server/server";
 
+import { organisationAdminRoutes } from "./_private/admin/organisations.routes.js";
 import { processorAdminRoutes } from "./_private/admin/processor.admin.routes";
 import { userAdminRoutes } from "./_private/admin/user.routes";
 import { authRoutes } from "./_private/auth.routes";
@@ -15,5 +16,6 @@ export const registerRoutes: RegisterRoutes = ({ server }) => {
   userRoutes({ server });
   emailsRoutes({ server });
   userAdminRoutes({ server });
+  organisationAdminRoutes({ server });
   processorAdminRoutes({ server });
 };

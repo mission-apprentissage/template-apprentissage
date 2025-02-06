@@ -4,7 +4,7 @@ import { Button } from "@codegouvfr/react-dsfr/Button";
 import { useQuery } from "@tanstack/react-query";
 
 import Loading from "@/app/loading";
-import { Table } from "@/components/table/Table";
+import { FixDataGridButton, Table } from "@/components/table/Table";
 import { apiGet } from "@/utils/api.utils";
 import { PAGES } from "@/utils/routes.utils";
 
@@ -45,9 +45,8 @@ export default function OrganisationList() {
             type: "actions",
             headerName: "Actions",
             getActions: ({ row: { _id } }) => [
-              <>
+              <FixDataGridButton key="view">
                 <Button
-                  key="view"
                   iconId="fr-icon-arrow-right-line"
                   linkProps={{
                     href: PAGES.dynamic.adminOrganisationView(_id).getPath(),
@@ -55,7 +54,7 @@ export default function OrganisationList() {
                   priority="tertiary no outline"
                   title="Voir l'utilisateur"
                 />
-              </>,
+              </FixDataGridButton>,
             ],
           },
         ]}
