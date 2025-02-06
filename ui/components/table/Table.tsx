@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 import type { DataGridProps, GridValidRowModel } from "@mui/x-data-grid";
 import { DataGrid } from "@mui/x-data-grid";
 import { frFR } from "@mui/x-data-grid/locales";
-import type { FC, ReactNode, RefObject } from "react";
+import type { ReactNode, RefObject } from "react";
 
 const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   "& .MuiTablePagination-selectLabel": {
@@ -13,13 +13,13 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   },
 }));
 
-export const WrappeDataGridAction: FC<{
-  children: ReactNode | undefined;
-  touchRippleRef?: RefObject<unknown>;
-}> = async ({
+export const WrappeDataGridAction = async ({
   children,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   touchRippleRef,
+}: {
+  children: ReactNode | undefined;
+  touchRippleRef?: RefObject<unknown>;
 }) => {
   return children;
 };
