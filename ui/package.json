@@ -17,7 +17,7 @@
   "type": "module",
   "dependencies": {
     "@babel/runtime": "^7.26.7",
-    "@codegouvfr/react-dsfr": "^1.17.0",
+    "@codegouvfr/react-dsfr": "^1.18.0",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/server": "^11.11.0",

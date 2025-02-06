@@ -1,21 +1,15 @@
 "use client";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { Typography } from "@mui/material";
-import { use } from "react";
-import { useTranslation } from "react-i18next";
 
-import { useImporterStatus } from "@/app/[lang]/admin/hooks/useImporterStatus";
-import Loading from "@/app/[lang]/loading";
-import type { PropsWithLangParams } from "@/app/i18n/settings";
+import { useImporterStatus } from "@/app/admin/hooks/useImporterStatus";
+import Loading from "@/app/loading";
 import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 import { Table } from "@/components/table/Table";
 import { formatNullableDate } from "@/utils/date.utils";
 import { PAGES } from "@/utils/routes.utils";
 
-export default function AdminImportersPage({ params }: PropsWithLangParams) {
-  const { lang } = use(params);
-  const { t } = useTranslation("global", { lng: lang });
-
+export default function AdminImportersPage() {
   const result = useImporterStatus();
 
   if (result.isError) {
@@ -30,9 +24,9 @@ export default function AdminImportersPage({ params }: PropsWithLangParams) {
 
   return (
     <>
-      <Breadcrumb pages={[PAGES.static.adminImporters]} lang={lang} t={t} />
+      <Breadcrumb pages={[PAGES.static.adminImporters]} />
       <Typography variant="h2" gutterBottom>
-        {PAGES.static.adminImporters.getTitle(lang, t)}
+        {PAGES.static.adminImporters.getTitle()}
       </Typography>
       <Table
         rows={rows}
@@ -69,15 +63,17 @@ export default function AdminImportersPage({ params }: PropsWithLangParams) {
                 return [];
               }
               return [
-                <Button
-                  key="view"
-                  iconId="fr-icon-arrow-right-line"
-                  linkProps={{
-                    href: PAGES.dynamic.adminImporterView(name).getPath(lang),
-                  }}
-                  priority="tertiary no outline"
-                  title="Voir l'importer"
-                />,
+                <>
+                  <Button
+                    key="view"
+                    iconId="fr-icon-arrow-right-line"
+                    linkProps={{
+                      href: PAGES.dynamic.adminImporterView(name).getPath(),
+                    }}
+                    priority="tertiary no outline"
+                    title="Voir l'importer"
+                  />{" "}
+                </>,
               ];
             },
           },

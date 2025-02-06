@@ -45,15 +45,17 @@ export default function OrganisationList() {
             type: "actions",
             headerName: "Actions",
             getActions: ({ row: { _id } }) => [
-              <Button
-                key="view"
-                iconId="fr-icon-arrow-right-line"
-                linkProps={{
-                  href: PAGES.dynamic.adminOrganisationView(_id).getPath(),
-                }}
-                priority="tertiary no outline"
-                title="Voir l'utilisateur"
-              />,
+              <>
+                <Button
+                  key="view"
+                  iconId="fr-icon-arrow-right-line"
+                  linkProps={{
+                    href: PAGES.dynamic.adminOrganisationView(_id).getPath(),
+                  }}
+                  priority="tertiary no outline"
+                  title="Voir l'utilisateur"
+                />
+              </>,
             ],
           },
         ]}

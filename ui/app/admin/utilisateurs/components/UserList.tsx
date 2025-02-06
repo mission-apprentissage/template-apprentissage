@@ -92,15 +92,17 @@ const UserList = () => {
             type: "actions",
             headerName: "Actions",
             getActions: ({ row: { _id } }) => [
-              <Button
-                key="view"
-                iconId="fr-icon-arrow-right-line"
-                linkProps={{
-                  href: PAGES.dynamic.adminUserView(_id).getPath(),
-                }}
-                priority="tertiary no outline"
-                title="Voir l'utilisateur"
-              />,
+              <>
+                <Button
+                  key="view"
+                  iconId="fr-icon-arrow-right-line"
+                  linkProps={{
+                    href: PAGES.dynamic.adminUserView(_id).getPath(),
+                  }}
+                  priority="tertiary no outline"
+                  title="Voir l'utilisateur"
+                />
+              </>,
             ],
           },
         ]}
