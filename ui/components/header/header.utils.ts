@@ -25,13 +25,6 @@ const getNavigationItems = ({ user, pathname }: GetNavigationItemsProps): MainNa
         href: PAGES.static.explorerApi.getPath(),
       },
     },
-    {
-      isActive: pathname.startsWith(PAGES.static.documentationTechnique.getPath()),
-      text: PAGES.static.documentationTechnique.getTitle(),
-      linkProps: {
-        href: PAGES.static.documentationTechnique.getPath(),
-      },
-    },
   ];
 
   if (user?.is_admin) {
@@ -48,13 +41,6 @@ const getNavigationItems = ({ user, pathname }: GetNavigationItemsProps): MainNa
         isActive: pathname.startsWith(PAGES.static.adminUsers.getPath()),
         linkProps: {
           href: PAGES.static.adminUsers.getPath(),
-        },
-      },
-      {
-        text: PAGES.static.adminImporters.getTitle(),
-        isActive: pathname.startsWith(PAGES.static.adminImporters.getPath()),
-        linkProps: {
-          href: PAGES.static.adminImporters.getPath(),
         },
       },
       {

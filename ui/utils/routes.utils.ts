@@ -26,20 +26,10 @@ export const PAGES = {
       index: true,
       getTitle: () => "Accueil",
     },
-    documentationTechnique: {
-      getPath: () => `/documentation-technique` as string,
-      index: true,
-      getTitle: () => "Documentation technique",
-    },
-    documentationTechniqueEssayer: {
-      getPath: () => `/documentation-technique/try` as string,
-      index: true,
-      getTitle: () => "Essayer l'API",
-    },
     explorerApi: {
       getPath: () => `/explorer` as string,
       index: true,
-      getTitle: () => "Explorer l’API",
+      getTitle: () => "Explorer",
     },
     mentionsLegales: {
       getPath: () => `/mentions-legales` as string,
@@ -96,11 +86,6 @@ export const PAGES = {
       index: false,
       getTitle: () => "Administration du processeur",
     },
-    adminImporters: {
-      getPath: () => `/admin/importers` as string,
-      index: false,
-      getTitle: () => "Importeurs",
-    },
   },
   dynamic: {
     inscription: (token: string): IPage => ({
@@ -117,11 +102,6 @@ export const PAGES = {
       getPath: () => `/admin/utilisateurs/${id}`,
       index: false,
       getTitle: () => "Fiche utilisateur",
-    }),
-    adminImporterView: (name: string): IPage => ({
-      getPath: () => `/admin/importers/${name}` as string,
-      index: false,
-      getTitle: () => name,
     }),
     adminOrganisationView: (id: string): IPage => ({
       getPath: () => `/admin/organisations/${id}`,

@@ -80,7 +80,7 @@ function VousEtesSection() {
 
           <Link component={NextLink} href={PAGES.static.explorerApi.getPath()}>
             <Button iconId="fr-icon-arrow-right-line" iconPosition="right" priority="primary" size="large">
-              Explorer l'API
+              Explorer
             </Button>
           </Link>
         </Box>
@@ -134,12 +134,6 @@ function CommentUtiliserApiSection() {
             <Box display="grid" gap={fr.spacing("2v")}>
               <Typography>
                 <DsfrLink href={PAGES.static.compteProfil.getPath()}>Créer mon compte</DsfrLink>
-              </Typography>
-
-              <Typography>
-                <DsfrLink href={PAGES.static.documentationTechnique.getPath()}>
-                  Consulter la documentation technique
-                </DsfrLink>
               </Typography>
             </Box>
           </Box>

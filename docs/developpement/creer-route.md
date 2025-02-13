@@ -71,8 +71,8 @@ Le code relatif à la définition des routes, et de la documentation se trouve d
    4. Exporter le fichier dans `sdk/src/docs/metier/internal.ts`
 2. Ajouter la page à créer dans la variable `PAGES` du fichier `ui/utils/routes.utils.ts`
    1. Ne pas oublier d'ajouter les traductions du titre dans les fichiers `ui/app/i18n/locales/en/global.json` & `ui/app/i18n/locales/fr/global.json`
-3. Ajouter le lien vers la nouvelle page dans le fichier `ui/app/[lang]/explorer/page.tsx`
-4. Créer la page métier dans `ui/app/[lang]/explorer/<nom-page>/page.tsx`
+3. Ajouter le lien vers la nouvelle page dans le fichier `ui/app/explorer/page.tsx`
+4. Créer la page métier dans `ui/app/explorer/<nom-page>/page.tsx`
 
 ### Création de la documenation technique
 
