@@ -32,7 +32,7 @@ async function optionsToFetchParams(
 
   let body: BodyInit | undefined = undefined;
   if ("body" in options && method !== "GET") {
-    // @ts-expect-error
+    // @ts-expect-error: skip type check
     if (options.body instanceof FormData) {
       body = options.body;
     } else {
@@ -71,12 +71,13 @@ async function getHeaders(options: IRequestOptions) {
       // By default server-side we don't use headers
       // But we need them for the api, as all routes are authenticated
       const { headers: nextHeaders } = await import("next/headers");
-      const cookie = nextHeaders().get("cookie");
+      const headersList = await nextHeaders();
+      const cookie = headersList.get("cookie");
       if (cookie) {
         headers.append("cookie", cookie);
       }
     }
-  } catch (error) {
+  } catch (_error) {
     // We're in client, cookies will be includes
   }
 
@@ -136,7 +137,7 @@ export class ApiError extends Error {
           message = data.message;
           errorData = data.data;
         }
-      } catch (error) {
+      } catch (_error) {
         // ignore
       }
     }

@@ -1,13 +1,14 @@
 import { Suspense } from "react";
 
-import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 
+import { PAGES } from "../../utils/routes.utils";
 import PolitiqueConfidentialite from "./components/PolitiqueConfidentialite";
 
 const PolitiqueConfidentialitePage = () => {
   return (
     <Suspense>
-      <Breadcrumb pages={[PAGES.homepage(), PAGES.politiqueConfidentialite()]} />
+      <Breadcrumb pages={[PAGES.static.politiqueConfidentialite]} />
       <PolitiqueConfidentialite />
     </Suspense>
   );

@@ -1,11 +1,11 @@
-#compdef -d mna-tmpl
+#compdef -d product-tmpl
 
-_mna_completion() {
+_product_completion() {
   local curcontext="$curcontext" state line
   typeset -A opt_args
   local -a commands=(
    "help:'Show help message'"
-   "bin\:setup:'Installs mna-tmpl binary with zsh completion on system'"
+   "bin\:setup:'Installs product-tmpl binary with zsh completion on system'"
    "init\:env:'Update local env files using values from vault file'"
    "release\:app:'Build & Push Docker image releases'"
    "release\:interactive:'Interactivelly Build & Push Docker image releases'"
@@ -34,4 +34,4 @@ _mna_completion() {
   # _describe 'command' commands
 }
 
-_mna_completion "$@"
+_product_completion "$@"

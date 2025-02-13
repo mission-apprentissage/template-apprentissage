@@ -1,16 +1,59 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import { use } from "react";
+import type { IOrganisation } from "shared/src/models/organisation.model";
+import type { IUserAdminView } from "shared/src/models/user.model";
+import type { Jsonify } from "type-fest";
+
+import Loading from "@/app/loading";
 import { apiGet } from "@/utils/api.utils";
 
 import UserView from "./components/UserView";
 
-interface Props {
-  params: { id: string };
+type Result<T> = { isLoading: true } | { isLoading: false; data: T };
+
+function useUsers(id: string): Result<Jsonify<IUserAdminView>> {
+  const result = useQuery({
+    queryKey: ["/_private/admin/users", { id }],
+    queryFn: async () => apiGet(`/_private/admin/users/:id`, { params: { id } }),
+  });
+
+  if (result.isError) {
+    throw result.error;
+  }
+
+  if (result.isLoading || result.isPending) {
+    return { isLoading: true };
+  }
+
+  return { isLoading: false, data: result.data };
+}
+function useOrganisations(): Result<Jsonify<IOrganisation[]>> {
+  const result = useQuery({
+    queryKey: ["/_private/admin/organisations"],
+    queryFn: async () => apiGet(`/_private/admin/organisations`, {}),
+  });
+
+  if (result.isError) {
+    throw result.error;
+  }
+
+  if (result.isLoading || result.isPending) {
+    return { isLoading: true };
+  }
+
+  return { isLoading: false, data: result.data };
 }
 
-const AdminUserViewPage = async ({ params }: Props) => {
-  //@ts-expect-error: TODO fix this
-  const user = await apiGet(`/admin/users/:id`, { params });
+export default function AdminUserViewPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
+  const userResult = useUsers(id);
+  const organisationResult = useOrganisations();
 
-  return <UserView user={user} />;
-};
+  if (userResult.isLoading || organisationResult.isLoading) {
+    return <Loading />;
+  }
 
-export default AdminUserViewPage;
+  return <UserView user={userResult.data} organisations={organisationResult.data} />;
+}

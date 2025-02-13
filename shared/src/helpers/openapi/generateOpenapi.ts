@@ -119,7 +119,6 @@ function addOpenApiOperation(
     method,
     path: formatParamUrl(path),
     request: generateOpenApiRequest(route),
-    // @ts-expect-error
     responses: generateOpenApiResponsesObject(route.response),
     security: getSecurityRequirementObject(route),
   });

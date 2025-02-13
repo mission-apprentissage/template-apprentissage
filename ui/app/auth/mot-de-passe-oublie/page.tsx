@@ -11,8 +11,10 @@ import type { IGetRoutes, IQuery } from "shared";
 import type { IStatus } from "shared/src/routes/_private/auth.routes";
 
 import FormContainer from "@/app/auth/components/FormContainer";
-import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+// import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 import { apiGet } from "@/utils/api.utils";
+
+import { PAGES } from "../../../utils/routes.utils";
 
 //@ts-expect-error: TODO fix this
 type Route = IGetRoutes["/auth/reset-password"];
@@ -54,7 +56,7 @@ const MotDePasseOubliePage = () => {
 
   return (
     <Suspense>
-      <Breadcrumb pages={[PAGES.connexion(), PAGES.motDePasseOublie()]} />
+      {/* <Breadcrumb pages={[PAGES.connexion(), PAGES.motDePasseOublie()]} /> */}
       <FormContainer>
         <Typography variant="h2" gutterBottom>
           Mot de passe oublié
@@ -75,7 +77,7 @@ const MotDePasseOubliePage = () => {
             <Button type="submit">Recevoir un courriel de ré-initialisation</Button>
             <Button
               linkProps={{
-                href: PAGES.connexion().path,
+                href: PAGES.static.connexion.getPath(),
               }}
               priority="tertiary no outline"
             >

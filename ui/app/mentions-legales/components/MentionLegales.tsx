@@ -1,7 +1,7 @@
 import { Summary } from "@codegouvfr/react-dsfr/Summary";
 import { Grid, Typography } from "@mui/material";
 
-import Section from "@/app/components/section/Section";
+import Section from "@/components/section/Section";
 import { publicConfig } from "@/config.public";
 
 const anchors = {

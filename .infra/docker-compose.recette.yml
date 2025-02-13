@@ -21,7 +21,7 @@ services:
       - 1025:1025
       - 8025:8025
     networks:
-      - mna_network
+      - product_network
     volumes:
       - /opt/app/data/smtp:/data
       - /opt/app/configs/mailpit/auth:/auth

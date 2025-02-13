@@ -12,8 +12,10 @@ import type { IPostRoutes } from "shared";
 import type { IStatus } from "shared/src/routes/_private/auth.routes";
 
 import FormContainer from "@/app/auth/components/FormContainer";
-import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+// import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 import { apiPost } from "@/utils/api.utils";
+
+import { PAGES } from "../../../utils/routes.utils";
 // import { NavLink } from "../../components/NavLink";
 
 //@ts-expect-error: TODO fix this
@@ -37,7 +39,7 @@ const ModifierMotDePassePage = () => {
   } = useForm<IFormValues>();
 
   if (!token) {
-    return push(PAGES.homepage().path);
+    return push(PAGES.static.home.getPath());
   }
   //@ts-expect-error: TODO fix this
   const password = watch("password");
@@ -76,10 +78,10 @@ const ModifierMotDePassePage = () => {
 
   return (
     <Suspense>
-      <Breadcrumb pages={[PAGES.modifierMotDePasse()]} />
+      {/* <Breadcrumb pages={[PAGES.modifierMotDePasse()]} /> */}
       <FormContainer>
         <Typography variant="h2" gutterBottom>
-          {PAGES.modifierMotDePasse().title}
+          {/* {PAGES.modifierMotDePasse().title} */}
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <PasswordInput

@@ -1,8 +1,18 @@
+import type { Jsonify } from "type-fest";
 import { z } from "zod";
 
+import { zOrganisation } from "../../models/organisation.model";
 import { zUser, zUserPublic } from "../../models/user.model";
 import type { IRoutesDef } from "../common.routes";
 import { ZReqHeadersAuthorization, ZResOk } from "../common.routes";
+
+const zSession = z.object({
+  user: zUserPublic,
+  organisation: zOrganisation.nullable(),
+});
+
+export type ISession = z.output<typeof zSession>;
+export type ISessionJson = Jsonify<ISession>;
 
 export const zAuthRoutes = {
   get: {
@@ -18,7 +28,7 @@ export const zAuthRoutes = {
       method: "get",
       path: "/_private/auth/session",
       response: {
-        "200": zUserPublic,
+        "200": zSession,
       },
       headers: ZReqHeadersAuthorization,
       securityScheme: {
@@ -61,7 +71,7 @@ export const zAuthRoutes = {
         })
         .strict(),
       response: {
-        "200": zUserPublic,
+        "200": zSession,
       },
       securityScheme: {
         auth: "access-token",
@@ -89,7 +99,7 @@ export const zAuthRoutes = {
       path: "/_private/auth/login",
       body: z.unknown(),
       response: {
-        "200": zUserPublic,
+        "200": zSession,
       },
       securityScheme: {
         auth: "access-token",

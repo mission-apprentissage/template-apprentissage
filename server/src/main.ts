@@ -24,7 +24,6 @@ import { configureDbSchemaValidation, connectToMongodb } from "./services/mongod
   } catch (err) {
     captureException(err);
     logger.error({ err }, "startup error");
-    // eslint-disable-next-line n/no-process-exit
     process.exit(1);
   }
 })();

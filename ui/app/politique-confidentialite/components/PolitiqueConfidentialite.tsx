@@ -4,7 +4,7 @@ import { Table } from "@codegouvfr/react-dsfr/Table";
 import { Grid, Typography } from "@mui/material";
 import React from "react";
 
-import Section from "@/app/components/section/Section";
+import Section from "@/components/section/Section";
 
 const CONTACT_ADDRESS = "tableau-de-bord@apprentissage.beta.gouv.fr";
 

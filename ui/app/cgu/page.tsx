@@ -2,14 +2,15 @@
 
 import { Suspense } from "react";
 
-import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 
+import { PAGES } from "../../utils/routes.utils";
 import Cgu from "./components/Cgu";
 
 const CGUPage = () => {
   return (
     <Suspense>
-      <Breadcrumb pages={[PAGES.cgu()]} />
+      <Breadcrumb pages={[PAGES.static.cgu]} />
       <Cgu />
     </Suspense>
   );

@@ -1,6 +1,8 @@
 import "./globals.css";
 import "react-notion-x/src/styles.css";
 
+// eslint-disable-next-line import/no-named-as-default
+import MuiDsfrThemeProvider from "@codegouvfr/react-dsfr/mui";
 import { DsfrHead } from "@codegouvfr/react-dsfr/next-appdir/DsfrHead";
 import { DsfrProvider } from "@codegouvfr/react-dsfr/next-appdir/DsfrProvider";
 import { getHtmlAttributes } from "@codegouvfr/react-dsfr/next-appdir/getHtmlAttributes";
@@ -9,8 +11,9 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import type { PropsWithChildren } from "react";
 import { Suspense } from "react";
-import type { IUserPublic } from "shared/src/models/user.model";
+import type { ISessionJson } from "shared/src/routes/_private/auth.routes";
 
+import { Header } from "@/components/header/Header";
 import { publicConfig } from "@/config.public";
 import { AuthContextProvider } from "@/context/AuthContext";
 import { defaultColorScheme } from "@/theme/defaultColorScheme";
@@ -19,20 +22,16 @@ import { apiGet } from "@/utils/api.utils";
 
 import { StartDsfr } from "./StartDsfr";
 
-async function getSession(): Promise<IUserPublic | undefined> {
-  if (process.env.NEXT_PHASE === "phase-production-build") {
-    return;
-  }
-
+async function getSession(): Promise<ISessionJson | null> {
   try {
-    const session: IUserPublic = await apiGet(`/_private/auth/session`, {}, { cache: "no-store" });
+    const session = await apiGet(`/_private/auth/session`, {}, { cache: "no-store" });
     return session;
   } catch (error) {
     if ((error as ApiError).context?.statusCode !== 401) {
       captureException(error);
     }
 
-    return;
+    return null;
   }
 }
 
@@ -74,9 +73,14 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         />
       </head>
       <body>
-        <AuthContextProvider initialUser={session ?? null}>
+        <AuthContextProvider initialSession={session ?? null}>
           <Suspense>
-            <DsfrProvider lang={lang}>{children}</DsfrProvider>
+            <DsfrProvider lang={lang}>
+              <MuiDsfrThemeProvider>
+                <Header />
+                {children}
+              </MuiDsfrThemeProvider>
+            </DsfrProvider>
           </Suspense>
         </AuthContextProvider>
       </body>

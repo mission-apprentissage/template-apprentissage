@@ -14,15 +14,17 @@ import type { IBody, IPostRoutes } from "shared";
 import type { IStatus } from "shared/src/routes/_private/auth.routes";
 
 import FormContainer from "@/app/auth/components/FormContainer";
-import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 import { useAuth } from "@/context/AuthContext";
 import { apiPost } from "@/utils/api.utils";
+
+import { PAGES } from "../../../utils/routes.utils";
 
 type Route = IPostRoutes["/_private/auth/login"];
 
 const ConnexionPage = () => {
   const { push } = useRouter();
-  const { user, setUser } = useAuth();
+  const { session, setSession } = useAuth();
   const [status, setStatus] = useState<IStatus>();
 
   const {
@@ -35,7 +37,10 @@ const ConnexionPage = () => {
   const onSubmit: SubmitHandler<IBody<Route>> = async (data) => {
     try {
       //@ts-expect-error: TODO fix this
-      setUser(await apiPost("/_private/auth/login", { body: data }));
+      const session = await apiPost("/_private/auth/login", {
+        body: data,
+      });
+      setSession(session);
     } catch (error) {
       const errorMessage = (error as Record<string, string>)?.message;
 
@@ -48,13 +53,13 @@ const ConnexionPage = () => {
     }
   };
 
-  if (user) {
+  if (session) {
     return push("/");
   }
 
   return (
     <Suspense>
-      <Breadcrumb pages={[PAGES.connexion()]} />
+      <Breadcrumb pages={[PAGES.static.connexion]} />
       <FormContainer>
         <Typography variant="h2" gutterBottom>
           Connectez-vous
@@ -100,7 +105,7 @@ const ConnexionPage = () => {
             <Button type="submit">Connexion</Button>
             <Button
               linkProps={{
-                href: PAGES.motDePasseOublie().path,
+                href: PAGES.static.motDePasseOublie.getPath(),
               }}
               priority="tertiary no outline"
             >

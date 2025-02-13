@@ -2,14 +2,15 @@
 
 import { Suspense } from "react";
 
-import Breadcrumb, { PAGES } from "@/app/components/breadcrumb/Breadcrumb";
+import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 
+import { PAGES } from "../../utils/routes.utils";
 import DonneesPersonnelles from "./components/DonneesPersonnelles";
 
 const DonneesPersonnellesPage = () => {
   return (
     <Suspense>
-      <Breadcrumb pages={[PAGES.donneesPersonnelles()]} />
+      <Breadcrumb pages={[PAGES.static.donneesPersonnelles]} />
       <DonneesPersonnelles />
     </Suspense>
   );

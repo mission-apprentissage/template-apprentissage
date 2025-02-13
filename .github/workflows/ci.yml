@@ -15,7 +15,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - uses: actions/cache@v4
         with:
@@ -33,16 +33,14 @@ jobs:
         run: yarn dedupe --check
 
       - name: typecheck
-        run: yarn typecheck:ci
+        run: yarn typecheck
 
       - name: lint
         run: yarn lint
 
       - name: start mongodb service
         run: |
-          chmod 400 .infra/local/mongo_keyfile
-          sudo chown 999:999 .infra/local/mongo_keyfile
-          docker compose up -d --wait mongodb
+          docker compose up --build -d --wait mongodb
           yarn setup:mongodb
 
       - name: test
