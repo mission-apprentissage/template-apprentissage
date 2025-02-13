@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "yarn predev && next dev",
     "build": "yarn prebuild && next build --no-lint",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -b",
     "predev": "react-dsfr update-icons",
     "prebuild": "react-dsfr update-icons"
   },

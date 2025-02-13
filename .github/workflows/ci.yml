@@ -33,7 +33,7 @@ jobs:
         run: yarn dedupe --check
 
       - name: typecheck
-        run: yarn typecheck:ci
+        run: yarn typecheck
 
       - name: lint
         run: yarn lint
